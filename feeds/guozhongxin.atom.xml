@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="/" rel="alternate"></link><link href="/feeds/guozhongxin.atom.xml" rel="self"></link><id>/</id><updated>2014-09-03T10:20:00+08:00</updated><entry><title>My super title</title><link href="/my-super-post.html" rel="alternate"></link><updated>2014-09-03T10:20:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:,2014-09-03:my-super-post.html</id><summary type="html">&lt;h2&gt;MaHua是什么?&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.voteyourvoice.cn/" rel="alternate"></link><link href="http://www.voteyourvoice.cn/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.voteyourvoice.cn/</id><updated>2014-09-03T10:20:00+08:00</updated><entry><title>My super title</title><link href="http://www.voteyourvoice.cn/pages/2014/09/03/my-super-post.html" rel="alternate"></link><updated>2014-09-03T10:20:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.voteyourvoice.cn,2014-09-03:pages/2014/09/03/my-super-post.html</id><summary type="html">&lt;h2&gt;MaHua是什么?&lt;/h2&gt;
 &lt;p&gt;一个在线编辑markdown文档的编辑器&lt;/p&gt;
 &lt;p&gt;向Mac下优秀的markdown编辑器mou致敬&lt;/p&gt;
 &lt;h2&gt;MaHua有哪些功能？&lt;/h2&gt;

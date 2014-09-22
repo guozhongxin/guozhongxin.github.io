@@ -4,63 +4,63 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>/index.html</loc>
-<lastmod>2014-09-22T11:09:48-00:00</lastmod>
+<loc>http://www.voteyourvoice.cn/index.html</loc>
+<lastmod>2014-09-22T11:21:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/archives.html</loc>
-<lastmod>2014-09-22T11:09:48-00:00</lastmod>
+<loc>http://www.voteyourvoice.cn/archives.html</loc>
+<lastmod>2014-09-22T11:21:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tags.html</loc>
-<lastmod>2014-09-22T11:09:48-00:00</lastmod>
+<loc>http://www.voteyourvoice.cn/tags.html</loc>
+<lastmod>2014-09-22T11:21:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/categories.html</loc>
-<lastmod>2014-09-22T11:09:48-00:00</lastmod>
+<loc>http://www.voteyourvoice.cn/categories.html</loc>
+<lastmod>2014-09-22T11:21:24-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/my-super-post.html</loc>
+<loc>http://www.voteyourvoice.cn/pages/2014/09/03/my-super-post.html</loc>
 <lastmod>2014-09-03T10:20:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
 </url>
 
 <url>
-<loc>/category/python.html</loc>
+<loc>http://www.voteyourvoice.cn/category/python.html</loc>
 <lastmod>2014-09-03T10:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tag/pelican.html</loc>
+<loc>http://www.voteyourvoice.cn/tag/pelican.html</loc>
 <lastmod>2014-09-03T10:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tag/publishing.html</loc>
+<loc>http://www.voteyourvoice.cn/tag/publishing.html</loc>
 <lastmod>2014-09-03T10:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/author/guozhongxin.html</loc>
+<loc>http://www.voteyourvoice.cn/author/guozhongxin.html</loc>
 <lastmod>2014-09-03T10:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
