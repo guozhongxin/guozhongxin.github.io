@@ -1,11 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-09-25T21:00:00+08:00</updated><entry><title>pelican建站攻略补充（站内搜索，和标签云）</title><link href="http://www.guozhongxin.com/pages/2014/09/25/build%20blog%20with%20pelican.html" rel="alternate"></link><updated>2014-09-25T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build blog with pelican.html</id><summary type="html">&lt;h2&gt;pelican建站准备&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-09-26T23:00:00+08:00</updated><entry><title>Spark安装：搭建Spark集群及开发环境搭建</title><link href="http://www.guozhongxin.com/pages/2014/09/26/spark%20installation%20and%20develop%20environment.html" rel="alternate"></link><updated>2014-09-26T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark installation and develop environment.html</id><summary type="html">&lt;h2&gt;安装Spark准备&lt;/h2&gt;
+&lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;scala安装包，可以在&lt;a href="http://www.scala-lang.org/"&gt;scala官方网站&lt;/a&gt;下载&lt;/li&gt;
+&lt;li&gt;spark安装包，可以在&lt;a href="http://spark.apache.org/downloads.html"&gt;spark官网&lt;/a&gt;下载，用两种形式的安装包：&lt;ul&gt;
+&lt;li&gt;source code package&lt;/li&gt;
+&lt;li&gt;pre-build package&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;在主节点实现ssh免密码登陆其他节点。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;install scala&lt;/h3&gt;
+&lt;p&gt;download scala-2.10.4.tgz and unzip： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;scala&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.10.4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;   
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;install spark.&lt;/h3&gt;
+&lt;p&gt;There are two types of spark installation package, source package that you need build spark at first, and prebuild package.&lt;br /&gt;
+To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;distribution&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;hadoop&lt;/span&gt; &lt;span class="mf"&gt;2.4.0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yarn&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;hive&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tachyon&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;skip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0.0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.2.0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;  
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configure Spark cluster&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;edit &lt;code&gt;$SPARK_HOME/conf/slaves&lt;/code&gt;, and input all node IP :  &lt;/p&gt;
+&lt;p&gt;masters&lt;br /&gt;
+slave1&lt;br /&gt;
+slave2&lt;br /&gt;
+slave3 &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_env.sh&lt;/code&gt; &lt;/p&gt;
+&lt;p&gt;export HADOOP_HOME=/opt/apache/hadoop-2.4.0&lt;br /&gt;
+export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop&lt;br /&gt;
+export JAVA_HOME=/usr/local/jdk1.7.0_60&lt;br /&gt;
+export SCALA_HOME=/home/yarn/scala-2.10.4  &lt;/p&gt;
+&lt;p&gt;export SPARK_WORKER_MEMORY=16g&lt;br /&gt;
+export SPARK_WORKER_INSTANCES=1&lt;br /&gt;
+export SPARK_MASTER_IP=bigant-test-001  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_default.conf&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;spark.master                    spark://master:7077&lt;br /&gt;
+spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog&lt;br /&gt;
+spark.local.dir                  ...  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Copy to other node  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Do not forget change ~/.bashrc &lt;/p&gt;
+&lt;h3&gt;Tips&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node&lt;br /&gt;
+If old worker's process is still working , you can use this command to kill them:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ef&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Worker&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="n"&gt;kill&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and restart Spark Cluster  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;if you want to start history server, you should assign logs' path:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;historyserver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;  &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you wanna save a job's log, you should assign two properties:  &lt;/p&gt;
+&lt;p&gt;spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary></entry><entry><title>pelican建站攻略补充（站内搜索，和标签云）</title><link href="http://www.guozhongxin.com/pages/2014/09/25/build%20blog%20with%20pelican.html" rel="alternate"></link><updated>2014-09-25T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build blog with pelican.html</id><summary type="html">&lt;h2&gt;pelican建站准备&lt;/h2&gt;
 &lt;p&gt;参见lizherui的&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;一步一步打造Geek风格的技术博客&lt;/a&gt;，不累述&lt;/p&gt;
-&lt;h2&gt;添加百度站内搜索&lt;/h2&gt;
+&lt;hr /&gt;
+&lt;h2&gt;添加站内搜索&lt;/h2&gt;
 &lt;p&gt;由于原日志中关于添加google站内搜索的链接失效，在其他地方没有看到特别好的介绍。&lt;br /&gt;
 我首先尝试了直接在&lt;code&gt;pelicanconf.py&lt;/code&gt;中直接添加&lt;code&gt;GOOGLE_CUSTOM_SEARCH_NAVBAR&lt;/code&gt;这一条属性，结果在&lt;code&gt;make html&lt;/code&gt;之后，左上角的search框，在参考了lizhurui的博客代码后，我是这样实现的。  &lt;/p&gt;
 &lt;h3&gt;添加google站内搜索&lt;/h3&gt;
-&lt;h5&gt;修改主题：&lt;/h5&gt;
+&lt;h4&gt;修改主题：&lt;/h4&gt;
 &lt;p&gt;找到这个主题（&lt;code&gt;tuxlite_tbs&lt;/code&gt;）的templates文件夹中的&lt;code&gt;base.html&lt;/code&gt;，在这个div(&lt;code&gt;&amp;lt;div class="nav-collapse"&amp;gt;&lt;/code&gt;)的最后，添加以下内容：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;navbar-search pull-right&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/search.html&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-query&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;placeholder=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Search&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;q&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
@@ -18,7 +110,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h5&gt;创建search.html&lt;/h5&gt;
+&lt;h4&gt;创建search.html&lt;/h4&gt;
 &lt;p&gt;之后，在output目录下，新建一个名为search.html的文件，写入下面的内容，其中需要你自己修改的是google站内搜索的ID号，需要自己在&lt;a href="https://www.google.com/cse/"&gt;google站内搜索&lt;/a&gt;的网站上自己申请。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;html&lt;/span&gt; &lt;span class="na"&gt;lang=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;zh_CN&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
@@ -100,24 +192,25 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h6&gt;生成html，发布&lt;/h6&gt;
+&lt;h4&gt;生成html，发布&lt;/h4&gt;
 &lt;p&gt;将这个html文件保存在output目录（网站的根目录）下，执行&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;
 &lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;这样，搜索框就出来了。
-&lt;img alt="1" src="http://www.guozhongxin.com/theme/images/searchwithgoogle.png" /&gt;&lt;/p&gt;
+&lt;p&gt;这样，搜索框就出来了。  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/theme/images/searchwithgoogle.png" /&gt;&lt;/p&gt;
 &lt;p&gt;为了让google站内搜索功能更好的工作，你可在google站长工具中提交你的sitemap（这个可以在pelicanconf.py中配置sitemap插件，着执行make html后能自动生成）。&lt;/p&gt;
-&lt;h5&gt;提交sitemap&lt;/h5&gt;
-&lt;p&gt;引入sitemap插件的工程见lizherui的日志。这样在&lt;code&gt;make html&lt;/code&gt;之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。&lt;/p&gt;
+&lt;h4&gt;提交sitemap&lt;/h4&gt;
+&lt;p&gt;引入sitemap插件的工程见lizherui的日志。这样在&lt;code&gt;make html&lt;/code&gt;之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。  &lt;/p&gt;
+&lt;hr /&gt;
 &lt;h3&gt;添加百度站内搜索&lt;/h3&gt;
 &lt;p&gt;虽然实现了google站内搜索的功能，但是由于GFW的原因导致实际在使用google站内搜索时加载太慢，最终，我还是无奈的选择了百度站内搜索。。。  &lt;/p&gt;
-&lt;h5&gt;注册&lt;/h5&gt;
+&lt;h4&gt;注册&lt;/h4&gt;
 &lt;p&gt;在&lt;a href="http://zhanzhang.baidu.com/"&gt;百度站长平台&lt;/a&gt;中注册一个账号，之后添加网站，按照提示验证网站。&lt;br /&gt;
 之后左侧&lt;code&gt;其他工具&lt;/code&gt;中找到&lt;code&gt;站内搜索&lt;/code&gt;，按照提示填写基本信息，选择搜索框样式，之后点击&lt;code&gt;查看代码&lt;/code&gt;，复制其中内容，留用。  &lt;/p&gt;
-&lt;h5&gt;修改主题&lt;/h5&gt;
+&lt;h4&gt;修改主题&lt;/h4&gt;
 &lt;p&gt;同样在&lt;code&gt;base.html&lt;/code&gt;的这个个div(&lt;code&gt;&amp;lt;div class="nav-collapse"&amp;gt;&lt;/code&gt;)的最后，新建一个&lt;code&gt;div&lt;/code&gt;，刚才注册最后复制的代码粘贴到这个&lt;code&gt;div&lt;/code&gt;中： &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;navbar-search pull-right&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
     &lt;span class="nt"&gt;&amp;lt;script&amp;gt;&lt;/span&gt;  
@@ -132,10 +225,10 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h6&gt;生成html，发布&lt;/h6&gt;
-&lt;p&gt;同上
-&lt;img alt="2" src="http://www.guozhongxin.com/theme/images/searchwithbaidu.png" /&gt;&lt;/p&gt;
-&lt;h5&gt;提交sitemap&lt;/h5&gt;
+&lt;h4&gt;生成html，发布&lt;/h4&gt;
+&lt;p&gt;同上  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="2" src="http://www.guozhongxin.com/theme/images/searchwithbaidu.png" /&gt;&lt;/p&gt;
+&lt;h4&gt;提交sitemap&lt;/h4&gt;
 &lt;p&gt;在百度站长工具里提交sitemap的过程和google的类似，需要注意的是百度有自己的&lt;a href="http://zhanzhang.baidu.com/wiki/170#_2什么是sitemap索引文件？"&gt;sitemap格式&lt;/a&gt;，直接用lizherui日志中的方法生成的sitemap.xml不符合百度的要求：  &lt;/p&gt;
 &lt;p&gt;&lt;img alt="3" src="http://www.guozhongxin.com/theme/images/sitemapofbaidu.png" /&gt;&lt;/p&gt;
 &lt;p&gt;百度sitemap要求有&lt;/p&gt;
@@ -143,8 +236,8 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改：&lt;/p&gt;
-&lt;h6&gt;配置符合百度站内搜索规则的pelican sitemap插件&lt;/h6&gt;
+&lt;p&gt;而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改.&lt;/p&gt;
+&lt;h4&gt;配置符合百度站内搜索规则的pelican sitemap插件&lt;/h4&gt;
 &lt;p&gt;找到&lt;code&gt;.../pelican-plugins/sitemap/sitemap.py&lt;/code&gt;，找到全局变量&lt;code&gt;XML_URL&lt;/code&gt;，将其修改为以下形式：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;XML_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 &lt;span class="s2"&gt;&amp;lt;url&amp;gt;&lt;/span&gt;
@@ -163,9 +256,10 @@
 
 &lt;p&gt;这样，重新&lt;code&gt;make html&lt;/code&gt;就能生成一份符合百度站内搜索的sitemap.xml。将其提交到百度站内搜索“提交数据”中，等待百度验证之后，就能体验百度站内搜索功能。&lt;/p&gt;
 &lt;p&gt;在这里吐槽一句，百度的站长工具确实不如google webmasters，同样是提交sitemap，google可以做到立即生效，百度的要等至少一个小时。如果没有GFW，才懒得用百度的呢。&lt;/p&gt;
+&lt;hr /&gt;
 &lt;h2&gt;添加Tags链接&lt;/h2&gt;
 &lt;p&gt;在其他一些pelican主题中，看到有标签云，想到Tags的链接可能比Categories的链接更有用，通过更改主题，添加了侧栏中红框内的Tags链接框。&lt;/p&gt;
-&lt;h5&gt;修改主题&lt;/h5&gt;
+&lt;h4&gt;修改主题&lt;/h4&gt;
 &lt;p&gt;还是找到&lt;code&gt;base.html&lt;/code&gt;，找到categories部分：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;categories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;well&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;padding: 8px 0; background-color: #FBFBFB;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;

@@ -72,11 +72,12 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
         
         <div><h2>pelican建站准备</h2>
 <p>参见lizherui的<a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html">一步一步打造Geek风格的技术博客</a>，不累述</p>
-<h2>添加百度站内搜索</h2>
+<hr />
+<h2>添加站内搜索</h2>
 <p>由于原日志中关于添加google站内搜索的链接失效，在其他地方没有看到特别好的介绍。<br />
 我首先尝试了直接在<code>pelicanconf.py</code>中直接添加<code>GOOGLE_CUSTOM_SEARCH_NAVBAR</code>这一条属性，结果在<code>make html</code>之后，左上角的search框，在参考了lizhurui的博客代码后，我是这样实现的。  </p>
 <h3>添加google站内搜索</h3>
-<h5>修改主题：</h5>
+<h4>修改主题：</h4>
 <p>找到这个主题（<code>tuxlite_tbs</code>）的templates文件夹中的<code>base.html</code>，在这个div(<code>&lt;div class="nav-collapse"&gt;</code>)的最后，添加以下内容：  </p>
 <div class="highlight"><pre><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;navbar-search pull-right&quot;</span> <span class="na">action=</span><span class="s">&quot;/search.html&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">class=</span><span class="s">&quot;search-query&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;Search&quot;</span> <span class="na">name=</span><span class="s">&quot;q&quot;</span> <span class="na">id=</span><span class="s">&quot;s&quot;</span><span class="nt">&gt;</span>
@@ -89,7 +90,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </pre></div>
 
 
-<h5>创建search.html</h5>
+<h4>创建search.html</h4>
 <p>之后，在output目录下，新建一个名为search.html的文件，写入下面的内容，其中需要你自己修改的是google站内搜索的ID号，需要自己在<a href="https://www.google.com/cse/">google站内搜索</a>的网站上自己申请。</p>
 <div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;zh_CN&quot;</span><span class="nt">&gt;</span>
@@ -171,24 +172,25 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </pre></div>
 
 
-<h6>生成html，发布</h6>
+<h4>生成html，发布</h4>
 <p>将这个html文件保存在output目录（网站的根目录）下，执行</p>
 <div class="highlight"><pre><span class="n">make</span> <span class="n">html</span>
 <span class="n">make</span> <span class="n">github</span>
 </pre></div>
 
 
-<p>这样，搜索框就出来了。
-<img alt="1" src="http://www.guozhongxin.com/theme/images/searchwithgoogle.png" /></p>
+<p>这样，搜索框就出来了。  </p>
+<p><img alt="1" src="http://www.guozhongxin.com/theme/images/searchwithgoogle.png" /></p>
 <p>为了让google站内搜索功能更好的工作，你可在google站长工具中提交你的sitemap（这个可以在pelicanconf.py中配置sitemap插件，着执行make html后能自动生成）。</p>
-<h5>提交sitemap</h5>
-<p>引入sitemap插件的工程见lizherui的日志。这样在<code>make html</code>之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。</p>
+<h4>提交sitemap</h4>
+<p>引入sitemap插件的工程见lizherui的日志。这样在<code>make html</code>之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。  </p>
+<hr />
 <h3>添加百度站内搜索</h3>
 <p>虽然实现了google站内搜索的功能，但是由于GFW的原因导致实际在使用google站内搜索时加载太慢，最终，我还是无奈的选择了百度站内搜索。。。  </p>
-<h5>注册</h5>
+<h4>注册</h4>
 <p>在<a href="http://zhanzhang.baidu.com/">百度站长平台</a>中注册一个账号，之后添加网站，按照提示验证网站。<br />
 之后左侧<code>其他工具</code>中找到<code>站内搜索</code>，按照提示填写基本信息，选择搜索框样式，之后点击<code>查看代码</code>，复制其中内容，留用。  </p>
-<h5>修改主题</h5>
+<h4>修改主题</h4>
 <p>同样在<code>base.html</code>的这个个div(<code>&lt;div class="nav-collapse"&gt;</code>)的最后，新建一个<code>div</code>，刚才注册最后复制的代码粘贴到这个<code>div</code>中： </p>
 <div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;navbar-search pull-right&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;script&gt;</span>  
@@ -203,10 +205,10 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </pre></div>
 
 
-<h6>生成html，发布</h6>
-<p>同上
-<img alt="2" src="http://www.guozhongxin.com/theme/images/searchwithbaidu.png" /></p>
-<h5>提交sitemap</h5>
+<h4>生成html，发布</h4>
+<p>同上  </p>
+<p><img alt="2" src="http://www.guozhongxin.com/theme/images/searchwithbaidu.png" /></p>
+<h4>提交sitemap</h4>
 <p>在百度站长工具里提交sitemap的过程和google的类似，需要注意的是百度有自己的<a href="http://zhanzhang.baidu.com/wiki/170#_2什么是sitemap索引文件？">sitemap格式</a>，直接用lizherui日志中的方法生成的sitemap.xml不符合百度的要求：  </p>
 <p><img alt="3" src="http://www.guozhongxin.com/theme/images/sitemapofbaidu.png" /></p>
 <p>百度sitemap要求有</p>
@@ -214,8 +216,8 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </pre></div>
 
 
-<p>而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改：</p>
-<h6>配置符合百度站内搜索规则的pelican sitemap插件</h6>
+<p>而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改.</p>
+<h4>配置符合百度站内搜索规则的pelican sitemap插件</h4>
 <p>找到<code>.../pelican-plugins/sitemap/sitemap.py</code>，找到全局变量<code>XML_URL</code>，将其修改为以下形式：</p>
 <div class="highlight"><pre><span class="n">XML_URL</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">&lt;url&gt;</span>
@@ -234,9 +236,10 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 <p>这样，重新<code>make html</code>就能生成一份符合百度站内搜索的sitemap.xml。将其提交到百度站内搜索“提交数据”中，等待百度验证之后，就能体验百度站内搜索功能。</p>
 <p>在这里吐槽一句，百度的站长工具确实不如google webmasters，同样是提交sitemap，google可以做到立即生效，百度的要等至少一个小时。如果没有GFW，才懒得用百度的呢。</p>
+<hr />
 <h2>添加Tags链接</h2>
 <p>在其他一些pelican主题中，看到有标签云，想到Tags的链接可能比Categories的链接更有用，通过更改主题，添加了侧栏中红框内的Tags链接框。</p>
-<h5>修改主题</h5>
+<h4>修改主题</h4>
 <p>还是找到<code>base.html</code>，找到categories部分：</p>
 <div class="highlight"><pre><span class="cp">{%</span> <span class="k">if</span> <span class="nv">categories</span> <span class="cp">%}</span>
 <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;well&quot;</span> <span class="na">style=</span><span class="s">&quot;padding: 8px 0; background-color: #FBFBFB;&quot;</span><span class="nt">&gt;</span>
@@ -320,6 +323,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
                 </li>
                 
                 <li><a href="http://www.guozhongxin.com/category/python.html">Python</a></li>
+                <li><a href="http://www.guozhongxin.com/category/spark.html">spark</a></li>
                    
             </ul>
             </div>
