@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/index.html</loc>
-<lastmod>2014-09-27T00:21:12-00:00</lastmod>
+<lastmod>2014-09-27T17:11:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -16,7 +16,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/archives.html</loc>
-<lastmod>2014-09-27T00:21:12-00:00</lastmod>
+<lastmod>2014-09-27T17:11:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -27,7 +27,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/tags.html</loc>
-<lastmod>2014-09-27T00:21:12-00:00</lastmod>
+<lastmod>2014-09-27T17:11:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -38,7 +38,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/categories.html</loc>
-<lastmod>2014-09-27T00:21:12-00:00</lastmod>
+<lastmod>2014-09-27T17:11:52-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -59,7 +59,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://www.guozhongxin.com/pages/2014/09/26/spark installation and develop environment.html</loc>
+<loc>http://www.guozhongxin.com/pages/2014/09/26/spark installation.html</loc>
 <lastmod>2014-09-26T23:00:00-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.7</priority>
