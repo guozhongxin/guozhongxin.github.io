@@ -90,7 +90,7 @@ If old worker's process is still working , you can use this command to kill them
 &lt;p&gt;spark.eventLog.enabled          true&lt;br /&gt;
 spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 26 Sep 2014 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</guid><category>spark</category><category>开发环境</category><category></category></item><item><title>pelican建站攻略补充（站内搜索，和标签云）</title><link>http://www.guozhongxin.com/pages/2014/09/25/build%20blog%20with%20pelican.html</link><description>&lt;h2&gt;pelican建站准备&lt;/h2&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 26 Sep 2014 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</guid><category>spark</category><category>开发环境</category><category></category></item><item><title>pelican建站攻略补充（站内搜索，和标签云）</title><link>http://www.guozhongxin.com/pages/2014/09/25/build_blog_with_pelican.html</link><description>&lt;h2&gt;pelican建站准备&lt;/h2&gt;
 &lt;p&gt;参见lizherui的&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;一步一步打造Geek风格的技术博客&lt;/a&gt;，不累述&lt;/p&gt;
 &lt;hr /&gt;
 &lt;h2&gt;添加站内搜索&lt;/h2&gt;
@@ -303,4 +303,4 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 &lt;p&gt;这时，你就能看到左侧栏出现的TAGS链接框了。&lt;br /&gt;
 &lt;img alt="4" src="http://www.guozhongxin.com/theme/images/tags.png" /&gt;&lt;/p&gt;
-&lt;p&gt;实际上这不是一个能体现tag出现频次的tag云，小弟实在没学过前端技术，大神看到有感兴趣的可以提出解决的方法。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Thu, 25 Sep 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build blog with pelican.html</guid><category>pelican</category><category>python</category><category></category></item></channel></rss>
+&lt;p&gt;实际上这不是一个能体现tag出现频次的tag云，小弟实在没学过前端技术，大神看到有感兴趣的可以提出解决的方法。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Thu, 25 Sep 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build_blog_with_pelican.html</guid><category>pelican</category><category>python</category><category></category></item></channel></rss>
