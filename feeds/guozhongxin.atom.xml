@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-09-26T23:00:00+08:00</updated><entry><title>Spark安装：搭建Spark集群及开发环境搭建</title><link href="http://www.guozhongxin.com/pages/2014/09/26/spark%20installation.html" rel="alternate"></link><updated>2014-09-26T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark installation.html</id><summary type="html">&lt;h2&gt;安装Spark准备&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-09-26T23:00:00+08:00</updated><entry><title>Spark安装：搭建Spark集群及开发环境搭建</title><link href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html" rel="alternate"></link><updated>2014-09-26T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</id><summary type="html">&lt;h2&gt;安装Spark准备&lt;/h2&gt;
 &lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;scala安装包，可以在&lt;a href="http://www.scala-lang.org/"&gt;scala官方网站&lt;/a&gt;下载&lt;/li&gt;
@@ -90,7 +90,7 @@ If old worker's process is still working , you can use this command to kill them
 &lt;p&gt;spark.eventLog.enabled          true&lt;br /&gt;
 spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 &lt;/li&gt;
-&lt;/ol&gt;</summary></entry><entry><title>pelican建站攻略补充（站内搜索，和标签云）</title><link href="http://www.guozhongxin.com/pages/2014/09/25/build%20blog%20with%20pelican.html" rel="alternate"></link><updated>2014-09-25T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build blog with pelican.html</id><summary type="html">&lt;h2&gt;pelican建站准备&lt;/h2&gt;
+&lt;/ol&gt;</summary><category term="spark"></category><category term="开发环境"></category><category term=""></category></entry><entry><title>pelican建站攻略补充（站内搜索，和标签云）</title><link href="http://www.guozhongxin.com/pages/2014/09/25/build%20blog%20with%20pelican.html" rel="alternate"></link><updated>2014-09-25T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build blog with pelican.html</id><summary type="html">&lt;h2&gt;pelican建站准备&lt;/h2&gt;
 &lt;p&gt;参见lizherui的&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;一步一步打造Geek风格的技术博客&lt;/a&gt;，不累述&lt;/p&gt;
 &lt;hr /&gt;
 &lt;h2&gt;添加站内搜索&lt;/h2&gt;
