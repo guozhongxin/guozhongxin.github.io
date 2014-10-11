@@ -10,7 +10,7 @@
 &lt;/li&gt;
 &lt;li&gt;在主节点实现ssh免密码登陆其他节点。  &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3&gt;install scala&lt;/h3&gt;
+&lt;h3&gt;install scala - scala安装&lt;/h3&gt;
 &lt;p&gt;download scala-2.10.4.tgz and unzip： &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;scala&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.10.4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
 &lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
@@ -20,14 +20,18 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;install spark.&lt;/h3&gt;
-&lt;p&gt;There are two types of spark installation package, source package that you need build spark at first, and prebuild package.&lt;br /&gt;
-To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :  &lt;/p&gt;
+&lt;h3&gt;install spark. - spark安装&lt;/h3&gt;
+&lt;p&gt;There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  &lt;/p&gt;
+&lt;p&gt;Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包&lt;/p&gt;
+&lt;p&gt;To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :    &lt;/p&gt;
+&lt;p&gt;在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  &lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;distribution&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;hadoop&lt;/span&gt; &lt;span class="mf"&gt;2.4.0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yarn&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;hive&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tachyon&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;skip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   &lt;/p&gt;
+&lt;p&gt;如果你选择了已经build好的安装包，以上步骤不需执行。&lt;/p&gt;
+&lt;p&gt;将自己编译或是下载的编译包解压缩，并配置环境变量：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0.0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.2.0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
 &lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
     &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;  
@@ -36,7 +40,7 @@ To build source package, you should unzip the package and edit pom.xml in the di
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h3&gt;Configure Spark cluster&lt;/h3&gt;
+&lt;h3&gt;Configure Spark cluster - Spark集群配置&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;p&gt;edit &lt;code&gt;$SPARK_HOME/conf/slaves&lt;/code&gt;, and input all node IP :  &lt;/p&gt;
@@ -53,8 +57,17 @@ export JAVA_HOME=/usr/local/jdk1.7.0_60&lt;br /&gt;
 export SCALA_HOME=/home/yarn/scala-2.10.4  &lt;/p&gt;
 &lt;p&gt;export SPARK_WORKER_MEMORY=16g&lt;br /&gt;
 export SPARK_WORKER_INSTANCES=1&lt;br /&gt;
-export SPARK_MASTER_IP=bigant-test-001  &lt;/p&gt;
+export SPARK_MASTER_IP=master&lt;/p&gt;
+&lt;p&gt;实际上安装好之后&lt;code&gt;conf&lt;/code&gt;文件夹下有一个&lt;code&gt;spark_env.sh&lt;/code&gt;的模板，里边有各个变量的解释说明，在这不一一累述  &lt;/p&gt;
 &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Copy to other node &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要将各个节点上的这两个文件都进行配置&lt;/p&gt;
+&lt;h3&gt;Configure Spark App - Spark作业属性配置&lt;/h3&gt;
+&lt;p&gt;对于作业执行的属性配置，spark提供了三种不同的配置方法  &lt;/p&gt;
+&lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_default.conf&lt;/code&gt;  &lt;/p&gt;
 &lt;p&gt;spark.master                    spark://master:7077&lt;br /&gt;
@@ -63,10 +76,21 @@ spark.eventLog.dir              hdfs://master:8020/sparklog&lt;br /&gt;
 spark.local.dir                  ...  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Copy to other node  &lt;/p&gt;
+&lt;p&gt;在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//master:7077  /&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jar&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Do not forget change ~/.bashrc &lt;/p&gt;
+&lt;li&gt;
+&lt;p&gt;通过代码中对SparkContext来对这些属性赋值&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这三种方法的优先级是：&lt;br /&gt;
+    3 高于 2 高于1  &lt;/p&gt;
 &lt;h3&gt;Tips&lt;/h3&gt;
 &lt;ol&gt;
 &lt;li&gt;

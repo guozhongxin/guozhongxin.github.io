@@ -81,7 +81,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </li>
 <li>在主节点实现ssh免密码登陆其他节点。  </li>
 </ul>
-<h3>install scala</h3>
+<h3>install scala - scala安装</h3>
 <p>download scala-2.10.4.tgz and unzip： </p>
 <div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">scala</span><span class="o">-</span><span class="mf">2.10.4</span><span class="p">.</span><span class="n">tgz</span>
 <span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
@@ -91,14 +91,18 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </pre></div>
 
 
-<h3>install spark.</h3>
-<p>There are two types of spark installation package, source package that you need build spark at first, and prebuild package.<br />
-To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :  </p>
+<h3>install spark. - spark安装</h3>
+<p>There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  </p>
+<p>Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包</p>
+<p>To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :    </p>
+<p>在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  </p>
 <div class="highlight"><pre><span class="p">.</span><span class="o">/</span><span class="n">make</span><span class="o">-</span><span class="n">distribution</span><span class="p">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">hadoop</span> <span class="mf">2.4.0</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">yarn</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">hive</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">tachyon</span> <span class="o">--</span><span class="n">tgz</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">test</span>
 </pre></div>
 
 
 <p>If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   </p>
+<p>如果你选择了已经build好的安装包，以上步骤不需执行。</p>
+<p>将自己编译或是下载的编译包解压缩，并配置环境变量：</p>
 <div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">spark</span><span class="o">-</span><span class="mf">1.0.0</span><span class="o">-</span><span class="n">bin</span><span class="o">-</span><span class="mf">2.2.0</span><span class="p">.</span><span class="n">tgz</span>
 <span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
     <span class="n">export</span> <span class="n">SCALA_HOME</span><span class="o">=</span><span class="p">...</span>  
@@ -107,7 +111,7 @@ To build source package, you should unzip the package and edit pom.xml in the di
 </pre></div>
 
 
-<h3>Configure Spark cluster</h3>
+<h3>Configure Spark cluster - Spark集群配置</h3>
 <ul>
 <li>
 <p>edit <code>$SPARK_HOME/conf/slaves</code>, and input all node IP :  </p>
@@ -124,8 +128,17 @@ export JAVA_HOME=/usr/local/jdk1.7.0_60<br />
 export SCALA_HOME=/home/yarn/scala-2.10.4  </p>
 <p>export SPARK_WORKER_MEMORY=16g<br />
 export SPARK_WORKER_INSTANCES=1<br />
-export SPARK_MASTER_IP=bigant-test-001  </p>
+export SPARK_MASTER_IP=master</p>
+<p>实际上安装好之后<code>conf</code>文件夹下有一个<code>spark_env.sh</code>的模板，里边有各个变量的解释说明，在这不一一累述  </p>
 </li>
+<li>
+<p>Copy to other node </p>
+</li>
+</ul>
+<p>要将各个节点上的这两个文件都进行配置</p>
+<h3>Configure Spark App - Spark作业属性配置</h3>
+<p>对于作业执行的属性配置，spark提供了三种不同的配置方法  </p>
+<ol>
 <li>
 <p>create and edit <code>$SPARK_HOME/conf/spark_default.conf</code>  </p>
 <p>spark.master                    spark://master:7077<br />
@@ -134,10 +147,21 @@ spark.eventLog.dir              hdfs://master:8020/sparklog<br />
 spark.local.dir                  ...  </p>
 </li>
 <li>
-<p>Copy to other node  </p>
+<p>在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 </p>
+<div class="highlight"><pre><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">spark</span><span class="o">-</span><span class="n">submit</span>  <span class="o">/</span>
+<span class="o">--</span><span class="n">master</span> <span class="n">spark</span><span class="o">:</span><span class="c1">//master:7077  /</span>
+<span class="o">--</span><span class="n">conf</span> <span class="n">spark</span><span class="p">.</span><span class="n">eventLog</span><span class="p">.</span><span class="n">enabled</span><span class="o">=</span><span class="nb">true</span> <span class="p">...</span>  <span class="o">/</span>
+<span class="o">***</span><span class="p">.</span><span class="n">jar</span>
+</pre></div>
+
+
 </li>
-</ul>
-<p>Do not forget change ~/.bashrc </p>
+<li>
+<p>通过代码中对SparkContext来对这些属性赋值</p>
+</li>
+</ol>
+<p>这三种方法的优先级是：<br />
+    3 高于 2 高于1  </p>
 <h3>Tips</h3>
 <ol>
 <li>
