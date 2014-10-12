@@ -383,7 +383,7 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 
 &lt;p&gt;这样，搜索框就出来了。  &lt;/p&gt;
-&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/theme/images/searchwithgoogle.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/searchwithgoogle.png" /&gt;&lt;/p&gt;
 &lt;p&gt;为了让google站内搜索功能更好的工作，你可在google站长工具中提交你的sitemap（这个可以在pelicanconf.py中配置sitemap插件，着执行make html后能自动生成）。&lt;/p&gt;
 &lt;h4&gt;提交sitemap&lt;/h4&gt;
 &lt;p&gt;引入sitemap插件的工程见lizherui的日志。这样在&lt;code&gt;make html&lt;/code&gt;之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。  &lt;/p&gt;
@@ -410,10 +410,10 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 &lt;h4&gt;生成html，发布&lt;/h4&gt;
 &lt;p&gt;同上  &lt;/p&gt;
-&lt;p&gt;&lt;img alt="2" src="http://www.guozhongxin.com/theme/images/searchwithbaidu.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="2" src="http://www.guozhongxin.com/images/searchwithbaidu.png" /&gt;&lt;/p&gt;
 &lt;h4&gt;提交sitemap&lt;/h4&gt;
 &lt;p&gt;在百度站长工具里提交sitemap的过程和google的类似，需要注意的是百度有自己的&lt;a href="http://zhanzhang.baidu.com/wiki/170#_2什么是sitemap索引文件？"&gt;sitemap格式&lt;/a&gt;，直接用lizherui日志中的方法生成的sitemap.xml不符合百度的要求：  &lt;/p&gt;
-&lt;p&gt;&lt;img alt="3" src="http://www.guozhongxin.com/theme/images/sitemapofbaidu.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="3" src="http://www.guozhongxin.com/images/sitemapofbaidu.png" /&gt;&lt;/p&gt;
 &lt;p&gt;百度sitemap要求有&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;data&amp;gt;&amp;lt;display&amp;gt;&amp;lt;/display&amp;gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -485,5 +485,5 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 
 &lt;p&gt;这时，你就能看到左侧栏出现的TAGS链接框了。&lt;br /&gt;
-&lt;img alt="4" src="http://www.guozhongxin.com/theme/images/tags.png" /&gt;&lt;/p&gt;
+&lt;img alt="4" src="http://www.guozhongxin.com/images/tags.png" /&gt;&lt;/p&gt;
 &lt;p&gt;实际上这不是一个能体现tag出现频次的tag云，小弟实在没学过前端技术，大神看到有感兴趣的可以提出解决的方法。&lt;/p&gt;</summary><category term="pelican"></category><category term="python"></category><category term=""></category></entry></feed>
