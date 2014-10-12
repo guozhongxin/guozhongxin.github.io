@@ -60,8 +60,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html"><h1>Spark安装：搭建Spark集群及开发环境搭建</h1></a>
-2014-09-26
+            <a href="http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html"><h1>Spark简介</h1></a>
+2014-10-12
 
 by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
  
@@ -70,125 +70,187 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
  
         </div>
         
-        <div><h2>安装Spark准备</h2>
-<p>在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  </p>
+        <div><h1>目录：</h1>
 <ul>
-<li>scala安装包，可以在<a href="http://www.scala-lang.org/">scala官方网站</a>下载</li>
-<li>spark安装包，可以在<a href="http://spark.apache.org/downloads.html">spark官网</a>下载，用两种形式的安装包：<ul>
-<li>source code package</li>
-<li>pre-build package</li>
+<li>Spark综述</li>
+<li>Spark计算模型：RDD，算子，stage，</li>
+<li>Spark架构及工作流程</li>
+<li>Spark组件</li>
+<li>Spark配置</li>
 </ul>
-</li>
-<li>在主节点实现ssh免密码登陆其他节点。  </li>
-</ul>
-<h3>install scala - scala安装</h3>
-<p>download scala-2.10.4.tgz and unzip： </p>
-<div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">scala</span><span class="o">-</span><span class="mf">2.10.4</span><span class="p">.</span><span class="n">tgz</span>
-<span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-    <span class="n">export</span> <span class="n">SCALA_HOME</span><span class="o">=</span><span class="p">...</span>   
-    <span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">bin</span>
-<span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-</pre></div>
-
-
-<h3>install spark. - spark安装</h3>
-<p>There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  </p>
-<p>Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包</p>
-<p>To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :    </p>
-<p>在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  </p>
-<div class="highlight"><pre><span class="p">.</span><span class="o">/</span><span class="n">make</span><span class="o">-</span><span class="n">distribution</span><span class="p">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">hadoop</span> <span class="mf">2.4.0</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">yarn</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">hive</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">tachyon</span> <span class="o">--</span><span class="n">tgz</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">test</span>
-</pre></div>
-
-
-<p>If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   </p>
-<p>如果你选择了已经build好的安装包，以上步骤不需执行。</p>
-<p>将自己编译或是下载的编译包解压缩，并配置环境变量：</p>
-<div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">spark</span><span class="o">-</span><span class="mf">1.0.0</span><span class="o">-</span><span class="n">bin</span><span class="o">-</span><span class="mf">2.2.0</span><span class="p">.</span><span class="n">tgz</span>
-<span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-    <span class="n">export</span> <span class="n">SCALA_HOME</span><span class="o">=</span><span class="p">...</span>  
-    <span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">sbin</span>
-<span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-</pre></div>
-
-
-<h3>Configure Spark cluster - Spark集群配置</h3>
+<h1>Spark综述--Spark是什么</h1>
 <ul>
-<li>
-<p>edit <code>$SPARK_HOME/conf/slaves</code>, and input all node IP :  </p>
-<p>masters<br />
-slave1<br />
-slave2<br />
-slave3 </p>
-</li>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_env.sh</code> </p>
-<p>export HADOOP_HOME=/opt/apache/hadoop-2.4.0<br />
-export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop<br />
-export JAVA_HOME=/usr/local/jdk1.7.0_60<br />
-export SCALA_HOME=/home/yarn/scala-2.10.4  </p>
-<p>export SPARK_WORKER_MEMORY=16g<br />
-export SPARK_WORKER_INSTANCES=1<br />
-export SPARK_MASTER_IP=master</p>
-<p>实际上安装好之后<code>conf</code>文件夹下有一个<code>spark_env.sh</code>的模板，里边有各个变量的解释说明，在这不一一累述  </p>
-</li>
-<li>
-<p>Copy to other node </p>
-</li>
+<li>基于内存的分布式并行计算框架</li>
+<li>一种粗粒度数据并行（data parallel）的计算范式（相对于 task parallel）</li>
+<li>以RDD(弹性分布式数据集)为计算对象</li>
+<li>核心代码两万行，轻量级分布式系统</li>
+<li>支持Hadoop2.0，支持HDFS</li>
+<li>支持内存计算、多迭代批量处理、即席查询、流处理和图计算</li>
 </ul>
-<p>要将各个节点上的这两个文件都进行配置</p>
-<h3>Configure Spark App - Spark作业属性配置</h3>
-<p>对于作业执行的属性配置，spark提供了三种不同的配置方法  </p>
+<h1>Spark计算模型</h1>
+<h3>弹性的分布数据集(RDD)</h3>
+<ul>
+<li>分布式对象集合能够跨集群在内存中保存。多个并行操作，失败自动恢复。</li>
+<li>A list of partitions;</li>
+<li>A function for computing each split</li>
+<li>A list of dependencies on other RDDs: HadoopRDD，ShuffledRDD，PartitionPruningRDD…  </li>
+</ul>
+<h3>算子</h3>
+<p>算子，即对数据集RDD进行操作的函数。<br />
+Spark计算模型中，总共涉及四种算子。    </p>
+<ul>
+<li>输入算子：val lines = sc.textFile("data.txt")</li>
+<li>缓存算子：lines.cache(), lines.persist()</li>
+<li>变换算子(Transformations)： create a new dataset from an existing one，由一个（或多个）已存在的RDD转换成另外一个RDD：map(), filter(), group(), flatmap()…</li>
+<li>行动算子(Actions)： return a value to the driver program after running a computation on the dataset，由RDD转换成：reduce(), count()…  </li>
+</ul>
+<p>下图可以较为清楚的理解四种算子：<br />
+<img alt="1" src="http://www.guozhongxin.com/images/suanzi.png" />  </p>
+<h4>算子的执行</h4>
+<p>从RDD到RDD的变换算子序列，一直在RDD空间发生。这里很重要的设计是<code>lazy evaluation</code>：计算并不实际发生，只是不断地记录到元数据。元数据的结构是<code>DAG</code>（有向无环图），其中每一个“顶点”是RDD（包括生产该RDD 的算子），从父RDD到子RDD有“边”，表示RDD间的依赖性。Spark给元数据DAG取了个很酷的名字，<code>Lineage</code>（世系）。  </p>
+<p>Lineage一直增长，直到遇上行动（action）算子（图1中的绿色箭头），这时 就要evaluate了，把刚才累积的所有算子一次性执行。行动算子的输入是RDD（以及该RDD在Lineage上依赖的所有RDD），输出是执行后生 成的原生数据，可能是Scala标量、集合类型的数据或存储。当一个算子的输出是上述类型时，该算子必然是行动算子，其效果则是从RDD空间返回原生数据 空间。</p>
+<p>另一个要点是一旦行动算子产生原生数据，就必须退出RDD空间。因为目前Spark只能够跟踪RDD的计算，原生数据的计算对它来说是不可见的（除非以后 Spark会提供原生数据类型操作的重载、wrapper或implicit conversion）。</p>
+<h4>shuffle（重排）</h4>
+<p>涉及重排，称为shuffle类操作。</p>
+<ul>
+<li>对单个RDD重排，如sort、partitionBy（实现一致性的分区划分，这个对数据本地性优化很重要，后面会讲）；</li>
+<li>对单个RDD基于key进行重组和reduce，如groupByKey、reduceByKey；</li>
+<li>对两个RDD基于key进行join和重组，如join、cogroup。</li>
+</ul>
+<h3>宽依赖与窄依赖</h3>
+<p><img alt="2" src="http://www.guozhongxin.com/images/dependency.png" />  </p>
+<p>左侧为窄依赖，右侧为宽依赖  </p>
+<p>宽依赖与窄依赖的最主要区别在于，宽依赖关系涉及到shuffle过程，而窄依赖不涉及shuffle。  </p>
+<h3>Stage</h3>
+<p>Stage是Spark对DAG的划分，以此作为对作业的进行任务（task）划分和调度的依据。<br />
+可以这样理解Stage不需要shuffle是可以随意并发的, 所以stage的边界就是需要shuffle的地方。</p>
+<p>下图是一个stage例子。
+<img alt="3" src="http://www.guozhongxin.com/images/stage.png" /> </p>
+<h3>共享变量（Shared Variables）</h3>
+<ul>
+<li>广播变量：<br />
+    允许程序员保留一个只读的变量，缓存在每一台机器上，而非每个任务。被创建后，它能在集群运行的任何函数上，需要被再次传递到这些结点上。
+    通过SparkContext.broadcast(v)方法创建。
+    对象v不能在被广播后修改，是只读的。</li>
+<li>累加器：<br />
+    通过调用SparkContext.accumulator(V)方法来创建。
+    运行在集群上的任务，可以使用+=来加值。然而，它们不能读取计数器的值。
+    当Driver程序可以使用.value方法读取该值</li>
+</ul>
+<h1>Spark架构</h1>
+<p>先给一个概况图：<br />
+<img alt="4" src="http://www.guozhongxin.com/images/jiagou.png" /> </p>
 <ol>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_default.conf</code>  </p>
-<p>spark.master                    spark://master:7077<br />
-spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog<br />
-spark.local.dir                  ...  </p>
-</li>
-<li>
-<p>在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 </p>
-<div class="highlight"><pre><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">spark</span><span class="o">-</span><span class="n">submit</span>  <span class="o">/</span>
-<span class="o">--</span><span class="n">master</span> <span class="n">spark</span><span class="o">:</span><span class="c1">//master:7077  /</span>
-<span class="o">--</span><span class="n">conf</span> <span class="n">spark</span><span class="p">.</span><span class="n">eventLog</span><span class="p">.</span><span class="n">enabled</span><span class="o">=</span><span class="nb">true</span> <span class="p">...</span>  <span class="o">/</span>
-<span class="o">***</span><span class="p">.</span><span class="n">jar</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>通过代码中对SparkContext来对这些属性赋值</p>
-</li>
+<li>构建Spark Application运行环境；<br />
+    在Driver Program中新建SparkContext（包含sparkcontext的程序称为Driver Program）；
+    Spark Application运行的表现方式为：在集群上运行着一组独立的executor进程，这些进程由sparkcontext来协调；</li>
+<li>SparkContext向资源管理器申请运行Executor资源，并启动StandaloneExecutorBackend，executor向sparkcontent申请task；
+    集群通过SparkContext连接到不同的cluster manager(standalone、yarn、mesos)，cluster manager为运行应用的Executor分配资源；一旦连接建立之后，Spark每个Application就会获得各个节点上的Executor（进程）；每个Application都有自己独立的executor进程；Executor才是真正运行在WorkNode上的工作进程，它们为应用来计算或者存储数据；</li>
+<li>SparkContext获取到executor之后，Application的应用代码将会被发送到各个executor；</li>
+<li>SparkContext构建RDD DAG图，将RDD DAG图分解成Stage DAG图，将Stage提交给TaskScheduler，最后由TaskScheduler将Task发送给Executor运行；</li>
+<li>Task在Executor上运行，运行完毕后释放所有资源；</li>
 </ol>
-<p>这三种方法的优先级是：<br />
-    3 高于 2 高于1  </p>
-<h3>Tips</h3>
+<p>Spark通用的使用方式主要有两种：standalone、spark on yarn</p>
+<h3>standalone</h3>
+<p>基于standalone的Spark架构与作业执行流程（Driver运行在客户端上）：  </p>
+<p><img alt="5" src="http://www.guozhongxin.com/images/standalone.png" /> </p>
+<p>作业执行流程描述：  </p>
 <ol>
-<li>
-<p>If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node<br />
-If old worker's process is still working , you can use this command to kill them:  </p>
-<div class="highlight"><pre><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">Worker</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="n">grep</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">c</span> <span class="mi">9</span><span class="o">-</span><span class="mi">15</span> <span class="o">|</span> <span class="n">xargs</span> <span class="n">kill</span> <span class="o">-</span><span class="n">s</span> <span class="mi">9</span>
-</pre></div>
-
-
-<p>and restart Spark Cluster  </p>
-</li>
-<li>
-<p>if you want to start history server, you should assign logs' path:  </p>
-<div class="highlight"><pre><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">start</span><span class="o">-</span><span class="n">historyserver</span><span class="p">.</span><span class="n">sh</span>  <span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">logs</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>If you wanna save a job's log, you should assign two properties:  </p>
-<p>spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog  </p>
-</li>
-</ol></div>
+<li>客户端启动后直接运行用户程序，启动Driver相关的工作：DAGScheduler和BlockManagerMaster等。</li>
+<li>客户端的Driver向Master注册。</li>
+<li>Master还会让Worker启动Exeuctor。Worker创建一个ExecutorRunner线程，ExecutorRunner会启动ExecutorBackend进程。</li>
+<li>ExecutorBackend启动后会向Driver的SchedulerBackend注册。Driver的DAGScheduler解析作业并生成相应的Stage，每个Stage包含的Task通过TaskScheduler分配给Executor执行。</li>
+<li>所有stage都完成后作业结束。</li>
+</ol>
+<h3>Spark on Yarn</h3>
+<p>基于Yarn的Spark架构与作业执行流程：<br />
+<img alt="6" src="http://www.guozhongxin.com/images/taobao.png" /> </p>
+<p>基于YARN的Spark作业首先由客户端生成作业信息，提交给ResourceManager，ResourceManager在某一NodeManager汇报时把AppMaster分配给NodeManager，NodeManager启动 SparkAppMaster，SparkAppMaster启动后初始化作业，然后向ResourceManager申请资源，申请到相应资源后 SparkAppMaster通过RPC让NodeManager启动相应的SparkExecutor，SparkExecutor向 SparkAppMaster汇报并完成相应的任务。此外，SparkClient会通过AppMaster获取作业运行状态。</p>
+<p>Spark on Yarn这种模式因为淘宝技术部在内部平台上的应用而被许多其他使用者模仿，其实根据笔者的感受来讲，绝大多数类型的任务spark着standalone的模式下就能很好的运行，并有不次于Spark on Yarn的执行效率。   </p>
+<h1>Spark组件</h1>
+<h3>DAGScheduler</h3>
+<p>DAGScheduler主要功能如下：  </p>
+<ul>
+<li>接收用户提交的job;</li>
+<li>将job根据类型划分为不同的stage，记录哪些RDD、Stage被物化，并在每一个stage内产生一系列的task，并封装成TaskSet；</li>
+<li>决定每个Task的最佳位置(任务在数据所在的节点上运行)，并结合当前的缓存情况；将TaskSet提交给TaskScheduler;</li>
+<li>重新提交Shuffle输出丢失的Stage给TaskScheduler；</li>
+</ul>
+<p>注：一个Stage内部的错误不是由shuffle输出丢失造成的，DAGScheduler是不管的，由TaskScheduler负责尝试重新提交task执行；</p>
+<h3>TaskScheduler</h3>
+<p>TaskScheduler是一个可插拔任务调度接口，主要功能如下：  </p>
+<ul>
+<li>一个TaskScheduler只为一个SparkContext服务，接收DAGScheduler提交过来的一组组的TaskSet；</li>
+<li>TaskScheduler将task提交到集群中并执行，如果其中某个Task执行失败则重试之；TaskScheduler将TaskSet对应的执行结果返回DAGScheduler；</li>
+<li>处理straggle任务；（比如：100个任务运行，其中99个任务快，1个任务慢，需要在另外一个节点上开启一个相同的任务来运行，谁先完成取用谁）；</li>
+<li>遇到shuffle输出丢失则汇报给DAGScheduler；</li>
+<li>为每个TaskSet维护一个TaskSetManager追踪本地性(resourceOffer--&gt;findTask)及错误信息；</li>
+</ul>
+<h3>Storage模块</h3>
+<p>主要分为两层：</p>
+<ul>
+<li>通信层：storage模块采用的是master-slave结构来实现通信层，master和slave之间传输控制信息、状态信息，这些都是通过通信层来实现的。</li>
+<li>存储层：storage模块需要把数据存储到disk或是memory上面，有可能还需replicate到远端，这都是由存储层来实现和提供相应接口。</li>
+</ul>
+<p>其他模块若要和storage模块进行交互，storage模块提供了统一的操作类BlockManager，外部类与storage模块打交道都需要通过调用BlockManager相应接口来实现</p>
+<h1>Spark配置</h1>
+<h3>Spark集群配置</h3>
+<p>配置文件：$SPARK_HOME/conf/spark-env.sh
+主要的配置参数有：</p>
+<ul>
+<li>SPARK_MASTER_IP, to bind the master to a different IP address or hostname</li>
+<li>SPARK_WORKER_CORES, to set the number of cores to use on this machine</li>
+<li>SPARK_WORKER_MEMORY, to set how much total memory workers have to give executors (e.g. 1000m, 2g)</li>
+<li>SPARK_WORKER_INSTANCES, to set the number of worker processes per node</li>
+</ul>
+<p>举例：一共5台机器，每台24个cpu cores，每台机器上有90GB内存：
+    export SPARK_WORKER_MEMORY=30000m
+    export SPARK_WORKER_CORES=8
+    export SPARK_WORKER_INSTANCES=3
+另外还有一些关于Hadoop的配置参数，这是为了Spark on Yarn的工作模式提供的，如果你只使用Standalone模式，则不需要配置。</p>
+<h3><a href="http://spark.apache.org/docs/latest/configuration.html">Saprk执行作业属性</a></h3>
+<h4>配置方式</h4>
+<p>在Spark1.0.x提供了3种方式的属性配置：  </p>
+<ul>
+<li>SparkConf方式，在代码中配置各个参数；</li>
+<li>命令行参数方式
+    使用spark-submit或spark-shell提交应用程序时用命令行参数提交；</li>
+<li>文件配置方式
+    在$SPARK_HOME/conf/spark_default.conf里进行配置；该方式是将属性配置项以键值对方式写入文本文件中，一个配置项占一行；</li>
+</ul>
+<p>优先权：<br />
+    SparkConf方式 &gt; 命令行参数方式 &gt;文件配置方式</p>
+<h4>查看Spark属性配置</h4>
+<p>在应用程序执行过程中，通过应用程序的webUI（地址http://<driver>:4040）可以查看Spark属性配置，从而检查属性配置是否正确；<br />
+只是显示通过上面三种方式显式指定的属性配置，对于其他属性可以假定使用默认配置；<br />
+对于大多数内部控制属性，系统已经提供了合理的默认配置。  </p>
+<h4>Spark日志属性配置</h4>
+<p>Spark日志：log4j，配置文件：$SPARK_HOME/conf/log4j.properties</p>
+<p>Spark job(Application)日志，计数器：通过刚才提到的三种方式中的任意一种，对一下Spark Conf进行配置：</p>
+<div class="highlight"><pre><span class="n">spark</span><span class="p">.</span><span class="n">eventLog</span><span class="p">.</span><span class="n">enabled</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>  
+<span class="n">spark</span><span class="p">.</span><span class="n">eventLog</span><span class="p">.</span><span class="n">dir</span><span class="o">=</span><span class="n">hdfs</span><span class="o">:</span><span class="err">\\</span><span class="p">...</span>
+</pre></div></div>
         <hr />
     </div>
 		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html"><h2>Spark安装：搭建Spark集群及开发环境搭建</h2></a>
+        <div class= "well small"> 2014-09-26
+
+by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
+ 
+
+
+ </div>
+        <div class="summary"><p>一一步一步在集群上安装spark，搭建spark上运行作业的开发环境</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html">read more</a></div>
+    </div>	
+				
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
@@ -236,11 +298,11 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  </p>
                 Tags
                 </li>
 
-                <li><a href="http://www.guozhongxin.com/tag/python.html">python</a></li>
+                <li><a href="http://www.guozhongxin.com/tag/.html"></a></li>
                 <li><a href="http://www.guozhongxin.com/tag/pelican.html">pelican</a></li>
                 <li><a href="http://www.guozhongxin.com/tag/spark.html">spark</a></li>
                 <li><a href="http://www.guozhongxin.com/tag/kai-fa-huan-jing.html">开发环境</a></li>
-                <li><a href="http://www.guozhongxin.com/tag/.html"></a></li>
+                <li><a href="http://www.guozhongxin.com/tag/python.html">python</a></li>
             </ul>
             </div>
 
