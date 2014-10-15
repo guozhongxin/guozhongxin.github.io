@@ -53,15 +53,67 @@
     <div class="row">
 
         <div class="span9">
+    <div class='article'>
+        <div class="content-title">
+            <h1>Spark源码阅读学习环境的安装与搭建（Windows + IDEA + SBT）</h1>
+2014-10-15
+
+by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
+ 
+
+
+        </div>
+	
+        <div><h2>Spark源码阅读环境的准备</h2>
+<p>Spark源码是有Scala语言写成的，目前，<a href="/http://www.jetbrains.com/idea/">IDEA</a>对Scala的支持要比eclipse要好，大多数人会选在在IDEA上完成Spark平台应用的开发。因此，Spark源码阅读的IDE理所当然的选择了IDEA。</p>
+<p>本文介绍的是Windows下的各项配置方法（默认已经装了java，JDK）。</p>
+<p>下面列举搭建此环境需要的各个组件：</p>
 <ul>
-    <li><a href="http://www.guozhongxin.com/tag/.html"></a></li>
-    <li><a href="http://www.guozhongxin.com/tag/pelican.html">pelican</a></li>
-    <li><a href="http://www.guozhongxin.com/tag/python.html">python</a></li>
-    <li><a href="http://www.guozhongxin.com/tag/yuan-ma.html">源码</a></li>
-    <li><a href="http://www.guozhongxin.com/tag/kai-fa-huan-jing.html">开发环境</a></li>
-    <li><a href="http://www.guozhongxin.com/tag/spark.html">spark</a></li>
-    <li><a href="http://www.guozhongxin.com/tag/ganglia.html">ganglia</a></li>
+<li><a href="http://www.jetbrains.com/idea/download/"><strong>IDEA</strong></a>，有两个版本：Ultimate Edition &amp; Community Edition，后者是free的，而且完全能满足学习者所有的需求  </li>
+<li><a href="http://www.scala-lang.org/download/"><strong>Scala</strong></a>，Spark是用Scala语言写成的，在本地编译执行需要这个包</li>
+<li><a href="http://www.scala-sbt.org/download.html"><strong>SBT</strong></a>，scala工程构建的工具</li>
+<li><a href="http://git-scm.com/download/"><strong>Git</strong></a>，IDEA自动下载SBT插件时可能会用到的工具</li>
+<li><a href="http://spark.apache.org/downloads.html"><strong>Spark Source Code</strong></a>，Spark源码</li>
 </ul>
+<p>下载各个安装包。</p>
+<h2>Spark源码阅读环境的安装步骤</h2>
+<h4>安装<a href="http://www.scala-lang.org/download/">Scala</a>。</h4>
+<p>完成后，在windows命令行中输入<code>scala</code>，检查是否识别此命令。<br />
+如果不识别，查看环境变量Path中是否有<code>....\scala\bin</code>（我的电脑右键，属性 -&gt; 高级系统设置 -&gt; 环境变量）,没有的手动将Scala文件夹下的bin目录的路径</p>
+<h4>安装<a href="http://www.scala-sbt.org/download.html">SBT</a></h4>
+<p>运行SBT的安装程序，运行完成后，重新打开windows命令行，输入<code>sbt</code>，检查是否识别此命令。没有的话，手动配置环境变量，添加<code>...\sbt\bin</code></p>
+<p>运行完SBT的安装程序之后，并不意味着完成了sbt的安装，在windows命令放下输入<code>sbt</code>后，SBT会自动的下载安装它所需要的程序包，请耐心等待全部下载成功。</p>
+<h4>安装<a href="http://git-scm.com/download/">Git</a></h4>
+<p>运行Git的安装程序，安装完成后，重新打开windows命令行，检查时候识别<code>git</code>命令。</p>
+<h4>安装<a href="http://www.jetbrains.com/idea/download/">IDEA</a></h4>
+<h4>安装IDEA的Scala插件</h4>
+<p>打开IDEA，在‘Welcome to IntelliJ IDEA’界面的‘Quick Start’栏，点击<code>Configure</code>，选择<code>Plugins</code>。  </p>
+<p>在弹出的窗口中可以看到已安装的插件，现在IDEA默认还没有Scala的插件。需要点击左下角的<code>Install JetBrains plugin...</code>，在搜索框中输入‘scala’，点击安装。安装完成后可能会要求重启一下IDEA。</p>
+<h4>解压缩Spark Source Code包</h4>
+<h2>导入Spark工程</h2>
+<p>在欢迎界面‘Quick Start’栏或者是在主界面的菜单栏<code>File</code>下，选<code>Import Project</code>，找到解压之后的spark工程文件夹，<code>OK</code>。</p>
+<p>选择<code>import project from external model</code>中的<code>SBT project</code>，（这个选项只有在安装了IDEA的Scala插件才会有）。</p>
+<p>下一步，选择Project SDK为JDK，最好勾上<code>Use auto-import</code>，然后点击<code>Finish</code>。这时，<strong>IDEA会自动下载安装SBT所需的各个包</strong>，没有装Git的话可能会报错。</p>
+<p>因为Spark是一个比较大的工程，所需的包也很多，这个过程也会特别慢，请耐心等待。</p>
+<h4>导入完成</h4>
+<p>导入完成后，自动打开工程，要等一段时间，等待sbt对这个工程进行编译。</p></div>
+	
+        <hr>
+
+        <h2>Comments</h2>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'guozhongxin'; 
+    var disqus_title = 'Spark源码阅读学习环境的安装与搭建（Windows + IDEA + SBT）';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
         </div>
         
         <div class="span3">
