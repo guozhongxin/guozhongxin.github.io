@@ -1,5 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/guozhongxin.rss.xml" rel="self"></atom:link><lastBuildDate>Mon, 13 Oct 2014 00:00:00 +0800</lastBuildDate><item><title>Spark使用及调优心得</title><link>http://www.guozhongxin.com/pages/2014/10/13/spark_experience.html</link><description>&lt;h3&gt;pending...&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Mon, 13 Oct 2014 00:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-13:pages/2014/10/13/spark_experience.html</guid><category>spark</category><category></category></item><item><title>Spark简介</title><link>http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html</link><description>&lt;h1&gt;目录：&lt;/h1&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/guozhongxin.rss.xml" rel="self"></atom:link><lastBuildDate>Wed, 15 Oct 2014 22:00:00 +0800</lastBuildDate><item><title>Ganlia采样、统计及RRD记录周期（频次、间隔）的配置和更改</title><link>http://www.guozhongxin.com/pages/2014/10/15/ganglia_frequency.html</link><description>&lt;h2&gt;Ganglia &amp;amp; RRD&lt;/h2&gt;
+&lt;p&gt;Ganglia是伯克利开发的一个集群监控软件。可以监视和显示集群中的节点的各种状态信息，比如如：cpu 、mem、硬盘利用率， I/O负载、网络流量情况等，同时可以将历史数据以曲线方式通过php页面呈现。&lt;/p&gt;
+&lt;p&gt;Ganglia监控系统的核心有两部分：gmond 和 gmetad：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gmond在各个节点上运行，负责采集数据；&lt;/li&gt;
+&lt;li&gt;gmetad在主节点上运行，负责接收gmond采集上来的数据并将之储存在RRD中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.png" /&gt; &lt;/p&gt;
+&lt;p&gt;Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这是Ganglia创建的RRD的默认形式，一个RRD文件有四个RRA用来记录数据。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一个RRA一共储存着244个数据，每插入一条数据储存一个数据，Ganglia默认的15s记录一次，这就意味着默认的这个RRA记录着最近61分钟的数据，这也就是在web上看到的一小时的图。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二个RRA一共储存着244个数据，每插入24条数据取平均数，储存一个数据，15s * 24 = 360s，意味着6分钟储存一条数据。总共记录了 6min * 244 = 1464min = 24.4h 约为一天的数据。对应的是web上最近24h的数据图。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三个RRA，每插入168条数据取平均数储存一条数据，15s * 168 = 42min，42分钟记录一条数据，总共记录 42min * 244 = 7.1d 约为一周的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第四个RRA，记录最近四周的数据。对应web界面上Last month的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;第五个RRA记录最近一年的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;为什么要更改Ganlia采样、统计及RRD记录的最小间隔&lt;/h2&gt;
+&lt;p&gt;对于简单的集群监控，Ganglia的默认配置是足够的，能够满足集群管理员发现集群的性能表现和一些故障，并判断故障发生在哪里。  &lt;/p&gt;
+&lt;p&gt;但是在进行细致的作业分析时，15s的最小采样间隔是不能够满足需求的。&lt;/p&gt;
+&lt;p&gt;以笔者研究的spark作业的性能表现为例，对于40G的数据，在4节点、16GB per node、32 cores per node的Spark集群上进行wordcount，作业的总共运行时间平均为53s，而map stage中每个task的运行时间在10s左右，reduce&amp;amp;save stage中每个task的运行时间不过2-4s。&lt;/p&gt;
+&lt;p&gt;由于spark高效的执行效率，spark运行过程中占用集群资源的行为变化是迅速的，15s的记录间隔是无法察觉的。&lt;/p&gt;
+&lt;p&gt;因此，&lt;strong&gt;为了让Ganglia能够更好的适应Spark的节奏，需要将Ganlia采样、统计及RRD记录的最小间隔由15s改到更小&lt;/strong&gt;，笔者直接选择在&lt;strong&gt;1s&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2&gt;更改Ganglia配置参数，以更改采样和记录的最小间隔&lt;/h2&gt;
+&lt;h3&gt;停止Ganglia的运行&lt;/h3&gt;
+&lt;p&gt;为了避免出现运行错误，在更改配置前关闭ganglia的运行。&lt;/p&gt;
+&lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;更改gmond配置（更改搜集数据的周期，以及传输传输周期）&lt;/h3&gt;
+&lt;p&gt;gmond的配置在/etc/ganglia/gmond.conf中&lt;/p&gt;
+&lt;p&gt;对于只取一次值的metric，将&lt;code&gt;time_threshold&lt;/code&gt;，因为这些值，如&lt;code&gt;mem_total&lt;/code&gt;，会在web端php画图时用到，因为memory那张图中的&lt;code&gt;memory used&lt;/code&gt;，并不是通过直接采集数据得到的，而是通过&lt;code&gt;mem_total&lt;/code&gt;减去其他值计算得到的，因此，&lt;code&gt;mem_total&lt;/code&gt;一开始就应该被获取，因此&lt;code&gt;time_threshold&lt;/code&gt;需设为1（默认为1200）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;collect_once&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
+  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_num&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU Count&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;mem_total&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Memory Total&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;对于其他metric，如cpu group中的各个metric，采样与传输的时间也应设置为1（s）&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
+  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;90&lt;/span&gt;
+  &lt;span class="cm"&gt;/* CPU status */&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_user&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU User&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_system&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU System&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;即&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;更改gmetad配置（更改记录的最小间隔）&lt;/h3&gt;
+&lt;p&gt;gmetad的配置在/etc/ganglia/gmetad.conf中&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Format: &lt;/span&gt;
+&lt;span class="c"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
+&lt;span class="c"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
+&lt;span class="c"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
+&lt;span class="c"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
+&lt;span class="c"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到这里有关于&lt;code&gt;[polling interval]&lt;/code&gt;的解释，即gmetad会根据从gmond搜集的数据，每一个间隔计算出这个间隔内的平均数将其写入rrd。&lt;br /&gt;
+而这个参数，是一个非必要的参数，如果用户不指定的话，每15s记录一次。&lt;/p&gt;
+&lt;p&gt;因此，为了将Ganglia记录最小间隔及RRD中数据的最小时间间隔改为1s，需要在master名称后添加一个参数：1&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_source&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;my cluster&amp;quot;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;  &lt;span class="n"&gt;my&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;machine&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;edu&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8649&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;为了让web依然能够顺利的画出一天、一周、一月、一年的图，还应该修改RRD的格式。&lt;/p&gt;
+&lt;p&gt;原来的采样间隔是15s，现在的采样间隔是1s，就要把每个RRA的容量扩充，或者将除了第一个RRA之外的RRA的记录间隔改大。&lt;/p&gt;
+&lt;p&gt;两种调整RRD格式的方法：&lt;/p&gt;
+&lt;p&gt;1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;因为我只需要近一小时的详细数据，因此，我采用第二种方式，RRD的文件会小一些。&lt;/p&gt;
+&lt;h3&gt;清除原有RRD&lt;/h3&gt;
+&lt;p&gt;因为RRD的格式发生变化，和原有的RRD不同，因此，需要将原来的RRD删除，&lt;/p&gt;
+&lt;p&gt;RRD的文件储存位置的配置在gmetad.conf中：&lt;code&gt;rrd_rootdir&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;rrd_rootdir&lt;/code&gt;的默认位置在&lt;code&gt;/var/lib/ganglia/rrds&lt;/code&gt;，将这个文件夹下的所有文件及文件夹删除即可。&lt;/p&gt;
+&lt;h3&gt;启动Ganglia&lt;/h3&gt;
+&lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;查看更改之后的效果&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在http://masterhost/ganglia中可以看到更改之后的变化：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_old.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_new.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_big.png" /&gt;&lt;/p&gt;
+&lt;p&gt;最后一张图明显能看出更改之后统计的数据更细腻。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 22:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</guid><category>ganglia</category><category></category></item><item><title>Spark使用及调优心得</title><link>http://www.guozhongxin.com/pages/2014/10/13/spark_experience.html</link><description>&lt;h3&gt;pending...&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Mon, 13 Oct 2014 00:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-13:pages/2014/10/13/spark_experience.html</guid><category>spark</category><category></category></item><item><title>Spark简介</title><link>http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html</link><description>&lt;h1&gt;目录：&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Spark综述&lt;/li&gt;
 &lt;li&gt;Spark计算模型：RDD，算子，stage，&lt;/li&gt;
@@ -158,7 +309,7 @@ Spark计算模型中，总共涉及四种算子。    &lt;/p&gt;
 &lt;p&gt;Spark job(Application)日志，计数器：通过刚才提到的三种方式中的任意一种，对一下Spark Conf进行配置：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
 &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;hdfs&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sun, 12 Oct 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-12:pages/2014/10/12/a_brief_in_spark.html</guid><category>spark</category><category></category></item><item><title>Spark安装：搭建Spark集群及开发环境搭建</title><link>http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html</link><description>&lt;h2&gt;安装Spark准备&lt;/h2&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sun, 12 Oct 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-12:pages/2014/10/12/a_brief_in_spark.html</guid><category>spark</category><category></category></item><item><title>Spark安装：Spark集群及开发环境搭建</title><link>http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html</link><description>&lt;h2&gt;安装Spark准备&lt;/h2&gt;
 &lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;scala安装包，可以在&lt;a href="http://www.scala-lang.org/"&gt;scala官方网站&lt;/a&gt;下载&lt;/li&gt;
