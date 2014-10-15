@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-10-15T22:00:00+08:00</updated><entry><title>Ganlia采样、统计及RRD记录周期（频次、间隔）的配置和更改</title><link href="http://www.guozhongxin.com/pages/2014/10/15/ganglia_frequency.html" rel="alternate"></link><updated>2014-10-15T22:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</id><summary type="html">&lt;h2&gt;Ganglia &amp;amp; RRD&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2014-10-16T00:00:00+08:00</updated><entry><title>Spark使用及调优心得</title><link href="http://www.guozhongxin.com/pages/2014/10/16/spark_experience.html" rel="alternate"></link><updated>2014-10-16T00:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-16:pages/2014/10/16/spark_experience.html</id><summary type="html">&lt;h3&gt;pending...&lt;/h3&gt;</summary><category term="spark"></category><category term=""></category></entry><entry><title>Ganlia采样、统计及RRD记录周期（频次、间隔）的配置和更改</title><link href="http://www.guozhongxin.com/pages/2014/10/15/ganglia_frequency.html" rel="alternate"></link><updated>2014-10-15T22:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</id><summary type="html">&lt;h2&gt;Ganglia &amp;amp; RRD&lt;/h2&gt;
 &lt;p&gt;Ganglia是伯克利开发的一个集群监控软件。可以监视和显示集群中的节点的各种状态信息，比如如：cpu 、mem、硬盘利用率， I/O负载、网络流量情况等，同时可以将历史数据以曲线方式通过php页面呈现。&lt;/p&gt;
 &lt;p&gt;Ganglia监控系统的核心有两部分：gmond 和 gmetad：&lt;/p&gt;
 &lt;ul&gt;
@@ -7,7 +7,7 @@
 &lt;li&gt;gmetad在主节点上运行，负责接收gmond采集上来的数据并将之储存在RRD中。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.png" /&gt; &lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /&gt; &lt;/p&gt;
 &lt;p&gt;Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -182,7 +182,7 @@
 &lt;p&gt;下一步，选择Project SDK为JDK，最好勾上&lt;code&gt;Use auto-import&lt;/code&gt;，然后点击&lt;code&gt;Finish&lt;/code&gt;。这时，&lt;strong&gt;IDEA会自动下载安装SBT所需的各个包&lt;/strong&gt;，没有装Git的话可能会报错。&lt;/p&gt;
 &lt;p&gt;因为Spark是一个比较大的工程，所需的包也很多，这个过程也会特别慢，请耐心等待。&lt;/p&gt;
 &lt;h4&gt;导入完成&lt;/h4&gt;
-&lt;p&gt;导入完成后，自动打开工程，要等一段时间，等待sbt对这个工程进行编译。&lt;/p&gt;</summary><category term="spark"></category><category term="源码"></category></entry><entry><title>Spark使用及调优心得</title><link href="http://www.guozhongxin.com/pages/2014/10/13/spark_experience.html" rel="alternate"></link><updated>2014-10-13T00:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-13:pages/2014/10/13/spark_experience.html</id><summary type="html">&lt;h3&gt;pending...&lt;/h3&gt;</summary><category term="spark"></category><category term=""></category></entry><entry><title>Spark简介</title><link href="http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html" rel="alternate"></link><updated>2014-10-12T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-12:pages/2014/10/12/a_brief_in_spark.html</id><summary type="html">&lt;h1&gt;目录：&lt;/h1&gt;
+&lt;p&gt;导入完成后，自动打开工程，要等一段时间，等待sbt对这个工程进行编译。&lt;/p&gt;</summary><category term="spark"></category><category term="源码"></category></entry><entry><title>Spark简介</title><link href="http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html" rel="alternate"></link><updated>2014-10-12T21:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-10-12:pages/2014/10/12/a_brief_in_spark.html</id><summary type="html">&lt;h1&gt;目录：&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Spark综述&lt;/li&gt;
 &lt;li&gt;Spark计算模型：RDD，算子，stage，&lt;/li&gt;

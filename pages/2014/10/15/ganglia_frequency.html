@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>guozhongxin's blog</title>
+    <title>Ganlia采样、统计及RRD记录周期（频次、间隔）的配置和更改-guozhongxin's blog</title>
     <meta name="description" content="">
     <meta name="author" content="guozhongxin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,7 +72,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <li>gmetad在主节点上运行，负责接收gmond采集上来的数据并将之储存在RRD中。</li>
 </ul>
 <p>RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。</p>
-<p><img alt="1" src="http://www.guozhongxin.com/images/RRD.png" /> </p>
+<p><img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /> </p>
 <p>Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：</p>
 <div class="highlight"><pre><span class="n">RRAs</span> <span class="s">&quot;RRA:AVERAGE:0.5:1:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:24:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:168:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:672:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:5760:374&quot;</span>
 </pre></div>
