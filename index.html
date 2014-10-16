@@ -99,7 +99,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
  
 
     <div class='article'>
-        <a href="http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html"><h2>Spark源码阅读学习环境的安装与搭建（Windows + IDEA + SBT）</h2></a>
+        <a href="http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html"><h2>Windows + IDEA + SBT 打造Spark源码阅读环境</h2></a>
         <div class= "well small"> 2014-10-15
 
 by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
@@ -107,7 +107,23 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 
  </div>
-        <div class="summary"><p>Spark源码阅读学习环境的安装与搭建（Windows + IDEA + SBT）</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html">read more</a></div>
+        <div class="summary"><h2>Spark源码阅读环境的准备</h2>
+<p>Spark源码是有Scala语言写成的，目前，<a href="/http://www.jetbrains.com/idea/">IDEA</a>对Scala的支持要比eclipse要好，大多数人会选在在IDEA上完成Spark平台应用的开发。因此，Spark源码阅读的IDE理所当然的选择了IDEA。</p>
+<p>本文介绍的是Windows下的各项配置方法（默认已经装了java，JDK）。</p>
+<p>下面列举搭建此环境需要的各个组件：</p>
+<ul>
+<li><a href="http://www.jetbrains.com/idea/download/"><strong>IDEA</strong></a>，有两个版本：Ultimate Edition &amp; Community Edition，后者是free的，而且完全能满足学习者所有的需求  </li>
+<li><a href="http://www.scala-lang.org/download/"><strong>Scala</strong></a>，Spark是用Scala语言写成的，在本地编译执行需要这个包</li>
+<li><a href="http://www.scala-sbt.org/download.html"><strong>SBT</strong></a>，scala工程构建的工具</li>
+<li><a href="http://git-scm.com/download/"><strong>Git</strong></a>，IDEA自动下载SBT插件时可能会用到的工具</li>
+<li><a href="http://spark.apache.org/downloads.html"><strong>Spark Source Code</strong></a>，Spark源码</li>
+</ul>
+<p>下载各个安装包。</p>
+<h2>Spark源码阅读环境的安装步骤</h2>
+<h4>安装<a href="http://www.scala-lang.org/download/">Scala</a>。</h4>
+<p>完成后，在windows命令行中输入<code>scala</code>，检查是否识别此命令。<br />
+如果不识别，查看环境变量Path中是否有<code>....\scala\bin</code>（我的电脑右键，属性 -&gt; 高级系统设置 -&gt; 环境变量）,没有的手动将Scala文件夹下的bin目录的路径</p>
+<h4>安装<a href="http://www.scala-sbt.org/download.html">SBT ...</a></h4> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html">read more</a></div>
     </div>	
 				
 
@@ -229,8 +245,8 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
                 </li>
             
                 <li><a href="http://getpelican.com/">Pelican</a></li>
-                <li><a href="http://python.org/">Python.org</a></li>
-                <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                <li><a href="http://python.org/">Python</a></li>
+                <li><a href="http://spark.apache.org/">Spark</a></li>
             </ul>
             </div>
 

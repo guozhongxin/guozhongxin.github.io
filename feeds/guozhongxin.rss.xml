@@ -150,7 +150,7 @@
 &lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_old.png" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_new.png" /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_big.png" /&gt;&lt;/p&gt;
-&lt;p&gt;最后一张图明显能看出更改之后统计的数据更细腻。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 22:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</guid><category>ganglia</category><category></category></item><item><title>Spark源码阅读学习环境的安装与搭建（Windows + IDEA + SBT）</title><link>http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html</link><description>&lt;h2&gt;Spark源码阅读环境的准备&lt;/h2&gt;
+&lt;p&gt;最后一张图明显能看出更改之后统计的数据更细腻。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 22:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</guid><category>ganglia</category><category></category></item><item><title>Windows + IDEA + SBT 打造Spark源码阅读环境</title><link>http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html</link><description>&lt;h2&gt;Spark源码阅读环境的准备&lt;/h2&gt;
 &lt;p&gt;Spark源码是有Scala语言写成的，目前，&lt;a href="/http://www.jetbrains.com/idea/"&gt;IDEA&lt;/a&gt;对Scala的支持要比eclipse要好，大多数人会选在在IDEA上完成Spark平台应用的开发。因此，Spark源码阅读的IDE理所当然的选择了IDEA。&lt;/p&gt;
 &lt;p&gt;本文介绍的是Windows下的各项配置方法（默认已经装了java，JDK）。&lt;/p&gt;
 &lt;p&gt;下面列举搭建此环境需要的各个组件：&lt;/p&gt;
