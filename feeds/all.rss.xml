@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 16 Oct 2014 00:00:00 +0800</lastBuildDate><item><title>Spark使用及调优心得</title><link>http://www.guozhongxin.com/pages/2014/10/16/spark_experience.html</link><description>&lt;h3&gt;pending...&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Thu, 16 Oct 2014 00:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-16:pages/2014/10/16/spark_experience.html</guid><category>spark</category><category></category></item><item><title>Ganlia采样、统计及RRD记录周期（频次、间隔）的配置和更改</title><link>http://www.guozhongxin.com/pages/2014/10/15/ganglia_frequency.html</link><description>&lt;h2&gt;Ganglia &amp;amp; RRD&lt;/h2&gt;
+&lt;p&gt;Ganglia是伯克利开发的一个集群监控软件。可以监视和显示集群中的节点的各种状态信息，比如如：cpu 、mem、硬盘利用率， I/O负载、网络流量情况等，同时可以将历史数据以曲线方式通过php页面呈现。&lt;/p&gt;
+&lt;p&gt;Ganglia监控系统的核心有两部分：gmond 和 gmetad：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;gmond在各个节点上运行，负责采集数据；&lt;/li&gt;
+&lt;li&gt;gmetad在主节点上运行，负责接收gmond采集上来的数据并将之储存在RRD中。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /&gt; &lt;/p&gt;
+&lt;p&gt;Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这是Ganglia创建的RRD的默认形式，一个RRD文件有四个RRA用来记录数据。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;第一个RRA一共储存着244个数据，每插入一条数据储存一个数据，Ganglia默认的15s记录一次，这就意味着默认的这个RRA记录着最近61分钟的数据，这也就是在web上看到的一小时的图。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第二个RRA一共储存着244个数据，每插入24条数据取平均数，储存一个数据，15s * 24 = 360s，意味着6分钟储存一条数据。总共记录了 6min * 244 = 1464min = 24.4h 约为一天的数据。对应的是web上最近24h的数据图。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第三个RRA，每插入168条数据取平均数储存一条数据，15s * 168 = 42min，42分钟记录一条数据，总共记录 42min * 244 = 7.1d 约为一周的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;第四个RRA，记录最近四周的数据。对应web界面上Last month的数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;第五个RRA记录最近一年的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;为什么要更改Ganlia采样、统计及RRD记录的最小间隔&lt;/h2&gt;
+&lt;p&gt;对于简单的集群监控，Ganglia的默认配置是足够的，能够满足集群管理员发现集群的性能表现和一些故障，并判断故障发生在哪里。  &lt;/p&gt;
+&lt;p&gt;但是在进行细致的作业分析时，15s的最小采样间隔是不能够满足需求的。&lt;/p&gt;
+&lt;p&gt;以笔者研究的spark作业的性能表现为例，对于40G的数据，在4节点、16GB per node、32 cores per node的Spark集群上进行wordcount，作业的总共运行时间平均为53s，而map stage中每个task的运行时间在10s左右，reduce&amp;amp;save stage中每个task的运行时间不过2-4s。&lt;/p&gt;
+&lt;p&gt;由于spark高效的执行效率，spark运行过程中占用集群资源的行为变化是迅速的，15s的记录间隔是无法察觉的。&lt;/p&gt;
+&lt;p&gt;因此，&lt;strong&gt;为了让Ganglia能够更好的适应Spark的节奏，需要将Ganlia采样、统计及RRD记录的最小间隔由15s改到更小&lt;/strong&gt;，笔者直接选择在&lt;strong&gt;1s&lt;/strong&gt;。&lt;/p&gt;
+&lt;h2&gt;更改Ganglia配置参数，以更改采样和记录的最小间隔&lt;/h2&gt;
+&lt;h3&gt;停止Ganglia的运行&lt;/h3&gt;
+&lt;p&gt;为了避免出现运行错误，在更改配置前关闭ganglia的运行。&lt;/p&gt;
+&lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;更改gmond配置（更改搜集数据的周期，以及传输传输周期）&lt;/h3&gt;
+&lt;p&gt;gmond的配置在/etc/ganglia/gmond.conf中&lt;/p&gt;
+&lt;p&gt;对于只取一次值的metric，将&lt;code&gt;time_threshold&lt;/code&gt;，因为这些值，如&lt;code&gt;mem_total&lt;/code&gt;，会在web端php画图时用到，因为memory那张图中的&lt;code&gt;memory used&lt;/code&gt;，并不是通过直接采集数据得到的，而是通过&lt;code&gt;mem_total&lt;/code&gt;减去其他值计算得到的，因此，&lt;code&gt;mem_total&lt;/code&gt;一开始就应该被获取，因此&lt;code&gt;time_threshold&lt;/code&gt;需设为1（默认为1200）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;collect_once&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
+  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_num&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU Count&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;mem_total&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Memory Total&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;对于其他metric，如cpu group中的各个metric，采样与传输的时间也应设置为1（s）&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
+  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;90&lt;/span&gt;
+  &lt;span class="cm"&gt;/* CPU status */&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_user&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU User&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_system&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU System&amp;quot;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;即&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;更改gmetad配置（更改记录的最小间隔）&lt;/h3&gt;
+&lt;p&gt;gmetad的配置在/etc/ganglia/gmetad.conf中&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Format: &lt;/span&gt;
+&lt;span class="c"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
+&lt;span class="c"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
+&lt;span class="c"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
+&lt;span class="c"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
+&lt;span class="c"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到这里有关于&lt;code&gt;[polling interval]&lt;/code&gt;的解释，即gmetad会根据从gmond搜集的数据，每一个间隔计算出这个间隔内的平均数将其写入rrd。&lt;br /&gt;
+而这个参数，是一个非必要的参数，如果用户不指定的话，每15s记录一次。&lt;/p&gt;
+&lt;p&gt;因此，为了将Ganglia记录最小间隔及RRD中数据的最小时间间隔改为1s，需要在master名称后添加一个参数：1&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_source&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;my cluster&amp;quot;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;  &lt;span class="n"&gt;my&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;machine&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;edu&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8649&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;为了让web依然能够顺利的画出一天、一周、一月、一年的图，还应该修改RRD的格式。&lt;/p&gt;
+&lt;p&gt;原来的采样间隔是15s，现在的采样间隔是1s，就要把每个RRA的容量扩充，或者将除了第一个RRA之外的RRA的记录间隔改大。&lt;/p&gt;
+&lt;p&gt;两种调整RRD格式的方法：&lt;/p&gt;
+&lt;p&gt;1.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;因为我只需要近一小时的详细数据，因此，我采用第二种方式，RRD的文件会小一些。&lt;/p&gt;
+&lt;h3&gt;清除原有RRD&lt;/h3&gt;
+&lt;p&gt;因为RRD的格式发生变化，和原有的RRD不同，因此，需要将原来的RRD删除，&lt;/p&gt;
+&lt;p&gt;RRD的文件储存位置的配置在gmetad.conf中：&lt;code&gt;rrd_rootdir&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;rrd_rootdir&lt;/code&gt;的默认位置在&lt;code&gt;/var/lib/ganglia/rrds&lt;/code&gt;，将这个文件夹下的所有文件及文件夹删除即可。&lt;/p&gt;
+&lt;h3&gt;启动Ganglia&lt;/h3&gt;
+&lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;查看更改之后的效果&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;在http://masterhost/ganglia中可以看到更改之后的变化：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_old.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_new.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="image" src="http://www.guozhongxin.com/images/ganglia_big.png" /&gt;&lt;/p&gt;
+&lt;p&gt;最后一张图明显能看出更改之后统计的数据更细腻。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 22:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/ganglia_frequency.html</guid><category>ganglia</category><category></category></item><item><title>Windows + IDEA + SBT 打造Spark源码阅读环境</title><link>http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html</link><description>&lt;h2&gt;Spark源码阅读环境的准备&lt;/h2&gt;
+&lt;p&gt;Spark源码是有Scala语言写成的，目前，&lt;a href="/http://www.jetbrains.com/idea/"&gt;IDEA&lt;/a&gt;对Scala的支持要比eclipse要好，大多数人会选在在IDEA上完成Spark平台应用的开发。因此，Spark源码阅读的IDE理所当然的选择了IDEA。&lt;/p&gt;
+&lt;p&gt;本文介绍的是Windows下的各项配置方法（默认已经装了java，JDK）。&lt;/p&gt;
+&lt;p&gt;下面列举搭建此环境需要的各个组件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.jetbrains.com/idea/download/"&gt;&lt;strong&gt;IDEA&lt;/strong&gt;&lt;/a&gt;，有两个版本：Ultimate Edition &amp;amp; Community Edition，后者是free的，而且完全能满足学习者所有的需求  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.scala-lang.org/download/"&gt;&lt;strong&gt;Scala&lt;/strong&gt;&lt;/a&gt;，Spark是用Scala语言写成的，在本地编译执行需要这个包&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.scala-sbt.org/download.html"&gt;&lt;strong&gt;SBT&lt;/strong&gt;&lt;/a&gt;，scala工程构建的工具&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://git-scm.com/download/"&gt;&lt;strong&gt;Git&lt;/strong&gt;&lt;/a&gt;，IDEA自动下载SBT插件时可能会用到的工具&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://spark.apache.org/downloads.html"&gt;&lt;strong&gt;Spark Source Code&lt;/strong&gt;&lt;/a&gt;，Spark源码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下载各个安装包。&lt;/p&gt;
+&lt;h2&gt;Spark源码阅读环境的安装步骤&lt;/h2&gt;
+&lt;h4&gt;安装&lt;a href="http://www.scala-lang.org/download/"&gt;Scala&lt;/a&gt;。&lt;/h4&gt;
+&lt;p&gt;完成后，在windows命令行中输入&lt;code&gt;scala&lt;/code&gt;，检查是否识别此命令。&lt;br /&gt;
+如果不识别，查看环境变量Path中是否有&lt;code&gt;....\scala\bin&lt;/code&gt;（我的电脑右键，属性 -&amp;gt; 高级系统设置 -&amp;gt; 环境变量）,没有的手动将Scala文件夹下的bin目录的路径&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://www.scala-sbt.org/download.html"&gt;SBT&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;运行SBT的安装程序，运行完成后，重新打开windows命令行，输入&lt;code&gt;sbt&lt;/code&gt;，检查是否识别此命令。没有的话，手动配置环境变量，添加&lt;code&gt;...\sbt\bin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;运行完SBT的安装程序之后，并不意味着完成了sbt的安装，在windows命令放下输入&lt;code&gt;sbt&lt;/code&gt;后，SBT会自动的下载安装它所需要的程序包，请耐心等待全部下载成功。&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://git-scm.com/download/"&gt;Git&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;运行Git的安装程序，安装完成后，重新打开windows命令行，检查时候识别&lt;code&gt;git&lt;/code&gt;命令。&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://www.jetbrains.com/idea/download/"&gt;IDEA&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;安装IDEA的Scala插件&lt;/h4&gt;
+&lt;p&gt;打开IDEA，在‘Welcome to IntelliJ IDEA’界面的‘Quick Start’栏，点击&lt;code&gt;Configure&lt;/code&gt;，选择&lt;code&gt;Plugins&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;在弹出的窗口中可以看到已安装的插件，现在IDEA默认还没有Scala的插件。需要点击左下角的&lt;code&gt;Install JetBrains plugin...&lt;/code&gt;，在搜索框中输入‘scala’，点击安装。安装完成后可能会要求重启一下IDEA。&lt;/p&gt;
+&lt;h4&gt;解压缩Spark Source Code包&lt;/h4&gt;
+&lt;h2&gt;导入Spark工程&lt;/h2&gt;
+&lt;p&gt;在欢迎界面‘Quick Start’栏或者是在主界面的菜单栏&lt;code&gt;File&lt;/code&gt;下，选&lt;code&gt;Import Project&lt;/code&gt;，找到解压之后的spark工程文件夹，&lt;code&gt;OK&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;选择&lt;code&gt;import project from external model&lt;/code&gt;中的&lt;code&gt;SBT project&lt;/code&gt;，（这个选项只有在安装了IDEA的Scala插件才会有）。&lt;/p&gt;
+&lt;p&gt;下一步，选择Project SDK为JDK，最好勾上&lt;code&gt;Use auto-import&lt;/code&gt;，然后点击&lt;code&gt;Finish&lt;/code&gt;。这时，&lt;strong&gt;IDEA会自动下载安装SBT所需的各个包&lt;/strong&gt;，没有装Git的话可能会报错。&lt;/p&gt;
+&lt;p&gt;因为Spark是一个比较大的工程，所需的包也很多，这个过程也会特别慢，请耐心等待。&lt;/p&gt;
+&lt;h4&gt;导入完成&lt;/h4&gt;
+&lt;p&gt;导入完成后，自动打开工程，要等一段时间，等待sbt对这个工程进行编译。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 11:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/spark_source_code.html</guid><category>spark</category><category>源码</category></item><item><title>Spark简介</title><link>http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html</link><description>&lt;h1&gt;目录：&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Spark综述&lt;/li&gt;
+&lt;li&gt;Spark计算模型：RDD，算子，stage，&lt;/li&gt;
+&lt;li&gt;Spark架构及工作流程&lt;/li&gt;
+&lt;li&gt;Spark组件&lt;/li&gt;
+&lt;li&gt;Spark配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Spark综述--Spark是什么&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;基于内存的分布式并行计算框架&lt;/li&gt;
+&lt;li&gt;一种粗粒度数据并行（data parallel）的计算范式（相对于 task parallel）&lt;/li&gt;
+&lt;li&gt;以RDD(弹性分布式数据集)为计算对象&lt;/li&gt;
+&lt;li&gt;核心代码两万行，轻量级分布式系统&lt;/li&gt;
+&lt;li&gt;支持Hadoop2.0，支持HDFS&lt;/li&gt;
+&lt;li&gt;支持内存计算、多迭代批量处理、即席查询、流处理和图计算  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Spark计算模型&lt;/h1&gt;
+&lt;h3&gt;弹性的分布数据集(RDD)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;分布式对象集合能够跨集群在内存中保存。多个并行操作，失败自动恢复。&lt;/li&gt;
+&lt;li&gt;A list of partitions;&lt;/li&gt;
+&lt;li&gt;A function for computing each split&lt;/li&gt;
+&lt;li&gt;A list of dependencies on other RDDs: HadoopRDD，ShuffledRDD，PartitionPruningRDD…  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;算子&lt;/h3&gt;
+&lt;p&gt;算子，即对数据集RDD进行操作的函数。&lt;br /&gt;
+Spark计算模型中，总共涉及四种算子。    &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入算子：val lines = sc.textFile("data.txt")&lt;/li&gt;
+&lt;li&gt;缓存算子：lines.cache(), lines.persist()&lt;/li&gt;
+&lt;li&gt;变换算子(Transformations)： create a new dataset from an existing one，由一个（或多个）已存在的RDD转换成另外一个RDD：map(), filter(), group(), flatmap()…&lt;/li&gt;
+&lt;li&gt;行动算子(Actions)： return a value to the driver program after running a computation on the dataset，由RDD转换成：reduce(), count()…  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下图可以较为清楚的理解四种算子：&lt;br /&gt;
+&lt;img alt="1" src="http://www.guozhongxin.com/images/suanzi.png" /&gt;  &lt;/p&gt;
+&lt;h4&gt;&amp;gt;&amp;gt;算子的执行&lt;/h4&gt;
+&lt;p&gt;从RDD到RDD的变换算子序列，一直在RDD空间发生。这里很重要的设计是&lt;code&gt;lazy evaluation&lt;/code&gt;：计算并不实际发生，只是不断地记录到元数据。元数据的结构是&lt;code&gt;DAG&lt;/code&gt;（有向无环图），其中每一个“顶点”是RDD（包括生产该RDD 的算子），从父RDD到子RDD有“边”，表示RDD间的依赖性。Spark给元数据DAG取了个很酷的名字，&lt;code&gt;Lineage&lt;/code&gt;（世系）。  &lt;/p&gt;
+&lt;p&gt;Lineage一直增长，直到遇上行动（action）算子（图1中的绿色箭头），这时 就要evaluate了，把刚才累积的所有算子一次性执行。行动算子的输入是RDD（以及该RDD在Lineage上依赖的所有RDD），输出是执行后生 成的原生数据，可能是Scala标量、集合类型的数据或存储。当一个算子的输出是上述类型时，该算子必然是行动算子，其效果则是从RDD空间返回原生数据 空间。&lt;/p&gt;
+&lt;p&gt;另一个要点是一旦行动算子产生原生数据，就必须退出RDD空间。因为目前Spark只能够跟踪RDD的计算，原生数据的计算对它来说是不可见的（除非以后 Spark会提供原生数据类型操作的重载、wrapper或implicit conversion）。&lt;/p&gt;
+&lt;h4&gt;&amp;gt;&amp;gt;shuffle（重排）&lt;/h4&gt;
+&lt;p&gt;涉及重排，称为shuffle类操作。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对单个RDD重排，如sort、partitionBy（实现一致性的分区划分，这个对数据本地性优化很重要，后面会讲）；&lt;/li&gt;
+&lt;li&gt;对单个RDD基于key进行重组和reduce，如groupByKey、reduceByKey；&lt;/li&gt;
+&lt;li&gt;对两个RDD基于key进行join和重组，如join、cogroup。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;宽依赖与窄依赖&lt;/h3&gt;
+&lt;p&gt;&lt;img alt="2" src="http://www.guozhongxin.com/images/dependency.png" /&gt;  &lt;/p&gt;
+&lt;p&gt;左侧为窄依赖，右侧为宽依赖  &lt;/p&gt;
+&lt;p&gt;宽依赖与窄依赖的最主要区别在于，宽依赖关系涉及到shuffle过程，而窄依赖不涉及shuffle。  &lt;/p&gt;
+&lt;h3&gt;Stage&lt;/h3&gt;
+&lt;p&gt;Stage是Spark对DAG的划分，以此作为对作业的进行任务（task）划分和调度的依据。&lt;br /&gt;
+可以这样理解Stage不需要shuffle是可以随意并发的, 所以stage的边界就是需要shuffle的地方。&lt;/p&gt;
+&lt;p&gt;下图是一个stage例子。
+&lt;img alt="3" src="http://www.guozhongxin.com/images/stage.png" /&gt; &lt;/p&gt;
+&lt;h3&gt;共享变量（Shared Variables）&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;广播变量：&lt;br /&gt;
+    允许程序员保留一个只读的变量，缓存在每一台机器上，而非每个任务。被创建后，它能在集群运行的任何函数上，需要被再次传递到这些结点上。
+    通过SparkContext.broadcast(v)方法创建。
+    对象v不能在被广播后修改，是只读的。&lt;/li&gt;
+&lt;li&gt;累加器：&lt;br /&gt;
+    通过调用SparkContext.accumulator(V)方法来创建。
+    运行在集群上的任务，可以使用+=来加值。然而，它们不能读取计数器的值。
+    当Driver程序可以使用.value方法读取该值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Spark架构&lt;/h1&gt;
+&lt;p&gt;先给一个概况图：&lt;br /&gt;
+&lt;img alt="4" src="http://www.guozhongxin.com/images/jiagou.png" /&gt; &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;构建Spark Application运行环境；&lt;br /&gt;
+    在Driver Program中新建SparkContext（包含sparkcontext的程序称为Driver Program）；
+    Spark Application运行的表现方式为：在集群上运行着一组独立的executor进程，这些进程由sparkcontext来协调；&lt;/li&gt;
+&lt;li&gt;SparkContext向资源管理器申请运行Executor资源，并启动StandaloneExecutorBackend，executor向sparkcontent申请task；
+    集群通过SparkContext连接到不同的cluster manager(standalone、yarn、mesos)，cluster manager为运行应用的Executor分配资源；一旦连接建立之后，Spark每个Application就会获得各个节点上的Executor（进程）；每个Application都有自己独立的executor进程；Executor才是真正运行在WorkNode上的工作进程，它们为应用来计算或者存储数据；&lt;/li&gt;
+&lt;li&gt;SparkContext获取到executor之后，Application的应用代码将会被发送到各个executor；&lt;/li&gt;
+&lt;li&gt;SparkContext构建RDD DAG图，将RDD DAG图分解成Stage DAG图，将Stage提交给TaskScheduler，最后由TaskScheduler将Task发送给Executor运行；&lt;/li&gt;
+&lt;li&gt;Task在Executor上运行，运行完毕后释放所有资源；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Spark通用的使用方式主要有两种：standalone、spark on yarn&lt;/p&gt;
+&lt;h3&gt;standalone&lt;/h3&gt;
+&lt;p&gt;基于standalone的Spark架构与作业执行流程（Driver运行在客户端上）：  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="5" src="http://www.guozhongxin.com/images/standalone.png" /&gt; &lt;/p&gt;
+&lt;p&gt;作业执行流程描述：  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;客户端启动后直接运行用户程序，启动Driver相关的工作：DAGScheduler和BlockManagerMaster等。&lt;/li&gt;
+&lt;li&gt;客户端的Driver向Master注册。&lt;/li&gt;
+&lt;li&gt;Master还会让Worker启动Exeuctor。Worker创建一个ExecutorRunner线程，ExecutorRunner会启动ExecutorBackend进程。&lt;/li&gt;
+&lt;li&gt;ExecutorBackend启动后会向Driver的SchedulerBackend注册。Driver的DAGScheduler解析作业并生成相应的Stage，每个Stage包含的Task通过TaskScheduler分配给Executor执行。&lt;/li&gt;
+&lt;li&gt;所有stage都完成后作业结束。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Spark on Yarn&lt;/h3&gt;
+&lt;p&gt;基于Yarn的Spark架构与作业执行流程：&lt;br /&gt;
+&lt;img alt="6" src="http://www.guozhongxin.com/images/taobao.png" /&gt; &lt;/p&gt;
+&lt;p&gt;基于YARN的Spark作业首先由客户端生成作业信息，提交给ResourceManager，ResourceManager在某一NodeManager汇报时把AppMaster分配给NodeManager，NodeManager启动 SparkAppMaster，SparkAppMaster启动后初始化作业，然后向ResourceManager申请资源，申请到相应资源后 SparkAppMaster通过RPC让NodeManager启动相应的SparkExecutor，SparkExecutor向 SparkAppMaster汇报并完成相应的任务。此外，SparkClient会通过AppMaster获取作业运行状态。&lt;/p&gt;
+&lt;p&gt;Spark on Yarn这种模式因为淘宝技术部在内部平台上的应用而被许多其他使用者模仿，其实根据笔者的感受来讲，绝大多数类型的任务spark着standalone的模式下就能很好的运行，并有不次于Spark on Yarn的执行效率。   &lt;/p&gt;
+&lt;h1&gt;Spark组件&lt;/h1&gt;
+&lt;h3&gt;DAGScheduler&lt;/h3&gt;
+&lt;p&gt;DAGScheduler主要功能如下：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;接收用户提交的job;&lt;/li&gt;
+&lt;li&gt;将job根据类型划分为不同的stage，记录哪些RDD、Stage被物化，并在每一个stage内产生一系列的task，并封装成TaskSet；&lt;/li&gt;
+&lt;li&gt;决定每个Task的最佳位置(任务在数据所在的节点上运行)，并结合当前的缓存情况；将TaskSet提交给TaskScheduler;&lt;/li&gt;
+&lt;li&gt;重新提交Shuffle输出丢失的Stage给TaskScheduler；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;注：一个Stage内部的错误不是由shuffle输出丢失造成的，DAGScheduler是不管的，由TaskScheduler负责尝试重新提交task执行；&lt;/p&gt;
+&lt;h3&gt;TaskScheduler&lt;/h3&gt;
+&lt;p&gt;TaskScheduler是一个可插拔任务调度接口，主要功能如下：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一个TaskScheduler只为一个SparkContext服务，接收DAGScheduler提交过来的一组组的TaskSet；&lt;/li&gt;
+&lt;li&gt;TaskScheduler将task提交到集群中并执行，如果其中某个Task执行失败则重试之；TaskScheduler将TaskSet对应的执行结果返回DAGScheduler；&lt;/li&gt;
+&lt;li&gt;处理straggle任务；（比如：100个任务运行，其中99个任务快，1个任务慢，需要在另外一个节点上开启一个相同的任务来运行，谁先完成取用谁）；&lt;/li&gt;
+&lt;li&gt;遇到shuffle输出丢失则汇报给DAGScheduler；&lt;/li&gt;
+&lt;li&gt;为每个TaskSet维护一个TaskSetManager追踪本地性(resourceOffer--&amp;gt;findTask)及错误信息；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Storage模块&lt;/h3&gt;
+&lt;p&gt;主要分为两层：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;通信层：storage模块采用的是master-slave结构来实现通信层，master和slave之间传输控制信息、状态信息，这些都是通过通信层来实现的。&lt;/li&gt;
+&lt;li&gt;存储层：storage模块需要把数据存储到disk或是memory上面，有可能还需replicate到远端，这都是由存储层来实现和提供相应接口。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其他模块若要和storage模块进行交互，storage模块提供了统一的操作类BlockManager，外部类与storage模块打交道都需要通过调用BlockManager相应接口来实现&lt;/p&gt;
+&lt;h1&gt;Spark配置&lt;/h1&gt;
+&lt;h3&gt;Spark集群配置&lt;/h3&gt;
+&lt;p&gt;配置文件：$SPARK_HOME/conf/spark-env.sh
+主要的配置参数有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SPARK_MASTER_IP, to bind the master to a different IP address or hostname&lt;/li&gt;
+&lt;li&gt;SPARK_WORKER_CORES, to set the number of cores to use on this machine&lt;/li&gt;
+&lt;li&gt;SPARK_WORKER_MEMORY, to set how much total memory workers have to give executors (e.g. 1000m, 2g)&lt;/li&gt;
+&lt;li&gt;SPARK_WORKER_INSTANCES, to set the number of worker processes per node&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;举例：一共5台机器，每台24个cpu cores，每台机器上有90GB内存：
+    export SPARK_WORKER_MEMORY=30000m
+    export SPARK_WORKER_CORES=8
+    export SPARK_WORKER_INSTANCES=3
+另外还有一些关于Hadoop的配置参数，这是为了Spark on Yarn的工作模式提供的，如果你只使用Standalone模式，则不需要配置。&lt;/p&gt;
+&lt;h3&gt;&lt;a href="http://spark.apache.org/docs/latest/configuration.html"&gt;Saprk执行作业属性&lt;/a&gt;&lt;/h3&gt;
+&lt;h4&gt;&amp;gt;&amp;gt;配置方式&lt;/h4&gt;
+&lt;p&gt;在Spark1.0.x提供了3种方式的属性配置：  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SparkConf方式，在代码中配置各个参数；&lt;/li&gt;
+&lt;li&gt;命令行参数方式
+    使用spark-submit或spark-shell提交应用程序时用命令行参数提交；&lt;/li&gt;
+&lt;li&gt;文件配置方式
+    在$SPARK_HOME/conf/spark_default.conf里进行配置；该方式是将属性配置项以键值对方式写入文本文件中，一个配置项占一行；&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;优先权：&lt;br /&gt;
+    SparkConf方式 &amp;gt; 命令行参数方式 &amp;gt;文件配置方式&lt;/p&gt;
+&lt;h4&gt;&amp;gt;&amp;gt;查看Spark属性配置&lt;/h4&gt;
+&lt;p&gt;在应用程序执行过程中，通过应用程序的webUI（地址http://&lt;driver&gt;:4040）可以查看Spark属性配置，从而检查属性配置是否正确；&lt;br /&gt;
+只是显示通过上面三种方式显式指定的属性配置，对于其他属性可以假定使用默认配置；&lt;br /&gt;
+对于大多数内部控制属性，系统已经提供了合理的默认配置。  &lt;/p&gt;
+&lt;h4&gt;&amp;gt;&amp;gt;Spark日志属性配置&lt;/h4&gt;
+&lt;p&gt;Spark日志：log4j，配置文件：$SPARK_HOME/conf/log4j.properties&lt;/p&gt;
+&lt;p&gt;Spark job(Application)日志，计数器：通过刚才提到的三种方式中的任意一种，对一下Spark Conf进行配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
+&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;hdfs&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sun, 12 Oct 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-12:pages/2014/10/12/a_brief_in_spark.html</guid><category>spark</category><category></category></item><item><title>Spark安装：Spark集群及开发环境搭建</title><link>http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html</link><description>&lt;h2&gt;安装Spark准备&lt;/h2&gt;
+&lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;scala安装包，可以在&lt;a href="http://www.scala-lang.org/"&gt;scala官方网站&lt;/a&gt;下载&lt;/li&gt;
+&lt;li&gt;spark安装包，可以在&lt;a href="http://spark.apache.org/downloads.html"&gt;spark官网&lt;/a&gt;下载，用两种形式的安装包：&lt;ul&gt;
+&lt;li&gt;source code package&lt;/li&gt;
+&lt;li&gt;pre-build package&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;在主节点实现ssh免密码登陆其他节点。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;install scala - scala安装&lt;/h3&gt;
+&lt;p&gt;download scala-2.10.4.tgz and unzip： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;scala&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.10.4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;   
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;install spark. - spark安装&lt;/h3&gt;
+&lt;p&gt;There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  &lt;/p&gt;
+&lt;p&gt;Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包&lt;/p&gt;
+&lt;p&gt;To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :    &lt;/p&gt;
+&lt;p&gt;在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;distribution&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;hadoop&lt;/span&gt; &lt;span class="mf"&gt;2.4.0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yarn&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;hive&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tachyon&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;skip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   &lt;/p&gt;
+&lt;p&gt;如果你选择了已经build好的安装包，以上步骤不需执行。&lt;/p&gt;
+&lt;p&gt;将自己编译或是下载的编译包解压缩，并配置环境变量：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0.0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.2.0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;  
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configure Spark cluster - Spark集群配置&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;edit &lt;code&gt;$SPARK_HOME/conf/slaves&lt;/code&gt;, and input all node IP :  &lt;/p&gt;
+&lt;p&gt;masters&lt;br /&gt;
+slave1&lt;br /&gt;
+slave2&lt;br /&gt;
+slave3 &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_env.sh&lt;/code&gt; &lt;/p&gt;
+&lt;p&gt;export HADOOP_HOME=/opt/apache/hadoop-2.4.0&lt;br /&gt;
+export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop&lt;br /&gt;
+export JAVA_HOME=/usr/local/jdk1.7.0_60&lt;br /&gt;
+export SCALA_HOME=/home/yarn/scala-2.10.4  &lt;/p&gt;
+&lt;p&gt;export SPARK_WORKER_MEMORY=16g&lt;br /&gt;
+export SPARK_WORKER_INSTANCES=1&lt;br /&gt;
+export SPARK_MASTER_IP=master&lt;/p&gt;
+&lt;p&gt;实际上安装好之后&lt;code&gt;conf&lt;/code&gt;文件夹下有一个&lt;code&gt;spark_env.sh&lt;/code&gt;的模板，里边有各个变量的解释说明，在这不一一累述  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Copy to other node &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要将各个节点上的这两个文件都进行配置&lt;/p&gt;
+&lt;h3&gt;Configure Spark App - Spark作业属性配置&lt;/h3&gt;
+&lt;p&gt;对于作业执行的属性配置，spark提供了三种不同的配置方法  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_default.conf&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;spark.master                    spark://master:7077&lt;br /&gt;
+spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog&lt;br /&gt;
+spark.local.dir                  ...  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//master:7077  /&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jar&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过代码中对SparkContext来对这些属性赋值&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这三种方法的优先级是：&lt;br /&gt;
+    3 高于 2 高于1  &lt;/p&gt;
+&lt;h3&gt;Tips&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node&lt;br /&gt;
+If old worker's process is still working , you can use this command to kill them:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ef&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Worker&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="n"&gt;kill&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and restart Spark Cluster  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;if you want to start history server, you should assign logs' path:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;historyserver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;  &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you wanna save a job's log, you should assign two properties:  &lt;/p&gt;
+&lt;p&gt;spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 26 Sep 2014 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</guid><category>spark</category><category>开发环境</category><category></category></item><item><title>pelican建站攻略补充（站内搜索，和标签云）</title><link>http://www.guozhongxin.com/pages/2014/09/25/build_blog_with_pelican.html</link><description>&lt;h2&gt;pelican建站准备&lt;/h2&gt;
+&lt;p&gt;参见lizherui的&lt;a href="http://www.lizherui.com/pages/2013/08/17/build_blog.html"&gt;一步一步打造Geek风格的技术博客&lt;/a&gt;，不累述&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;添加站内搜索&lt;/h2&gt;
+&lt;p&gt;由于原日志中关于添加google站内搜索的链接失效，在其他地方没有看到特别好的介绍。&lt;br /&gt;
+我首先尝试了直接在&lt;code&gt;pelicanconf.py&lt;/code&gt;中直接添加&lt;code&gt;GOOGLE_CUSTOM_SEARCH_NAVBAR&lt;/code&gt;这一条属性，结果在&lt;code&gt;make html&lt;/code&gt;之后，左上角的search框，在参考了lizhurui的博客代码后，我是这样实现的。  &lt;/p&gt;
+&lt;h3&gt;添加google站内搜索&lt;/h3&gt;
+&lt;h4&gt;修改主题：&lt;/h4&gt;
+&lt;p&gt;找到这个主题（&lt;code&gt;tuxlite_tbs&lt;/code&gt;）的templates文件夹中的&lt;code&gt;base.html&lt;/code&gt;，在这个div(&lt;code&gt;&amp;lt;div class="nav-collapse"&amp;gt;&lt;/code&gt;)的最后，添加以下内容：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;navbar-search pull-right&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/search.html&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-query&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;placeholder=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Search&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;q&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;s&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;更新pelican的主题：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;创建search.html&lt;/h4&gt;
+&lt;p&gt;之后，在output目录下，新建一个名为search.html的文件，写入下面的内容，其中需要你自己修改的是google站内搜索的ID号，需要自己在&lt;a href="https://www.google.com/cse/"&gt;google站内搜索&lt;/a&gt;的网站上自己申请。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;html&lt;/span&gt; &lt;span class="na"&gt;lang=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;zh_CN&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;meta&lt;/span&gt; &lt;span class="na"&gt;charset=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;utf-8&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;title&amp;gt;&lt;/span&gt;站内搜索&lt;span class="nt"&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;style&amp;gt;&lt;/span&gt;
+#search-box {
+    position: relative;
+    width: 50%;
+    margin: 0;
+    padding: 1em;
+}
+
+#search-form {
+    height: 30px;
+    border: 1px solid #999;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+#search-text {
+    font-size: 14px;
+    color: #ddd;
+    border-width: 0;
+    background: transparent;
+}
+
+#search-box input&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="k"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;text&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; {
+    width: 90%;
+    padding: 4px 0 12px 1em;
+    color: #333;
+    outline: none;
+}
+&lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;search-box&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/search.html&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;search-form&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;get&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;_top&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;input&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;search-text&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;name=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;q&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;placeholder=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Search&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;text&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;cse&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;width: 100%;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Loading&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://www.google.com/jsapi&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; 
+  google.load(&amp;#39;search&amp;#39;, &amp;#39;1&amp;#39;, {language : &amp;#39;zh-CN&amp;#39;, style : google.loader.themes.V2_DEFAULT});
+  google.setOnLoadCallback(function() {
+    var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
+      &amp;#39;012191777864628038963:**********&lt;span class="cp"&gt;&amp;lt;!写入你申请的google站内搜索的ID号&amp;gt;&lt;/span&gt;）&amp;#39;, customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    var options = new google.search.DrawOptions();
+    options.enableSearchResultsOnly(); 
+    customSearchControl.draw(&amp;#39;cse&amp;#39;, options);
+    function parseParamsFromUrl() {
+      var params = {};
+      var parts = window.location.search.substr(1).split(&amp;#39;\x26&amp;#39;);
+      for (var i = 0; i &lt;span class="nt"&gt;&amp;lt; parts.length&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt; &lt;span class="err"&gt;i++)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+        &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;keyValuePair =&lt;/span&gt; &lt;span class="s"&gt;parts&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="s"&gt;.split(&amp;#39;=&amp;#39;);&lt;/span&gt;
+        &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;key =&lt;/span&gt; &lt;span class="s"&gt;decodeURIComponent(keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="s"&gt;);&lt;/span&gt;
+        &lt;span class="na"&gt;params&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;key&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="na"&gt; =&lt;/span&gt; &lt;span class="s"&gt;keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt;
+            &lt;span class="err"&gt;decodeURIComponent(keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.replace(/\+/g,&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;))&lt;/span&gt; &lt;span class="err"&gt;:&lt;/span&gt;
+            &lt;span class="err"&gt;keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+      &lt;span class="err"&gt;}&lt;/span&gt;
+      &lt;span class="err"&gt;return&lt;/span&gt; &lt;span class="err"&gt;params;&lt;/span&gt;
+    &lt;span class="err"&gt;}&lt;/span&gt;
+
+    &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;urlParams =&lt;/span&gt; &lt;span class="s"&gt;parseParamsFromUrl();&lt;/span&gt;
+    &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;queryParamName =&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;q&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
+    &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="err"&gt;(urlParams&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+      &lt;span class="err"&gt;customSearchControl.execute(urlParams&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;);&lt;/span&gt;
+    &lt;span class="err"&gt;}&lt;/span&gt;
+  &lt;span class="err"&gt;},&lt;/span&gt; &lt;span class="err"&gt;true);&lt;/span&gt;
+&lt;span class="err"&gt;&amp;lt;/script&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;生成html，发布&lt;/h4&gt;
+&lt;p&gt;将这个html文件保存在output目录（网站的根目录）下，执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;
+&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样，搜索框就出来了。  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/searchwithgoogle.png" /&gt;&lt;/p&gt;
+&lt;p&gt;为了让google站内搜索功能更好的工作，你可在google站长工具中提交你的sitemap（这个可以在pelicanconf.py中配置sitemap插件，着执行make html后能自动生成）。&lt;/p&gt;
+&lt;h4&gt;提交sitemap&lt;/h4&gt;
+&lt;p&gt;引入sitemap插件的工程见lizherui的日志。这样在&lt;code&gt;make html&lt;/code&gt;之后就能生成sitemap.xml文件，提交到google站长上，搜索就可以生效了。  &lt;/p&gt;
+&lt;hr /&gt;
+&lt;h3&gt;添加百度站内搜索&lt;/h3&gt;
+&lt;p&gt;虽然实现了google站内搜索的功能，但是由于GFW的原因导致实际在使用google站内搜索时加载太慢，最终，我还是无奈的选择了百度站内搜索。。。  &lt;/p&gt;
+&lt;h4&gt;注册&lt;/h4&gt;
+&lt;p&gt;在&lt;a href="http://zhanzhang.baidu.com/"&gt;百度站长平台&lt;/a&gt;中注册一个账号，之后添加网站，按照提示验证网站。&lt;br /&gt;
+之后左侧&lt;code&gt;其他工具&lt;/code&gt;中找到&lt;code&gt;站内搜索&lt;/code&gt;，按照提示填写基本信息，选择搜索框样式，之后点击&lt;code&gt;查看代码&lt;/code&gt;，复制其中内容，留用。  &lt;/p&gt;
+&lt;h4&gt;修改主题&lt;/h4&gt;
+&lt;p&gt;同样在&lt;code&gt;base.html&lt;/code&gt;的这个个div(&lt;code&gt;&amp;lt;div class="nav-collapse"&amp;gt;&lt;/code&gt;)的最后，新建一个&lt;code&gt;div&lt;/code&gt;，刚才注册最后复制的代码粘贴到这个&lt;code&gt;div&lt;/code&gt;中： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;navbar-search pull-right&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;script&amp;gt;&lt;/span&gt;  
+        &lt;span class="cp"&gt;&amp;lt;!略&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;更新pelican的主题：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;生成html，发布&lt;/h4&gt;
+&lt;p&gt;同上  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="2" src="http://www.guozhongxin.com/images/searchwithbaidu.png" /&gt;&lt;/p&gt;
+&lt;h4&gt;提交sitemap&lt;/h4&gt;
+&lt;p&gt;在百度站长工具里提交sitemap的过程和google的类似，需要注意的是百度有自己的&lt;a href="http://zhanzhang.baidu.com/wiki/170#_2什么是sitemap索引文件？"&gt;sitemap格式&lt;/a&gt;，直接用lizherui日志中的方法生成的sitemap.xml不符合百度的要求：  &lt;/p&gt;
+&lt;p&gt;&lt;img alt="3" src="http://www.guozhongxin.com/images/sitemapofbaidu.png" /&gt;&lt;/p&gt;
+&lt;p&gt;百度sitemap要求有&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;data&amp;gt;&amp;lt;display&amp;gt;&amp;lt;/display&amp;gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改.&lt;/p&gt;
+&lt;h4&gt;配置符合百度站内搜索规则的pelican sitemap插件&lt;/h4&gt;
+&lt;p&gt;找到&lt;code&gt;.../pelican-plugins/sitemap/sitemap.py&lt;/code&gt;，找到全局变量&lt;code&gt;XML_URL&lt;/code&gt;，将其修改为以下形式：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;XML_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;url&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;loc&amp;gt;{0}/{1}&amp;lt;/loc&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;lastmod&amp;gt;{2}&amp;lt;/lastmod&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;changefreq&amp;gt;{3}&amp;lt;/changefreq&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;priority&amp;gt;{4}&amp;lt;/priority&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;data&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;display&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;/display&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
+&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样，重新&lt;code&gt;make html&lt;/code&gt;就能生成一份符合百度站内搜索的sitemap.xml。将其提交到百度站内搜索“提交数据”中，等待百度验证之后，就能体验百度站内搜索功能。&lt;/p&gt;
+&lt;p&gt;在这里吐槽一句，百度的站长工具确实不如google webmasters，同样是提交sitemap，google可以做到立即生效，百度的要等至少一个小时。如果没有GFW，才懒得用百度的呢。&lt;/p&gt;
+&lt;hr /&gt;
+&lt;h2&gt;添加Tags链接&lt;/h2&gt;
+&lt;p&gt;在其他一些pelican主题中，看到有标签云，想到Tags的链接可能比Categories的链接更有用，通过更改主题，添加了侧栏中红框内的Tags链接框。&lt;/p&gt;
+&lt;h4&gt;修改主题&lt;/h4&gt;
+&lt;p&gt;还是找到&lt;code&gt;base.html&lt;/code&gt;，找到categories部分：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;categories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;well&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;padding: 8px 0; background-color: #FBFBFB;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;ul&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;nav nav-list&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;nav-header&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; 
+    Categories
+    &lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+
+    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;cat&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;null&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;categories&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;SITEURL&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;/&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;cat.url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;cat&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;                   
+&lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endif&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;看到这一部分的代码之后，很容易仿写tags链接框的部分：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nv"&gt;tags&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;well&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;padding: 8px 0; background-color: #FBFBFB;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;ul&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;nav nav-list&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;nav-header&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; 
+    Tags
+    &lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;tag&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;tags&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;SITEURL&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;/&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;name.url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endif&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;将tags代码添加到categories框之后。执行&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
+&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;
+&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这时，你就能看到左侧栏出现的TAGS链接框了。&lt;br /&gt;
+&lt;img alt="4" src="http://www.guozhongxin.com/images/tags.png" /&gt;&lt;/p&gt;
+&lt;p&gt;实际上这不是一个能体现tag出现频次的tag云，小弟实在没学过前端技术，大神看到有感兴趣的可以提出解决的方法。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Thu, 25 Sep 2014 21:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-25:pages/2014/09/25/build_blog_with_pelican.html</guid><category>pelican</category><category>python</category><category></category></item></channel></rss>

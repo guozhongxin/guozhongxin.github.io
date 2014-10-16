@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/spark.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 16 Oct 2014 00:00:00 +0800</lastBuildDate><item><title>Spark使用及调优心得</title><link>http://www.guozhongxin.com/pages/2014/10/16/spark_experience.html</link><description>&lt;h3&gt;pending...&lt;/h3&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Thu, 16 Oct 2014 00:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-16:pages/2014/10/16/spark_experience.html</guid><category>spark</category><category></category></item><item><title>Windows + IDEA + SBT 打造Spark源码阅读环境</title><link>http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html</link><description>&lt;h2&gt;Spark源码阅读环境的准备&lt;/h2&gt;
+&lt;p&gt;Spark源码是有Scala语言写成的，目前，&lt;a href="/http://www.jetbrains.com/idea/"&gt;IDEA&lt;/a&gt;对Scala的支持要比eclipse要好，大多数人会选在在IDEA上完成Spark平台应用的开发。因此，Spark源码阅读的IDE理所当然的选择了IDEA。&lt;/p&gt;
+&lt;p&gt;本文介绍的是Windows下的各项配置方法（默认已经装了java，JDK）。&lt;/p&gt;
+&lt;p&gt;下面列举搭建此环境需要的各个组件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.jetbrains.com/idea/download/"&gt;&lt;strong&gt;IDEA&lt;/strong&gt;&lt;/a&gt;，有两个版本：Ultimate Edition &amp;amp; Community Edition，后者是free的，而且完全能满足学习者所有的需求  &lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.scala-lang.org/download/"&gt;&lt;strong&gt;Scala&lt;/strong&gt;&lt;/a&gt;，Spark是用Scala语言写成的，在本地编译执行需要这个包&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.scala-sbt.org/download.html"&gt;&lt;strong&gt;SBT&lt;/strong&gt;&lt;/a&gt;，scala工程构建的工具&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://git-scm.com/download/"&gt;&lt;strong&gt;Git&lt;/strong&gt;&lt;/a&gt;，IDEA自动下载SBT插件时可能会用到的工具&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://spark.apache.org/downloads.html"&gt;&lt;strong&gt;Spark Source Code&lt;/strong&gt;&lt;/a&gt;，Spark源码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下载各个安装包。&lt;/p&gt;
+&lt;h2&gt;Spark源码阅读环境的安装步骤&lt;/h2&gt;
+&lt;h4&gt;安装&lt;a href="http://www.scala-lang.org/download/"&gt;Scala&lt;/a&gt;。&lt;/h4&gt;
+&lt;p&gt;完成后，在windows命令行中输入&lt;code&gt;scala&lt;/code&gt;，检查是否识别此命令。&lt;br /&gt;
+如果不识别，查看环境变量Path中是否有&lt;code&gt;....\scala\bin&lt;/code&gt;（我的电脑右键，属性 -&amp;gt; 高级系统设置 -&amp;gt; 环境变量）,没有的手动将Scala文件夹下的bin目录的路径&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://www.scala-sbt.org/download.html"&gt;SBT&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;运行SBT的安装程序，运行完成后，重新打开windows命令行，输入&lt;code&gt;sbt&lt;/code&gt;，检查是否识别此命令。没有的话，手动配置环境变量，添加&lt;code&gt;...\sbt\bin&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;运行完SBT的安装程序之后，并不意味着完成了sbt的安装，在windows命令放下输入&lt;code&gt;sbt&lt;/code&gt;后，SBT会自动的下载安装它所需要的程序包，请耐心等待全部下载成功。&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://git-scm.com/download/"&gt;Git&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;运行Git的安装程序，安装完成后，重新打开windows命令行，检查时候识别&lt;code&gt;git&lt;/code&gt;命令。&lt;/p&gt;
+&lt;h4&gt;安装&lt;a href="http://www.jetbrains.com/idea/download/"&gt;IDEA&lt;/a&gt;&lt;/h4&gt;
+&lt;h4&gt;安装IDEA的Scala插件&lt;/h4&gt;
+&lt;p&gt;打开IDEA，在‘Welcome to IntelliJ IDEA’界面的‘Quick Start’栏，点击&lt;code&gt;Configure&lt;/code&gt;，选择&lt;code&gt;Plugins&lt;/code&gt;。  &lt;/p&gt;
+&lt;p&gt;在弹出的窗口中可以看到已安装的插件，现在IDEA默认还没有Scala的插件。需要点击左下角的&lt;code&gt;Install JetBrains plugin...&lt;/code&gt;，在搜索框中输入‘scala’，点击安装。安装完成后可能会要求重启一下IDEA。&lt;/p&gt;
+&lt;h4&gt;解压缩Spark Source Code包&lt;/h4&gt;
+&lt;h2&gt;导入Spark工程&lt;/h2&gt;
+&lt;p&gt;在欢迎界面‘Quick Start’栏或者是在主界面的菜单栏&lt;code&gt;File&lt;/code&gt;下，选&lt;code&gt;Import Project&lt;/code&gt;，找到解压之后的spark工程文件夹，&lt;code&gt;OK&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;选择&lt;code&gt;import project from external model&lt;/code&gt;中的&lt;code&gt;SBT project&lt;/code&gt;，（这个选项只有在安装了IDEA的Scala插件才会有）。&lt;/p&gt;
+&lt;p&gt;下一步，选择Project SDK为JDK，最好勾上&lt;code&gt;Use auto-import&lt;/code&gt;，然后点击&lt;code&gt;Finish&lt;/code&gt;。这时，&lt;strong&gt;IDEA会自动下载安装SBT所需的各个包&lt;/strong&gt;，没有装Git的话可能会报错。&lt;/p&gt;
+&lt;p&gt;因为Spark是一个比较大的工程，所需的包也很多，这个过程也会特别慢，请耐心等待。&lt;/p&gt;
+&lt;h4&gt;导入完成&lt;/h4&gt;
+&lt;p&gt;导入完成后，自动打开工程，要等一段时间，等待sbt对这个工程进行编译。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Wed, 15 Oct 2014 11:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-10-15:pages/2014/10/15/spark_source_code.html</guid><category>spark</category><category>源码</category></item><item><title>Spark安装：Spark集群及开发环境搭建</title><link>http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html</link><description>&lt;h2&gt;安装Spark准备&lt;/h2&gt;
+&lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;scala安装包，可以在&lt;a href="http://www.scala-lang.org/"&gt;scala官方网站&lt;/a&gt;下载&lt;/li&gt;
+&lt;li&gt;spark安装包，可以在&lt;a href="http://spark.apache.org/downloads.html"&gt;spark官网&lt;/a&gt;下载，用两种形式的安装包：&lt;ul&gt;
+&lt;li&gt;source code package&lt;/li&gt;
+&lt;li&gt;pre-build package&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;在主节点实现ssh免密码登陆其他节点。  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;install scala - scala安装&lt;/h3&gt;
+&lt;p&gt;download scala-2.10.4.tgz and unzip： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;scala&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.10.4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;   
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;install spark. - spark安装&lt;/h3&gt;
+&lt;p&gt;There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  &lt;/p&gt;
+&lt;p&gt;Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包&lt;/p&gt;
+&lt;p&gt;To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :    &lt;/p&gt;
+&lt;p&gt;在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;distribution&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;hadoop&lt;/span&gt; &lt;span class="mf"&gt;2.4.0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yarn&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;hive&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tachyon&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;skip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   &lt;/p&gt;
+&lt;p&gt;如果你选择了已经build好的安装包，以上步骤不需执行。&lt;/p&gt;
+&lt;p&gt;将自己编译或是下载的编译包解压缩，并配置环境变量：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0.0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.2.0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
+&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;  
+    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;
+&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Configure Spark cluster - Spark集群配置&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;edit &lt;code&gt;$SPARK_HOME/conf/slaves&lt;/code&gt;, and input all node IP :  &lt;/p&gt;
+&lt;p&gt;masters&lt;br /&gt;
+slave1&lt;br /&gt;
+slave2&lt;br /&gt;
+slave3 &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_env.sh&lt;/code&gt; &lt;/p&gt;
+&lt;p&gt;export HADOOP_HOME=/opt/apache/hadoop-2.4.0&lt;br /&gt;
+export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop&lt;br /&gt;
+export JAVA_HOME=/usr/local/jdk1.7.0_60&lt;br /&gt;
+export SCALA_HOME=/home/yarn/scala-2.10.4  &lt;/p&gt;
+&lt;p&gt;export SPARK_WORKER_MEMORY=16g&lt;br /&gt;
+export SPARK_WORKER_INSTANCES=1&lt;br /&gt;
+export SPARK_MASTER_IP=master&lt;/p&gt;
+&lt;p&gt;实际上安装好之后&lt;code&gt;conf&lt;/code&gt;文件夹下有一个&lt;code&gt;spark_env.sh&lt;/code&gt;的模板，里边有各个变量的解释说明，在这不一一累述  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Copy to other node &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要将各个节点上的这两个文件都进行配置&lt;/p&gt;
+&lt;h3&gt;Configure Spark App - Spark作业属性配置&lt;/h3&gt;
+&lt;p&gt;对于作业执行的属性配置，spark提供了三种不同的配置方法  &lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;create and edit &lt;code&gt;$SPARK_HOME/conf/spark_default.conf&lt;/code&gt;  &lt;/p&gt;
+&lt;p&gt;spark.master                    spark://master:7077&lt;br /&gt;
+spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog&lt;br /&gt;
+spark.local.dir                  ...  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//master:7077  /&lt;/span&gt;
+&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jar&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过代码中对SparkContext来对这些属性赋值&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;这三种方法的优先级是：&lt;br /&gt;
+    3 高于 2 高于1  &lt;/p&gt;
+&lt;h3&gt;Tips&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node&lt;br /&gt;
+If old worker's process is still working , you can use this command to kill them:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ef&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Worker&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="n"&gt;kill&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;and restart Spark Cluster  &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;if you want to start history server, you should assign logs' path:  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;historyserver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;  &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you wanna save a job's log, you should assign two properties:  &lt;/p&gt;
+&lt;p&gt;spark.eventLog.enabled          true&lt;br /&gt;
+spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 26 Sep 2014 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</guid><category>spark</category><category>开发环境</category><category></category></item></channel></rss>
