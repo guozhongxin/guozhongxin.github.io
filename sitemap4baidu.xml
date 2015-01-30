@@ -5,7 +5,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/index.html</loc>
-<lastmod>2014-10-16T22:24:03-00:00</lastmod>
+<lastmod>2015-01-30T11:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -16,7 +16,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/archives.html</loc>
-<lastmod>2014-10-16T22:24:03-00:00</lastmod>
+<lastmod>2015-01-30T11:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -27,7 +27,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/tags.html</loc>
-<lastmod>2014-10-16T22:24:03-00:00</lastmod>
+<lastmod>2015-01-30T11:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -38,7 +38,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/categories.html</loc>
-<lastmod>2014-10-16T22:24:03-00:00</lastmod>
+<lastmod>2015-01-30T11:16:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 <data>
@@ -49,7 +49,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/about.html</loc>
-<lastmod>2014-09-24T23:20:00-00:00</lastmod>
+<lastmod>2014-09-24T23:20:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.6</priority>
 <data>
@@ -59,8 +59,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>http://www.guozhongxin.com/pages/2015/01/25/spark_dagscheduler.html</loc>
+<lastmod>2015-01-25T21:00:00+08:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.9</priority>
+<data>
+<display>
+</display>
+</data>
+</url>
+
+<url>
+<loc>http://www.guozhongxin.com/pages/2015/01/18/spark_performance.html</loc>
+<lastmod>2015-01-18T22:00:00+08:00</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.9</priority>
+<data>
+<display>
+</display>
+</data>
+</url>
+
+<url>
 <loc>http://www.guozhongxin.com/pages/2014/10/16/spark_experience.html</loc>
-<lastmod>2014-10-16T00:00:00-00:00</lastmod>
+<lastmod>2014-10-16T00:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
@@ -71,7 +93,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/2014/10/15/ganglia_frequency.html</loc>
-<lastmod>2014-10-15T22:00:00-00:00</lastmod>
+<lastmod>2014-10-15T22:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
@@ -82,7 +104,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/2014/10/15/spark_source_code.html</loc>
-<lastmod>2014-10-15T11:00:00-00:00</lastmod>
+<lastmod>2014-10-15T11:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
@@ -93,7 +115,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/2014/10/12/a_brief_in_spark.html</loc>
-<lastmod>2014-10-12T21:00:00-00:00</lastmod>
+<lastmod>2014-10-12T21:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
@@ -104,7 +126,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html</loc>
-<lastmod>2014-09-26T23:00:00-00:00</lastmod>
+<lastmod>2014-09-26T23:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
@@ -115,7 +137,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.guozhongxin.com/pages/2014/09/25/build_blog_with_pelican.html</loc>
-<lastmod>2014-09-25T21:00:00-00:00</lastmod>
+<lastmod>2014-09-25T21:00:00+08:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.9</priority>
 <data>
