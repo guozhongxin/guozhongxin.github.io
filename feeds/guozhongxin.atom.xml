@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2017-04-25T23:00:00+08:00</updated><entry><title>重新开始使用这个博客</title><link href="http://www.guozhongxin.com/pages/2017/04/25/restart.html" rel="alternate"></link><updated>2017-04-25T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-04-25:pages/2017/04/25/restart.html</id><summary type="html">&lt;h2&gt;关于此博客&lt;/h2&gt;
-&lt;h4&gt;最初&lt;/h4&gt;
+&lt;h3&gt;最初&lt;/h3&gt;
 &lt;p&gt;这个博客刚开始搭建时，我刚上研究生不久。那时我对于各种技术都很懵懂，又充满热情。搭建博客之初，我还计划着把我的成长都记录在这，因此，对这个博客也充满热情。&lt;/p&gt;
 &lt;p&gt;早在2013年底，当时大四的我有幸进入了IBM中国研究院，前后做了接近一年的实习生。正是这段经历，我开始接触并学习分布式平台，特别要感谢我的mentor，巨伟，给还是小白的我提供了很多帮助和指导。&lt;/p&gt;
 &lt;p&gt;那时“大数据”的概念刚开始炒作，Hadoop已经推广开来，Spark方兴未艾，我也把分布式技术作为我读研期间的主要方向。当时就想着，把我在学习过程中的收获和体会都记录在这，积少成多，一定是一个值得期待的事情。&lt;/p&gt;
 &lt;p&gt;但是在写了几篇文章后，这种热情就削减了。可能是我之前对自己、对这个博客期望太高了，写出来的东西并不满意，平常忙(hao)于(chi)学(lan)业(zuo)，没能持续投入精力去维护这个博客。特别是看到一些大牛的blog，自己的文章更是相形见绌，也没啥新意。最后导致了这个博客荒废了两年零三个月。&lt;/p&gt;
-&lt;h4&gt;博客荒废之后的我&lt;/h4&gt;
+&lt;h3&gt;博客荒废之后的我&lt;/h3&gt;
 &lt;p&gt;其实，博客荒废的这两年多，是我快速成长、变化的阶段。更具体的来说，我完成了研究生学业，并开始了职业生涯。这两年多也是我经历最丰富的阶段。&lt;/p&gt;
 &lt;p&gt;从2014年底开始接触股票的我，在小赚一笔后迎来了15年的“股灾”，不仅金钱损失，也耗费了不少时间和精力。现在虽未完全退市，但基本不投入精力了，一个月操作不了几次。&lt;/p&gt;
 &lt;p&gt;2015年全年的时间基本都是在实验室做项目，也开始慢慢蹭蹭的做些研究，找论文点。主要的工作一方面是在搞一些机器学习算法的分布式实现上，一方面是在做一些实验室分布式集群的完善和性能调优上，这个阶段，经历Spark从1.2到1.5.2（刚才特地去官网上验证了一下，证明我的记忆没有偏差），社区越来越活跃，周边项目逐渐丰富起来。&lt;/p&gt;
