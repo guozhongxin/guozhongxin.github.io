@@ -9,7 +9,7 @@
 &lt;p&gt;RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /&gt; &lt;/p&gt;
 &lt;p&gt;Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -39,76 +39,76 @@
 &lt;h3&gt;停止Ganglia的运行&lt;/h3&gt;
 &lt;p&gt;为了避免出现运行错误，在更改配置前关闭ganglia的运行。&lt;/p&gt;
 &lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmetad stop
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmond stop
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;更改gmond配置（更改搜集数据的周期，以及传输传输周期）&lt;/h3&gt;
 &lt;p&gt;gmond的配置在/etc/ganglia/gmond.conf中&lt;/p&gt;
 &lt;p&gt;对于只取一次值的metric，将&lt;code&gt;time_threshold&lt;/code&gt;，因为这些值，如&lt;code&gt;mem_total&lt;/code&gt;，会在web端php画图时用到，因为memory那张图中的&lt;code&gt;memory used&lt;/code&gt;，并不是通过直接采集数据得到的，而是通过&lt;code&gt;mem_total&lt;/code&gt;减去其他值计算得到的，因此，&lt;code&gt;mem_total&lt;/code&gt;一开始就应该被获取，因此&lt;code&gt;time_threshold&lt;/code&gt;需设为1（默认为1200）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;collect_once&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
-  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_num&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU Count&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;mem_total&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Memory Total&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collection_group {
+  collect_once = yes
+  time_threshold = 1
+  metric {
+    name = &amp;quot;cpu_num&amp;quot;
+    title = &amp;quot;CPU Count&amp;quot;
+  }
+  ...
+  metric {
+    name = &amp;quot;mem_total&amp;quot;
+    title = &amp;quot;Memory Total&amp;quot;
+  }
+  ...
+}
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;对于其他metric，如cpu group中的各个metric，采样与传输的时间也应设置为1（s）&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
-  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;90&lt;/span&gt;
-  &lt;span class="cm"&gt;/* CPU status */&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_user&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU User&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_system&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU System&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collection_group {
+  collect_every = 20
+  time_threshold = 90
+  /* CPU status */
+  metric {
+    name = &amp;quot;cpu_user&amp;quot;
+    value_threshold = &amp;quot;1.0&amp;quot;
+    title = &amp;quot;CPU User&amp;quot;
+  }
+  metric {
+    name = &amp;quot;cpu_system&amp;quot;
+    value_threshold = &amp;quot;1.0&amp;quot;
+    title = &amp;quot;CPU System&amp;quot;
+  }
+  ...
+}
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;即&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-&lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collect_every = 1
+time_threshold = 1
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;更改gmetad配置（更改记录的最小间隔）&lt;/h3&gt;
 &lt;p&gt;gmetad的配置在/etc/ganglia/gmetad.conf中&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Format: &lt;/span&gt;
-&lt;span class="c"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
-&lt;span class="c"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
-&lt;span class="c"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
-&lt;span class="c"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
-&lt;span class="c"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# Format: &lt;/span&gt;
+&lt;span class="cp"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
+&lt;span class="cp"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
+&lt;span class="cp"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
+&lt;span class="cp"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
+&lt;span class="cp"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;看到这里有关于&lt;code&gt;[polling interval]&lt;/code&gt;的解释，即gmetad会根据从gmond搜集的数据，每一个间隔计算出这个间隔内的平均数将其写入rrd。&lt;br /&gt;
 而这个参数，是一个非必要的参数，如果用户不指定的话，每15s记录一次。&lt;/p&gt;
 &lt;p&gt;因此，为了将Ganglia记录最小间隔及RRD中数据的最小时间间隔改为1s，需要在master名称后添加一个参数：1&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_source&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;my cluster&amp;quot;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;  &lt;span class="n"&gt;my&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;machine&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;edu&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8649&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;data_source &amp;quot;my cluster&amp;quot; 1 localhost  my.machine.edu:8649 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -116,12 +116,12 @@
 &lt;p&gt;原来的采样间隔是15s，现在的采样间隔是1s，就要把每个RRA的容量扩充，或者将除了第一个RRA之外的RRA的记录间隔改大。&lt;/p&gt;
 &lt;p&gt;两种调整RRD格式的方法：&lt;/p&gt;
 &lt;p&gt;1.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;2.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -132,17 +132,17 @@
 &lt;p&gt;&lt;code&gt;rrd_rootdir&lt;/code&gt;的默认位置在&lt;code&gt;/var/lib/ganglia/rrds&lt;/code&gt;，将这个文件夹下的所有文件及文件夹删除即可。&lt;/p&gt;
 &lt;h3&gt;启动Ganglia&lt;/h3&gt;
 &lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmetad start
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmond start
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;查看更改之后的效果&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service httpd restart
 &lt;/pre&gt;&lt;/div&gt;
 
 

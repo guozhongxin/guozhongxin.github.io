@@ -37,7 +37,7 @@
         <div class="nav-collapse">
         <ul class="nav">
             
-            <li><a href="http://www.guozhongxin.com/pages/about.html">About</a></li>
+            <li><a href="http://www.guozhongxin.com/pages/about-me.html">About Me</a></li>
         </ul>
         <div class="navbar-search pull-right">
             <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=6131086231916765095') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
@@ -83,11 +83,11 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 </ul>
 <h3>install scala - scala安装</h3>
 <p>download scala-2.10.4.tgz and unzip： </p>
-<div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">scala</span><span class="o">-</span><span class="mf">2.10.4</span><span class="p">.</span><span class="n">tgz</span>
-<span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-    <span class="n">export</span> <span class="n">SCALA_HOME</span><span class="o">=</span><span class="p">...</span>   
-    <span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">bin</span>
-<span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
+<div class="highlight"><pre><span class="x">tar -zxf scala-2.10.4.tgz</span>
+<span class="x">vi ~/.bashrc</span>
+<span class="x">    export SCALA_HOME=...   </span>
+<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin</span>
+<span class="x">source ~/.bashrc</span>
 </pre></div>
 
 
@@ -96,18 +96,18 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <p>Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包</p>
 <p>To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :    </p>
 <p>在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  </p>
-<div class="highlight"><pre><span class="p">.</span><span class="o">/</span><span class="n">make</span><span class="o">-</span><span class="n">distribution</span><span class="p">.</span><span class="n">sh</span> <span class="o">--</span><span class="n">hadoop</span> <span class="mf">2.4.0</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">yarn</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">hive</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">tachyon</span> <span class="o">--</span><span class="n">tgz</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">java</span><span class="o">-</span><span class="n">test</span>
+<div class="highlight"><pre>./make-distribution.sh --hadoop 2.4.0 --with-yarn --with-hive --with-tachyon --tgz --skip-java-test
 </pre></div>
 
 
 <p>If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   </p>
 <p>如果你选择了已经build好的安装包，以上步骤不需执行。</p>
 <p>将自己编译或是下载的编译包解压缩，并配置环境变量：</p>
-<div class="highlight"><pre><span class="n">tar</span> <span class="o">-</span><span class="n">zxf</span> <span class="n">spark</span><span class="o">-</span><span class="mf">1.0.0</span><span class="o">-</span><span class="n">bin</span><span class="o">-</span><span class="mf">2.2.0</span><span class="p">.</span><span class="n">tgz</span>
-<span class="n">vi</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
-    <span class="n">export</span> <span class="n">SCALA_HOME</span><span class="o">=</span><span class="p">...</span>  
-    <span class="n">export</span> <span class="n">PATH</span><span class="o">=</span><span class="err">$</span><span class="n">PATH</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">:</span><span class="err">$</span><span class="n">SCALA_HOME</span><span class="o">/</span><span class="n">sbin</span>
-<span class="n">source</span> <span class="o">~/</span><span class="p">.</span><span class="n">bashrc</span>
+<div class="highlight"><pre><span class="x">tar -zxf spark-1.0.0-bin-2.2.0.tgz</span>
+<span class="x">vi ~/.bashrc</span>
+<span class="x">    export SCALA_HOME=...  </span>
+<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/sbin</span>
+<span class="x">source ~/.bashrc</span>
 </pre></div>
 
 
@@ -148,10 +148,10 @@ spark.local.dir                  ...  </p>
 </li>
 <li>
 <p>在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 </p>
-<div class="highlight"><pre><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">spark</span><span class="o">-</span><span class="n">submit</span>  <span class="o">/</span>
-<span class="o">--</span><span class="n">master</span> <span class="n">spark</span><span class="o">:</span><span class="c1">//master:7077  /</span>
-<span class="o">--</span><span class="n">conf</span> <span class="n">spark</span><span class="p">.</span><span class="n">eventLog</span><span class="p">.</span><span class="n">enabled</span><span class="o">=</span><span class="nb">true</span> <span class="p">...</span>  <span class="o">/</span>
-<span class="o">***</span><span class="p">.</span><span class="n">jar</span>
+<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/bin/spark-submit  /</span>
+<span class="x">--master spark://master:7077  /</span>
+<span class="x">--conf spark.eventLog.enabled=true ...  /</span>
+<span class="x">***.jar</span>
 </pre></div>
 
 
@@ -167,7 +167,7 @@ spark.local.dir                  ...  </p>
 <li>
 <p>If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node<br />
 If old worker's process is still working , you can use this command to kill them:  </p>
-<div class="highlight"><pre><span class="n">ps</span> <span class="o">-</span><span class="n">ef</span> <span class="o">|</span> <span class="n">grep</span> <span class="n">Worker</span> <span class="o">|</span> <span class="n">grep</span> <span class="o">-</span><span class="n">v</span> <span class="n">grep</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">c</span> <span class="mi">9</span><span class="o">-</span><span class="mi">15</span> <span class="o">|</span> <span class="n">xargs</span> <span class="n">kill</span> <span class="o">-</span><span class="n">s</span> <span class="mi">9</span>
+<div class="highlight"><pre>ps -ef | grep Worker | grep -v grep | cut -c 9-15 | xargs kill -s 9
 </pre></div>
 
 
@@ -175,7 +175,7 @@ If old worker's process is still working , you can use this command to kill them
 </li>
 <li>
 <p>if you want to start history server, you should assign logs' path:  </p>
-<div class="highlight"><pre><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">start</span><span class="o">-</span><span class="n">historyserver</span><span class="p">.</span><span class="n">sh</span>  <span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">logs</span>
+<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/sbin/start-historyserver.sh  </span><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/logs</span>
 </pre></div>
 
 

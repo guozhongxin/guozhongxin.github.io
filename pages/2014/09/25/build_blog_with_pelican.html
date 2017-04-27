@@ -37,7 +37,7 @@
         <div class="nav-collapse">
         <ul class="nav">
             
-            <li><a href="http://www.guozhongxin.com/pages/about.html">About</a></li>
+            <li><a href="http://www.guozhongxin.com/pages/about-me.html">About Me</a></li>
         </ul>
         <div class="navbar-search pull-right">
             <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=6131086231916765095') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
@@ -80,7 +80,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 
 <p>更新pelican的主题：</p>
-<div class="highlight"><pre><span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">U</span> <span class="p">...</span><span class="o">/</span><span class="n">tuxlite_tbs</span>
+<div class="highlight"><pre>pelican-themes -U .../tuxlite_tbs
 </pre></div>
 
 
@@ -94,36 +94,36 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <span class="nt">&lt;/head&gt;</span>
   <span class="nt">&lt;body&gt;</span>
 <span class="nt">&lt;style&gt;</span>
-#search-box {
-    position: relative;
-    width: 50%;
-    margin: 0;
-    padding: 1em;
-}
+<span class="nf">#search-box</span> <span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+<span class="p">}</span>
 
-#search-form {
-    height: 30px;
-    border: 1px solid #999;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background-color: #fff;
-    overflow: hidden;
-}
+<span class="nf">#search-form</span> <span class="p">{</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#999</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+<span class="p">}</span>
 
-#search-text {
-    font-size: 14px;
-    color: #ddd;
-    border-width: 0;
-    background: transparent;
-}
+<span class="nf">#search-text</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+    <span class="k">border-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+<span class="p">}</span>
 
-#search-box input<span class="cp">[</span><span class="k">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="cp">]</span> {
-    width: 90%;
-    padding: 4px 0 12px 1em;
-    color: #333;
-    outline: none;
-}
+<span class="nf">#search-box</span> <span class="nt">input</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="o">]</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">90%</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">4px</span> <span class="m">0</span> <span class="m">12px</span> <span class="m">1em</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
+    <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
 <span class="nt">&lt;/style&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&#39;search-box&#39;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&#39;/search.html&#39;</span> <span class="na">id=</span><span class="s">&#39;search-form&#39;</span> <span class="na">method=</span><span class="s">&#39;get&#39;</span> <span class="na">target=</span><span class="s">&#39;_top&#39;</span><span class="nt">&gt;</span>
@@ -131,36 +131,36 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
   <span class="nt">&lt;/form&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;cse&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 100%;&quot;</span><span class="nt">&gt;</span>Loading<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://www.google.com/jsapi&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span> 
-  google.load(&#39;search&#39;, &#39;1&#39;, {language : &#39;zh-CN&#39;, style : google.loader.themes.V2_DEFAULT});
-  google.setOnLoadCallback(function() {
-    var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
-      &#39;012191777864628038963:**********<span class="cp">&lt;!写入你申请的google站内搜索的ID号&gt;</span>）&#39;, customSearchOptions);
-    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-    var options = new google.search.DrawOptions();
-    options.enableSearchResultsOnly(); 
-    customSearchControl.draw(&#39;cse&#39;, options);
-    function parseParamsFromUrl() {
-      var params = {};
-      var parts = window.location.search.substr(1).split(&#39;\x26&#39;);
-      for (var i = 0; i <span class="nt">&lt; parts.length</span><span class="err">;</span> <span class="err">i++)</span> <span class="err">{</span>
-        <span class="err">var</span> <span class="na">keyValuePair =</span> <span class="s">parts</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="s">.split(&#39;=&#39;);</span>
-        <span class="err">var</span> <span class="na">key =</span> <span class="s">decodeURIComponent(keyValuePair</span><span class="cp">[</span><span class="mi">0</span><span class="cp">]</span><span class="s">);</span>
-        <span class="na">params</span><span class="cp">[</span><span class="nb">key</span><span class="cp">]</span><span class="na"> =</span> <span class="s">keyValuePair</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span> <span class="err">?</span>
-            <span class="err">decodeURIComponent(keyValuePair</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="err">.replace(/\+/g,</span> <span class="err">&#39;</span> <span class="err">&#39;))</span> <span class="err">:</span>
-            <span class="err">keyValuePair</span><span class="cp">[</span><span class="mi">1</span><span class="cp">]</span><span class="err">;</span>
-      <span class="err">}</span>
-      <span class="err">return</span> <span class="err">params;</span>
-    <span class="err">}</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://www.google.com/jsapi&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span> 
+  <span class="nx">google</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s1">&#39;search&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">language</span> <span class="o">:</span> <span class="s1">&#39;zh-CN&#39;</span><span class="p">,</span> <span class="nx">style</span> <span class="o">:</span> <span class="nx">google</span><span class="p">.</span><span class="nx">loader</span><span class="p">.</span><span class="nx">themes</span><span class="p">.</span><span class="nx">V2_DEFAULT</span><span class="p">});</span>
+  <span class="nx">google</span><span class="p">.</span><span class="nx">setOnLoadCallback</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">customSearchOptions</span> <span class="o">=</span> <span class="p">{};</span>  <span class="kd">var</span> <span class="nx">customSearchControl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">google</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">CustomSearchControl</span><span class="p">(</span>
+      <span class="s1">&#39;012191777864628038963:**********&lt;!写入你申请的google站内搜索的ID号&gt;）&#39;</span><span class="p">,</span> <span class="nx">customSearchOptions</span><span class="p">);</span>
+    <span class="nx">customSearchControl</span><span class="p">.</span><span class="nx">setResultSetSize</span><span class="p">(</span><span class="nx">google</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">Search</span><span class="p">.</span><span class="nx">FILTERED_CSE_RESULTSET</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">google</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">DrawOptions</span><span class="p">();</span>
+    <span class="nx">options</span><span class="p">.</span><span class="nx">enableSearchResultsOnly</span><span class="p">();</span> 
+    <span class="nx">customSearchControl</span><span class="p">.</span><span class="nx">draw</span><span class="p">(</span><span class="s1">&#39;cse&#39;</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+    <span class="kd">function</span> <span class="nx">parseParamsFromUrl</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
+      <span class="kd">var</span> <span class="nx">parts</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;\x26&#39;</span><span class="p">);</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">parts</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">keyValuePair</span> <span class="o">=</span> <span class="nx">parts</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">key</span> <span class="o">=</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">keyValuePair</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">keyValuePair</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">?</span>
+            <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">keyValuePair</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\+/g</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">))</span> <span class="o">:</span>
+            <span class="nx">keyValuePair</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">params</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    <span class="err">var</span> <span class="na">urlParams =</span> <span class="s">parseParamsFromUrl();</span>
-    <span class="err">var</span> <span class="na">queryParamName =</span> <span class="s">&quot;q&quot;</span><span class="err">;</span>
-    <span class="err">if</span> <span class="err">(urlParams</span><span class="cp">[</span><span class="nx">queryParamName</span><span class="cp">]</span><span class="err">)</span> <span class="err">{</span>
-      <span class="err">customSearchControl.execute(urlParams</span><span class="cp">[</span><span class="nx">queryParamName</span><span class="cp">]</span><span class="err">);</span>
-    <span class="err">}</span>
-  <span class="err">},</span> <span class="err">true);</span>
-<span class="err">&lt;/script</span><span class="nt">&gt;</span>
+    <span class="kd">var</span> <span class="nx">urlParams</span> <span class="o">=</span> <span class="nx">parseParamsFromUrl</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">queryParamName</span> <span class="o">=</span> <span class="s2">&quot;q&quot;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">urlParams</span><span class="p">[</span><span class="nx">queryParamName</span><span class="p">])</span> <span class="p">{</span>
+      <span class="nx">customSearchControl</span><span class="p">.</span><span class="nx">execute</span><span class="p">(</span><span class="nx">urlParams</span><span class="p">[</span><span class="nx">queryParamName</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">},</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
@@ -168,8 +168,8 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 <h4>生成html，发布</h4>
 <p>将这个html文件保存在output目录（网站的根目录）下，执行</p>
-<div class="highlight"><pre><span class="n">make</span> <span class="n">html</span>
-<span class="n">make</span> <span class="n">github</span>
+<div class="highlight"><pre>make html
+make github
 </pre></div>
 
 
@@ -195,7 +195,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 
 <p>更新pelican的主题：</p>
-<div class="highlight"><pre><span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">U</span> <span class="p">...</span><span class="o">/</span><span class="n">tuxlite_tbs</span>
+<div class="highlight"><pre>pelican-themes -U .../tuxlite_tbs
 </pre></div>
 
 
@@ -213,18 +213,18 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <p>而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改.</p>
 <h4>配置符合百度站内搜索规则的pelican sitemap插件</h4>
 <p>找到<code>.../pelican-plugins/sitemap/sitemap.py</code>，找到全局变量<code>XML_URL</code>，将其修改为以下形式：</p>
-<div class="highlight"><pre><span class="n">XML_URL</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;url&gt;</span>
-<span class="s2">&lt;loc&gt;{0}/{1}&lt;/loc&gt;</span>
-<span class="s2">&lt;lastmod&gt;{2}&lt;/lastmod&gt;</span>
-<span class="s2">&lt;changefreq&gt;{3}&lt;/changefreq&gt;</span>
-<span class="s2">&lt;priority&gt;{4}&lt;/priority&gt;</span>
-<span class="s2">&lt;data&gt;</span>
-<span class="s2">&lt;display&gt;</span>
-<span class="s2">&lt;/display&gt;</span>
-<span class="s2">&lt;/data&gt;</span>
-<span class="s2">&lt;/url&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class="highlight"><pre>XML_URL = &quot;&quot;&quot;
+<span class="nt">&lt;url&gt;</span>
+<span class="nt">&lt;loc&gt;</span>{0}/{1}<span class="nt">&lt;/loc&gt;</span>
+<span class="nt">&lt;lastmod&gt;</span>{2}<span class="nt">&lt;/lastmod&gt;</span>
+<span class="nt">&lt;changefreq&gt;</span>{3}<span class="nt">&lt;/changefreq&gt;</span>
+<span class="nt">&lt;priority&gt;</span>{4}<span class="nt">&lt;/priority&gt;</span>
+<span class="nt">&lt;data&gt;</span>
+<span class="nt">&lt;display&gt;</span>
+<span class="nt">&lt;/display&gt;</span>
+<span class="nt">&lt;/data&gt;</span>
+<span class="nt">&lt;/url&gt;</span>
+&quot;&quot;&quot;
 </pre></div>
 
 
@@ -269,9 +269,9 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 
 <p>将tags代码添加到categories框之后。执行</p>
-<div class="highlight"><pre><span class="n">pelican</span><span class="o">-</span><span class="n">themes</span> <span class="o">-</span><span class="n">U</span> <span class="p">...</span><span class="o">/</span><span class="n">tuxlite_tbs</span>
-<span class="n">make</span> <span class="n">html</span>
-<span class="n">make</span> <span class="n">github</span>
+<div class="highlight"><pre>pelican-themes -U .../tuxlite_tbs
+make html
+make github
 </pre></div>
 
 

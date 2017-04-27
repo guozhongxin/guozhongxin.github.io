@@ -21,6 +21,24 @@
 &lt;p&gt;在小论文上，主要从一个和我自己导师有合作关系的老师那里得到了一些指导，但她对研究内容本身没有太多了解。第一版的论文写得很潦草，投了CIKM，等了两个月之后最后收到了4个review，两个accept、一个borderline、一个reject，最后得到chair的reject。一般cikm都是3个reviewer，看来在最开始的review中分歧较大，多加了一个。这些review很犀利，也很到位，不得不服。&lt;/p&gt;
 &lt;p&gt;在做了相对应的修改和调整后，我和导师就投稿会议产生了分歧，导师想让我投VLDB这样的顶会，我不思进取找个时间近的水会就要投，最后导师还是放了我一马，投了HPCC: 。在修改论文时，我在MSRA实习的两位小伙伴youer和辰哥帮我修改英文表达，事实证明留学的博士就是强。感觉在MSRA认识的博士都非常让我佩服，洗刷了我对博士的naive的偏见，也后悔当时怎么没考虑读博呢。。&lt;/p&gt;
 &lt;h4&gt;·· 找工作：兜兜转转回到起点&lt;/h4&gt;
+&lt;p&gt;之前找实习机会还是挺顺利的，导致我到了7月份了都没怎么准备面试套路，也没怎么刷题。慢热的我直接错过了很多互联网公司的内推。在此要特地友情提示一下要找工作的应届生，&lt;strong&gt;一定要赶早投简历&lt;/strong&gt;，特别是内推环节，不要拖到收简历的最后几天，因为很大概率上hr们已经被简历淹没，后边投的就不理了。&lt;/p&gt;
+&lt;p&gt;在改完论文的一个月的时间里，先刷完了《剑指offer》，《编程之美》，以及部分Leetcode中等以上的题目，不得不说，刷题还是很有帮助的，起码适用于面试。另外对于自己擅长的分布式系统方面，我重新翻了一遍社区和源码，并且对一些主流技术的优劣都心中有数。工程知识是弱点，尽管提前看了些JVM和java编程框架等等方面的知识，但是遇到在这方面深究的面试官，还是会捉襟见肘。&lt;/p&gt;
+&lt;p&gt;我求职的主要两个方向：一是分布式计算工程师，二是算法工程师。个人更倾向于前者，但是还是要看具体工作内容。而且有些公司面试时岗位分的不是那么细。下面从各个公司开始说起吧。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;百度·凤巢：这是最早投的，中午到下午，三面一口气面完。我投的是分布式系统方向，面试的组是做策略算法的。有两个关于分布式算法的问题，比较偏实际应用场景。有3道代码题，medium难度上下。事后平台组又问我要不要面他们组，但相当于放弃了之前面的策略组，因为考虑到这是第一个offer，就想着求稳，没有再面。百度最开始offer给的批发价，要拿其他公司的offer去argue，非常没有诚意。尽管后来谈到special，而且表示可以再申请更高，还是拒掉了百度。&lt;/li&gt;
+&lt;li&gt;京东·广告：第一次面了算法组，第一面卡在了设计模式上。。被拒。。第二次面了平台组，就比较得心应手了。和三面面试官聊得不错，而且后来给的offer当时看来比百度的高，就愉快的接受了。后来还是发现自己太naive了，最后不得不毁掉。。向京东广告组道歉。。&lt;/li&gt;
+&lt;li&gt;支付宝·人工智能：四轮面试，主要是偏算法方向的，难度还是很大的，都是在线面的，之后HR面说北京名额比较少，问我去不去杭州，不去。之后又加了第5轮，虽然第五轮面的也还行，但最终还是被拒。&lt;/li&gt;
+&lt;li&gt;360：一面被挂，面试时脑子锈住了&lt;/li&gt;
+&lt;li&gt;滴滴：面试现场极其混乱，所有同学应该都感同身受。我从上午8点半到，一直到下午2点才找到一面面试官，3面+HR面结束后，已经晚上8点多了！投的大数据开发工程师，但是对口的面试官都不在，我也是服了，对滴滴没啥好印象。&lt;/li&gt;
+&lt;li&gt;一点资讯：是学长内推的，面试的组是做爬虫的。。面试中主要在java知识上栽了跟头，三面被拒了。&lt;/li&gt;
+&lt;li&gt;网易有道：没有具体区分岗位，但是二三面面试官都是做广告的，知道我是做分布式的，问了很多广告系统的问题，回答的还可以。给了offer，当时已经有其他在考虑的offer，待遇也没啥竞争力，通知电话里直接拒掉了。&lt;/li&gt;
+&lt;li&gt;今日头条·基础架构：&lt;/li&gt;
+&lt;li&gt;搜狐：&lt;/li&gt;
+&lt;li&gt;宜信·大数据：&lt;/li&gt;
+&lt;li&gt;美团：&lt;/li&gt;
+&lt;li&gt;Freewheel：&lt;/li&gt;
+&lt;li&gt;MSRA：&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h6&gt;【太晚了，未完待续。。。】&lt;/h6&gt;
 &lt;p&gt;p.s. 坚决不能烂尾&lt;/p&gt;
 &lt;p&gt;[1]Yan Y, Gao Y, Chen Y, et al. TR-Spark: Transient Computing for Big Data Analytics[C]// ACM Symposium on Cloud Computing(SoCC). ACM, 2016:484-496.&lt;/p&gt;
@@ -128,7 +146,7 @@
 &lt;p&gt;RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /&gt; &lt;/p&gt;
 &lt;p&gt;Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:24:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:168:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:672:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:5760:374&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -158,76 +176,76 @@
 &lt;h3&gt;停止Ganglia的运行&lt;/h3&gt;
 &lt;p&gt;为了避免出现运行错误，在更改配置前关闭ganglia的运行。&lt;/p&gt;
 &lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmetad stop
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmond stop
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;更改gmond配置（更改搜集数据的周期，以及传输传输周期）&lt;/h3&gt;
 &lt;p&gt;gmond的配置在/etc/ganglia/gmond.conf中&lt;/p&gt;
 &lt;p&gt;对于只取一次值的metric，将&lt;code&gt;time_threshold&lt;/code&gt;，因为这些值，如&lt;code&gt;mem_total&lt;/code&gt;，会在web端php画图时用到，因为memory那张图中的&lt;code&gt;memory used&lt;/code&gt;，并不是通过直接采集数据得到的，而是通过&lt;code&gt;mem_total&lt;/code&gt;减去其他值计算得到的，因此，&lt;code&gt;mem_total&lt;/code&gt;一开始就应该被获取，因此&lt;code&gt;time_threshold&lt;/code&gt;需设为1（默认为1200）。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;collect_once&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;yes&lt;/span&gt;
-  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_num&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU Count&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;mem_total&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Memory Total&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collection_group {
+  collect_once = yes
+  time_threshold = 1
+  metric {
+    name = &amp;quot;cpu_num&amp;quot;
+    title = &amp;quot;CPU Count&amp;quot;
+  }
+  ...
+  metric {
+    name = &amp;quot;mem_total&amp;quot;
+    title = &amp;quot;Memory Total&amp;quot;
+  }
+  ...
+}
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;对于其他metric，如cpu group中的各个metric，采样与传输的时间也应设置为1（s）&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collection_group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;
-  &lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;90&lt;/span&gt;
-  &lt;span class="cm"&gt;/* CPU status */&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_user&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU User&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="n"&gt;metric&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;cpu_system&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;value_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;1.0&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;CPU System&amp;quot;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;...&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collection_group {
+  collect_every = 20
+  time_threshold = 90
+  /* CPU status */
+  metric {
+    name = &amp;quot;cpu_user&amp;quot;
+    value_threshold = &amp;quot;1.0&amp;quot;
+    title = &amp;quot;CPU User&amp;quot;
+  }
+  metric {
+    name = &amp;quot;cpu_system&amp;quot;
+    value_threshold = &amp;quot;1.0&amp;quot;
+    title = &amp;quot;CPU System&amp;quot;
+  }
+  ...
+}
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;即&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;collect_every&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-&lt;span class="n"&gt;time_threshold&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;collect_every = 1
+time_threshold = 1
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;更改gmetad配置（更改记录的最小间隔）&lt;/h3&gt;
 &lt;p&gt;gmetad的配置在/etc/ganglia/gmetad.conf中&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Format: &lt;/span&gt;
-&lt;span class="c"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
-&lt;span class="c"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
-&lt;span class="c"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
-&lt;span class="c"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
-&lt;span class="c"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# Format: &lt;/span&gt;
+&lt;span class="cp"&gt;# data_source &amp;quot;my cluster&amp;quot; [polling interval] address1:port addreses2:port ...&lt;/span&gt;
+&lt;span class="cp"&gt;# The keyword &amp;#39;data_source&amp;#39; must immediately be followed by a unique&lt;/span&gt;
+&lt;span class="cp"&gt;# string which identifies the source, then an optional polling interval in &lt;/span&gt;
+&lt;span class="cp"&gt;# seconds. The source will be polled at this interval on average. &lt;/span&gt;
+&lt;span class="cp"&gt;# If the polling interval is omitted, 15sec is asssumed.&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;看到这里有关于&lt;code&gt;[polling interval]&lt;/code&gt;的解释，即gmetad会根据从gmond搜集的数据，每一个间隔计算出这个间隔内的平均数将其写入rrd。&lt;br /&gt;
 而这个参数，是一个非必要的参数，如果用户不指定的话，每15s记录一次。&lt;/p&gt;
 &lt;p&gt;因此，为了将Ganglia记录最小间隔及RRD中数据的最小时间间隔改为1s，需要在master名称后添加一个参数：1&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data_source&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;my cluster&amp;quot;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;  &lt;span class="n"&gt;my&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;machine&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;edu&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8649&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;data_source &amp;quot;my cluster&amp;quot; 1 localhost  my.machine.edu:8649 ...
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -235,12 +253,12 @@
 &lt;p&gt;原来的采样间隔是15s，现在的采样间隔是1s，就要把每个RRA的容量扩充，或者将除了第一个RRA之外的RRA的记录间隔改大。&lt;/p&gt;
 &lt;p&gt;两种调整RRD格式的方法：&lt;/p&gt;
 &lt;p&gt;1.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:24:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:168:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:672:3660&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;2.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;RRAs&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;RRAs &amp;quot;RRA:AVERAGE:0.5:1:3660&amp;quot; &amp;quot;RRA:AVERAGE:0.5:360:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:2520:244&amp;quot; &amp;quot;RRA:AVERAGE:0.5:10080:244&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -251,17 +269,17 @@
 &lt;p&gt;&lt;code&gt;rrd_rootdir&lt;/code&gt;的默认位置在&lt;code&gt;/var/lib/ganglia/rrds&lt;/code&gt;，将这个文件夹下的所有文件及文件夹删除即可。&lt;/p&gt;
 &lt;h3&gt;启动Ganglia&lt;/h3&gt;
 &lt;p&gt;在主节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmetad&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmetad start
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;在各个节点上，使用命令：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;gmond&lt;/span&gt; &lt;span class="n"&gt;start&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service gmond start
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;h3&gt;查看更改之后的效果&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt; &lt;span class="n"&gt;restart&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;service httpd restart
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -458,8 +476,8 @@ Spark计算模型中，总共涉及四种算子。    &lt;/p&gt;
 &lt;h4&gt;&amp;gt;&amp;gt;Spark日志属性配置&lt;/h4&gt;
 &lt;p&gt;Spark日志：log4j，配置文件：$SPARK_HOME/conf/log4j.properties&lt;/p&gt;
 &lt;p&gt;Spark job(Application)日志，计数器：通过刚才提到的三种方式中的任意一种，对一下Spark Conf进行配置：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;  
-&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;hdfs&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;\\&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;spark.eventLog.enabled=true;  
+spark.eventLog.dir=hdfs:\\...
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="spark"></category><category term=""></category></entry><entry><title>Spark安装：Spark集群及开发环境搭建</title><link href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html" rel="alternate"></link><updated>2014-09-26T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2014-09-26:pages/2014/09/26/spark_installation.html</id><summary type="html">&lt;h2&gt;安装Spark准备&lt;/h2&gt;
 &lt;p&gt;在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  &lt;/p&gt;
 &lt;ul&gt;
@@ -473,11 +491,11 @@ Spark计算模型中，总共涉及四种算子。    &lt;/p&gt;
 &lt;/ul&gt;
 &lt;h3&gt;install scala - scala安装&lt;/h3&gt;
 &lt;p&gt;download scala-2.10.4.tgz and unzip： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;scala&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.10.4&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
-&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
-    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;   
-    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;
-&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;tar -zxf scala-2.10.4.tgz&lt;/span&gt;
+&lt;span class="x"&gt;vi ~/.bashrc&lt;/span&gt;
+&lt;span class="x"&gt;    export SCALA_HOME=...   &lt;/span&gt;
+&lt;span class="x"&gt;    export PATH=&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="x"&gt;:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="x"&gt;/bin&lt;/span&gt;
+&lt;span class="x"&gt;source ~/.bashrc&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -486,18 +504,18 @@ Spark计算模型中，总共涉及四种算子。    &lt;/p&gt;
 &lt;p&gt;Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包&lt;/p&gt;
 &lt;p&gt;To build source package, you should unzip the package and edit pom.xml in the directory, change &lt;hadoop.version&gt;&lt;/hadoop.version&gt; and some jars' version: protobuf, hbase, hive. Then, you can run this command :    &lt;/p&gt;
 &lt;p&gt;在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;distribution&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;hadoop&lt;/span&gt; &lt;span class="mf"&gt;2.4.0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;yarn&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;hive&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;with&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;tachyon&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;skip&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;java&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;./make-distribution.sh --hadoop 2.4.0 --with-yarn --with-hive --with-tachyon --tgz --skip-java-test
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   &lt;/p&gt;
 &lt;p&gt;如果你选择了已经build好的安装包，以上步骤不需执行。&lt;/p&gt;
 &lt;p&gt;将自己编译或是下载的编译包解压缩，并配置环境变量：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tar&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zxf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.0.0&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.2.0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tgz&lt;/span&gt;
-&lt;span class="n"&gt;vi&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
-    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;...&lt;/span&gt;  
-    &lt;span class="n"&gt;export&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;
-&lt;span class="n"&gt;source&lt;/span&gt; &lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;bashrc&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="x"&gt;tar -zxf spark-1.0.0-bin-2.2.0.tgz&lt;/span&gt;
+&lt;span class="x"&gt;vi ~/.bashrc&lt;/span&gt;
+&lt;span class="x"&gt;    export SCALA_HOME=...  &lt;/span&gt;
+&lt;span class="x"&gt;    export PATH=&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="x"&gt;:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="x"&gt;/bin:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SCALA_HOME&lt;/span&gt;&lt;span class="x"&gt;/sbin&lt;/span&gt;
+&lt;span class="x"&gt;source ~/.bashrc&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -538,10 +556,10 @@ spark.local.dir                  ...  &lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;submit&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
-&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="c1"&gt;//master:7077  /&lt;/span&gt;
-&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt; &lt;span class="n"&gt;spark&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eventLog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;true&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;  &lt;span class="o"&gt;/&lt;/span&gt;
-&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;jar&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="x"&gt;/bin/spark-submit  /&lt;/span&gt;
+&lt;span class="x"&gt;--master spark://master:7077  /&lt;/span&gt;
+&lt;span class="x"&gt;--conf spark.eventLog.enabled=true ...  /&lt;/span&gt;
+&lt;span class="x"&gt;***.jar&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -557,7 +575,7 @@ spark.local.dir                  ...  &lt;/p&gt;
 &lt;li&gt;
 &lt;p&gt;If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node&lt;br /&gt;
 If old worker's process is still working , you can use this command to kill them:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ps&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ef&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Worker&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;cut&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;xargs&lt;/span&gt; &lt;span class="n"&gt;kill&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;ps -ef | grep Worker | grep -v grep | cut -c 9-15 | xargs kill -s 9
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -565,7 +583,7 @@ If old worker's process is still working , you can use this command to kill them
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;if you want to start history server, you should assign logs' path:  &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sbin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;historyserver&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sh&lt;/span&gt;  &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;logs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="x"&gt;/sbin/start-historyserver.sh  &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;SPARK_HOME&lt;/span&gt;&lt;span class="x"&gt;/logs&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -591,7 +609,7 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 
 &lt;p&gt;更新pelican的主题：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pelican-themes -U .../tuxlite_tbs
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -605,36 +623,36 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 &lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;body&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;style&amp;gt;&lt;/span&gt;
-#search-box {
-    position: relative;
-    width: 50%;
-    margin: 0;
-    padding: 1em;
-}
+&lt;span class="nf"&gt;#search-box&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;position&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;relative&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;50%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-#search-form {
-    height: 30px;
-    border: 1px solid #999;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    background-color: #fff;
-    overflow: hidden;
-}
+&lt;span class="nf"&gt;#search-form&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;30px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#999&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;5px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;5px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;5px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;overflow&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;hidden&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-#search-text {
-    font-size: 14px;
-    color: #ddd;
-    border-width: 0;
-    background: transparent;
-}
+&lt;span class="nf"&gt;#search-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;font-size&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;14px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border-width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;background&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;transparent&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-#search-box input&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="k"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;text&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; {
-    width: 90%;
-    padding: 4px 0 12px 1em;
-    color: #333;
-    outline: none;
-}
+&lt;span class="nf"&gt;#search-box&lt;/span&gt; &lt;span class="nt"&gt;input&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;text&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;90%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;4px&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="m"&gt;12px&lt;/span&gt; &lt;span class="m"&gt;1em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#333&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;outline&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;search-box&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
   &lt;span class="nt"&gt;&amp;lt;form&lt;/span&gt; &lt;span class="na"&gt;action=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;/search.html&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;search-form&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;method=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;get&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;target=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;_top&amp;#39;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
@@ -642,36 +660,36 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
   &lt;span class="nt"&gt;&amp;lt;/form&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;cse&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;style=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;width: 100%;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Loading&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://www.google.com/jsapi&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; 
-  google.load(&amp;#39;search&amp;#39;, &amp;#39;1&amp;#39;, {language : &amp;#39;zh-CN&amp;#39;, style : google.loader.themes.V2_DEFAULT});
-  google.setOnLoadCallback(function() {
-    var customSearchOptions = {};  var customSearchControl = new google.search.CustomSearchControl(
-      &amp;#39;012191777864628038963:**********&lt;span class="cp"&gt;&amp;lt;!写入你申请的google站内搜索的ID号&amp;gt;&lt;/span&gt;）&amp;#39;, customSearchOptions);
-    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
-    var options = new google.search.DrawOptions();
-    options.enableSearchResultsOnly(); 
-    customSearchControl.draw(&amp;#39;cse&amp;#39;, options);
-    function parseParamsFromUrl() {
-      var params = {};
-      var parts = window.location.search.substr(1).split(&amp;#39;\x26&amp;#39;);
-      for (var i = 0; i &lt;span class="nt"&gt;&amp;lt; parts.length&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt; &lt;span class="err"&gt;i++)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-        &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;keyValuePair =&lt;/span&gt; &lt;span class="s"&gt;parts&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="s"&gt;.split(&amp;#39;=&amp;#39;);&lt;/span&gt;
-        &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;key =&lt;/span&gt; &lt;span class="s"&gt;decodeURIComponent(keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="s"&gt;);&lt;/span&gt;
-        &lt;span class="na"&gt;params&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;key&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="na"&gt; =&lt;/span&gt; &lt;span class="s"&gt;keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt; &lt;span class="err"&gt;?&lt;/span&gt;
-            &lt;span class="err"&gt;decodeURIComponent(keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;.replace(/\+/g,&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;))&lt;/span&gt; &lt;span class="err"&gt;:&lt;/span&gt;
-            &lt;span class="err"&gt;keyValuePair&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
-      &lt;span class="err"&gt;}&lt;/span&gt;
-      &lt;span class="err"&gt;return&lt;/span&gt; &lt;span class="err"&gt;params;&lt;/span&gt;
-    &lt;span class="err"&gt;}&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://www.google.com/jsapi&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt; 
+  &lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;search&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;language&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;zh-CN&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;style&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;loader&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;themes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;V2_DEFAULT&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt;
+  &lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setOnLoadCallback&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;customSearchOptions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;customSearchControl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;CustomSearchControl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="s1"&gt;&amp;#39;012191777864628038963:**********&amp;lt;!写入你申请的google站内搜索的ID号&amp;gt;）&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;customSearchOptions&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;customSearchControl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setResultSetSize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;FILTERED_CSE_RESULTSET&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;google&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;DrawOptions&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;enableSearchResultsOnly&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; 
+    &lt;span class="nx"&gt;customSearchControl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;draw&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;cse&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;parseParamsFromUrl&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;parts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;window&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;location&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;search&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;substr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;\x26&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="nx"&gt;parts&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;keyValuePair&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;parts&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;=&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;decodeURIComponent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;keyValuePair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+        &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;keyValuePair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;?&lt;/span&gt;
+            &lt;span class="nb"&gt;decodeURIComponent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;keyValuePair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/\+/g&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="nx"&gt;keyValuePair&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;params&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
 
-    &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;urlParams =&lt;/span&gt; &lt;span class="s"&gt;parseParamsFromUrl();&lt;/span&gt;
-    &lt;span class="err"&gt;var&lt;/span&gt; &lt;span class="na"&gt;queryParamName =&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;q&amp;quot;&lt;/span&gt;&lt;span class="err"&gt;;&lt;/span&gt;
-    &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="err"&gt;(urlParams&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-      &lt;span class="err"&gt;customSearchControl.execute(urlParams&lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="err"&gt;);&lt;/span&gt;
-    &lt;span class="err"&gt;}&lt;/span&gt;
-  &lt;span class="err"&gt;},&lt;/span&gt; &lt;span class="err"&gt;true);&lt;/span&gt;
-&lt;span class="err"&gt;&amp;lt;/script&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;urlParams&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;parseParamsFromUrl&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;queryParamName&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;q&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;urlParams&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="nx"&gt;customSearchControl&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;execute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;urlParams&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;queryParamName&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/body&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -679,8 +697,8 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 &lt;h4&gt;生成html，发布&lt;/h4&gt;
 &lt;p&gt;将这个html文件保存在output目录（网站的根目录）下，执行&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;
-&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;make html
+make github
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -706,7 +724,7 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 
 &lt;p&gt;更新pelican的主题：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pelican-themes -U .../tuxlite_tbs
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -724,18 +742,18 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 &lt;p&gt;而我们使用的sitemap工具里没有这个，需要手动的对这个插件进行修改.&lt;/p&gt;
 &lt;h4&gt;配置符合百度站内搜索规则的pelican sitemap插件&lt;/h4&gt;
 &lt;p&gt;找到&lt;code&gt;.../pelican-plugins/sitemap/sitemap.py&lt;/code&gt;，找到全局变量&lt;code&gt;XML_URL&lt;/code&gt;，将其修改为以下形式：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;XML_URL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;url&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;loc&amp;gt;{0}/{1}&amp;lt;/loc&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;lastmod&amp;gt;{2}&amp;lt;/lastmod&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;changefreq&amp;gt;{3}&amp;lt;/changefreq&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;priority&amp;gt;{4}&amp;lt;/priority&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;data&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;display&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;/display&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
-&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;XML_URL = &amp;quot;&amp;quot;&amp;quot;
+&lt;span class="nt"&gt;&amp;lt;url&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;loc&amp;gt;&lt;/span&gt;{0}/{1}&lt;span class="nt"&gt;&amp;lt;/loc&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;lastmod&amp;gt;&lt;/span&gt;{2}&lt;span class="nt"&gt;&amp;lt;/lastmod&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;changefreq&amp;gt;&lt;/span&gt;{3}&lt;span class="nt"&gt;&amp;lt;/changefreq&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;priority&amp;gt;&lt;/span&gt;{4}&lt;span class="nt"&gt;&amp;lt;/priority&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;data&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;display&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/display&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/data&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/url&amp;gt;&lt;/span&gt;
+&amp;quot;&amp;quot;&amp;quot;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -780,9 +798,9 @@ spark.eventLog.dir              hdfs://master:8020/sparklog  &lt;/p&gt;
 
 
 &lt;p&gt;将tags代码添加到categories框之后。执行&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;pelican&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;themes&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;U&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tuxlite_tbs&lt;/span&gt;
-&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;html&lt;/span&gt;
-&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pelican-themes -U .../tuxlite_tbs
+make html
+make github
 &lt;/pre&gt;&lt;/div&gt;
 
 

@@ -37,7 +37,7 @@
         <div class="nav-collapse">
         <ul class="nav">
             
-            <li><a href="http://www.guozhongxin.com/pages/about.html">About</a></li>
+            <li><a href="http://www.guozhongxin.com/pages/about-me.html">About Me</a></li>
         </ul>
         <div class="navbar-search pull-right">
             <script type="text/javascript">document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://rp.baidu.com/rp3w/3w.js?sid=6131086231916765095') + '&t=' + (Math.ceil(new Date()/3600000)) + unescape('"%3E%3C/script%3E'));</script>
@@ -74,7 +74,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <p>RRD（Round-Robin Database）是一种固定大小的环形的数据库，一个RRD文件下可以有多个RRA，每个RRA是一个环，环上可以储存的数据个数是固定个，新的数据被记录时会覆盖最旧的那条数据，从而周而复始的记录。</p>
 <p><img alt="1" src="http://www.guozhongxin.com/images/RRD.jpg" /> </p>
 <p>Ganglia将监控数据以RRD的形式储存并通过php展示在web页面上。Ganglia默认的是15秒在RRD中记录一次数据，而RRD默认的格式为：</p>
-<div class="highlight"><pre><span class="n">RRAs</span> <span class="s">&quot;RRA:AVERAGE:0.5:1:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:24:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:168:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:672:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:5760:374&quot;</span>
+<div class="highlight"><pre>RRAs &quot;RRA:AVERAGE:0.5:1:244&quot; &quot;RRA:AVERAGE:0.5:24:244&quot; &quot;RRA:AVERAGE:0.5:168:244&quot; &quot;RRA:AVERAGE:0.5:672:244&quot; &quot;RRA:AVERAGE:0.5:5760:374&quot;
 </pre></div>
 
 
@@ -104,76 +104,76 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <h3>停止Ganglia的运行</h3>
 <p>为了避免出现运行错误，在更改配置前关闭ganglia的运行。</p>
 <p>在主节点上，使用命令：</p>
-<div class="highlight"><pre><span class="n">service</span> <span class="n">gmetad</span> <span class="n">stop</span>
+<div class="highlight"><pre>service gmetad stop
 </pre></div>
 
 
 <p>在各个节点上，使用命令：</p>
-<div class="highlight"><pre><span class="n">service</span> <span class="n">gmond</span> <span class="n">stop</span>
+<div class="highlight"><pre>service gmond stop
 </pre></div>
 
 
 <h3>更改gmond配置（更改搜集数据的周期，以及传输传输周期）</h3>
 <p>gmond的配置在/etc/ganglia/gmond.conf中</p>
 <p>对于只取一次值的metric，将<code>time_threshold</code>，因为这些值，如<code>mem_total</code>，会在web端php画图时用到，因为memory那张图中的<code>memory used</code>，并不是通过直接采集数据得到的，而是通过<code>mem_total</code>减去其他值计算得到的，因此，<code>mem_total</code>一开始就应该被获取，因此<code>time_threshold</code>需设为1（默认为1200）。</p>
-<div class="highlight"><pre><span class="n">collection_group</span> <span class="p">{</span>
-  <span class="n">collect_once</span> <span class="o">=</span> <span class="n">yes</span>
-  <span class="n">time_threshold</span> <span class="o">=</span> <span class="mi">1</span>
-  <span class="n">metric</span> <span class="p">{</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;cpu_num&quot;</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;CPU Count&quot;</span>
-  <span class="p">}</span>
-  <span class="p">...</span>
-  <span class="n">metric</span> <span class="p">{</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;mem_total&quot;</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;Memory Total&quot;</span>
-  <span class="p">}</span>
-  <span class="p">...</span>
-<span class="p">}</span>
+<div class="highlight"><pre>collection_group {
+  collect_once = yes
+  time_threshold = 1
+  metric {
+    name = &quot;cpu_num&quot;
+    title = &quot;CPU Count&quot;
+  }
+  ...
+  metric {
+    name = &quot;mem_total&quot;
+    title = &quot;Memory Total&quot;
+  }
+  ...
+}
 </pre></div>
 
 
 <p>对于其他metric，如cpu group中的各个metric，采样与传输的时间也应设置为1（s）</p>
-<div class="highlight"><pre><span class="n">collection_group</span> <span class="p">{</span>
-  <span class="n">collect_every</span> <span class="o">=</span> <span class="mi">20</span>
-  <span class="n">time_threshold</span> <span class="o">=</span> <span class="mi">90</span>
-  <span class="cm">/* CPU status */</span>
-  <span class="n">metric</span> <span class="p">{</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;cpu_user&quot;</span>
-    <span class="n">value_threshold</span> <span class="o">=</span> <span class="s">&quot;1.0&quot;</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;CPU User&quot;</span>
-  <span class="p">}</span>
-  <span class="n">metric</span> <span class="p">{</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;cpu_system&quot;</span>
-    <span class="n">value_threshold</span> <span class="o">=</span> <span class="s">&quot;1.0&quot;</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="s">&quot;CPU System&quot;</span>
-  <span class="p">}</span>
-  <span class="p">...</span>
-<span class="p">}</span>
+<div class="highlight"><pre>collection_group {
+  collect_every = 20
+  time_threshold = 90
+  /* CPU status */
+  metric {
+    name = &quot;cpu_user&quot;
+    value_threshold = &quot;1.0&quot;
+    title = &quot;CPU User&quot;
+  }
+  metric {
+    name = &quot;cpu_system&quot;
+    value_threshold = &quot;1.0&quot;
+    title = &quot;CPU System&quot;
+  }
+  ...
+}
 </pre></div>
 
 
 <p>即</p>
-<div class="highlight"><pre><span class="n">collect_every</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">time_threshold</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight"><pre>collect_every = 1
+time_threshold = 1
 </pre></div>
 
 
 <h3>更改gmetad配置（更改记录的最小间隔）</h3>
 <p>gmetad的配置在/etc/ganglia/gmetad.conf中</p>
-<div class="highlight"><pre><span class="c"># Format: </span>
-<span class="c"># data_source &quot;my cluster&quot; [polling interval] address1:port addreses2:port ...</span>
-<span class="c"># The keyword &#39;data_source&#39; must immediately be followed by a unique</span>
-<span class="c"># string which identifies the source, then an optional polling interval in </span>
-<span class="c"># seconds. The source will be polled at this interval on average. </span>
-<span class="c"># If the polling interval is omitted, 15sec is asssumed.</span>
+<div class="highlight"><pre><span class="cp"># Format: </span>
+<span class="cp"># data_source &quot;my cluster&quot; [polling interval] address1:port addreses2:port ...</span>
+<span class="cp"># The keyword &#39;data_source&#39; must immediately be followed by a unique</span>
+<span class="cp"># string which identifies the source, then an optional polling interval in </span>
+<span class="cp"># seconds. The source will be polled at this interval on average. </span>
+<span class="cp"># If the polling interval is omitted, 15sec is asssumed.</span>
 </pre></div>
 
 
 <p>看到这里有关于<code>[polling interval]</code>的解释，即gmetad会根据从gmond搜集的数据，每一个间隔计算出这个间隔内的平均数将其写入rrd。<br />
 而这个参数，是一个非必要的参数，如果用户不指定的话，每15s记录一次。</p>
 <p>因此，为了将Ganglia记录最小间隔及RRD中数据的最小时间间隔改为1s，需要在master名称后添加一个参数：1</p>
-<div class="highlight"><pre><span class="n">data_source</span> <span class="s">&quot;my cluster&quot;</span> <span class="mi">1</span> <span class="n">localhost</span>  <span class="n">my</span><span class="p">.</span><span class="n">machine</span><span class="p">.</span><span class="n">edu</span><span class="o">:</span><span class="mi">8649</span> <span class="p">...</span>
+<div class="highlight"><pre>data_source &quot;my cluster&quot; 1 localhost  my.machine.edu:8649 ...
 </pre></div>
 
 
@@ -181,12 +181,12 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <p>原来的采样间隔是15s，现在的采样间隔是1s，就要把每个RRA的容量扩充，或者将除了第一个RRA之外的RRA的记录间隔改大。</p>
 <p>两种调整RRD格式的方法：</p>
 <p>1.</p>
-<div class="highlight"><pre><span class="n">RRAs</span> <span class="s">&quot;RRA:AVERAGE:0.5:1:3660&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:24:3660&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:168:3660&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:672:3660&quot;</span>
+<div class="highlight"><pre>RRAs &quot;RRA:AVERAGE:0.5:1:3660&quot; &quot;RRA:AVERAGE:0.5:24:3660&quot; &quot;RRA:AVERAGE:0.5:168:3660&quot; &quot;RRA:AVERAGE:0.5:672:3660&quot;
 </pre></div>
 
 
 <p>2.</p>
-<div class="highlight"><pre><span class="n">RRAs</span> <span class="s">&quot;RRA:AVERAGE:0.5:1:3660&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:360:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:2520:244&quot;</span> <span class="s">&quot;RRA:AVERAGE:0.5:10080:244&quot;</span>
+<div class="highlight"><pre>RRAs &quot;RRA:AVERAGE:0.5:1:3660&quot; &quot;RRA:AVERAGE:0.5:360:244&quot; &quot;RRA:AVERAGE:0.5:2520:244&quot; &quot;RRA:AVERAGE:0.5:10080:244&quot;
 </pre></div>
 
 
@@ -197,17 +197,17 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 <p><code>rrd_rootdir</code>的默认位置在<code>/var/lib/ganglia/rrds</code>，将这个文件夹下的所有文件及文件夹删除即可。</p>
 <h3>启动Ganglia</h3>
 <p>在主节点上，使用命令：</p>
-<div class="highlight"><pre><span class="n">service</span> <span class="n">gmetad</span> <span class="n">start</span>
+<div class="highlight"><pre>service gmetad start
 </pre></div>
 
 
 <p>在各个节点上，使用命令：</p>
-<div class="highlight"><pre><span class="n">service</span> <span class="n">gmond</span> <span class="n">start</span>
+<div class="highlight"><pre>service gmond start
 </pre></div>
 
 
 <h3>查看更改之后的效果</h3>
-<div class="highlight"><pre><span class="n">service</span> <span class="n">httpd</span> <span class="n">restart</span>
+<div class="highlight"><pre>service httpd restart
 </pre></div>
 
 
