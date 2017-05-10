@@ -60,8 +60,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html"><h1>迟到的毕业求职总结：兜兜转转回到起点</h1></a>
-2017-05-02
+            <a href="http://www.guozhongxin.com/pages/2017/05/07/blockchainGlossary.html"><h1>区块链系统基本概念介绍</h1></a>
+2017-05-07
 
 by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
  
@@ -70,45 +70,60 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
  
         </div>
         
-        <div><h2>起步有点慢的求职季</h2>
-<p>之前找实习机会还是挺顺利的，导致我到了7月份了都没怎么准备面试套路，也没怎么刷题。慢热的我直接错过了很多互联网公司的内推。在此要特地友情提示一下要找工作的应届生，<strong>一定要赶早投简历</strong>，特别是内推环节，不要拖到收简历的最后几天，因为很大概率上hr们已经被简历淹没，后边投的就不理了。</p>
-<h2>我的求职方向</h2>
-<p>我求职的主要两个方向：一是分布式计算工程师，二是算法工程师。个人更倾向于前者，但是还是要看具体工作内容。而且有些公司面试时岗位分的不是那么细。</p>
-<h2>求职前的准备</h2>
-<h3>1.首先还是要好好刷题的</h3>
-<p>一方面要把算法题刷起来，其实我建议越早越好，我正式刷题起步太晚，好在之前有点基础。在改完论文的一个月的时间里，先刷完了《剑指offer》，《编程之美》，以及部分Leetcode中等以上的题目，不得不说，刷题还是很有帮助的，起码适用于面试。</p>
-<p>另一方面是基础知识，包括但不限于：操作系统，计算机网络，编程语言，设计模式，编程框架，linux等等。我的工程知识是弱点，尽管提前看了些JVM和java编程框架等等方面的知识，但是遇到在这方面深究的面试官，还是会捉襟见肘。</p>
-<p>最后是和自己求职岗位直接相关的内容。对于我而言，包括机器学习算法原理、公式推导，分布式系统等等。对于自己擅长的分布式系统方面，我重新翻了一遍社区和源码，并且对一些主流技术的优劣都心中有数。</p>
-<h3>2.准备一份好看的简历</h3>
-<p>所谓好看，各家标准不一。总归要：格式清晰，内容详实最好有数据，最好一页，突出重点。工程师的简历还是要突出自己的项目和实习经历的，一些相关的奖项也会增添光彩，太过普遍的成绩或者和求职不相关的经历就没必要写了。比如要做程序员就没必要写学生干部经历了。</p>
-<p>我在实习之前就有相对完善的中英文简历，后来mentor又给了一些建议，我也会经常update。在准备简历的时候，顺便反复练习怎么把自己的项目经历准确简洁的描述出来，这一点还是很有用的。在面试中连自己的项目经历都表述的模棱两可磕磕绊绊，这可是极大的减分项。</p>
-<h3>3.和求职小伙伴及时分享信息</h3>
-<p>这一点帮我比较快的进入求职节奏，不断发现自己欠缺的地方。需要注意的是，要保持心态的稳定，对自己的定位要保持清醒，不要被干扰。</p>
-<h3>4.实战锻炼</h3>
-<p>其实最好的提高方法还是实战，多面几次自然就懂面试套路了。</p>
-<h2>一步一步求职路</h2>
+        <div><p>这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。</p>
+<h2>区块（Block）:</h2>
+<p>区块是构成区块链的单位。一个区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。</p>
+<h2>区块链（BlockChain）:</h2>
+<p>区块链即是一个个“区块（Block）”组成的“链（Chain）”。每个区块会记录上个区块的hash值，由此产生一个逻辑上的链。</p>
+<h2>公有链，私有链，联盟链</h2>
 <ul>
-<li>百度·凤巢：这是最早投的，中午到下午，三面一口气面完。我投的是分布式系统方向，面试的组是做策略算法的。有两个关于分布式算法的问题，比较偏实际应用场景。有3道代码题，medium难度上下。事后平台组又问我要不要面他们组，但相当于放弃了之前面的策略组，因为考虑到这是第一个offer，就想着求稳，没有再面。百度最开始offer给的批发价，要拿其他公司的offer去argue，非常没有诚意。尽管后来谈到special，而且表示可以再申请更高，还是拒掉了百度。</li>
-<li>京东·广告：第一次面了算法组，第一面卡在了设计模式上。。被拒。。第二次面了平台组，就比较得心应手了。和三面面试官聊得不错，而且后来给的offer当时看来比百度的高，就愉快的接受了。后来还是发现自己太naive了，最后不得不毁掉。。向京东广告组道歉。。</li>
-<li>蚂蚁金服·人工智能：四轮面试，主要是偏算法方向的，难度还是很大的，都是在线面的，之后HR面说北京名额比较少，问我去不去杭州，我说不去。之后又加了第5轮，虽然第五轮面的也还行，但最终还是被拒。</li>
-<li>360：一面被挂，面试时脑子锈住了。。</li>
-<li>滴滴：面试现场极其混乱，所有同学应该都感同身受。我从上午8点半到，一直到下午2点才找到一面面试官，3面+HR面结束后，已经晚上8点多了！投的大数据开发工程师，但是对口的面试官都不在，我也是服了，对滴滴没啥好印象。</li>
-<li>一点资讯：是学长内推的，面试的组是做爬虫的。。面试中主要在java知识上栽了跟头，三面被拒了。</li>
-<li>网易有道：没有具体区分岗位，但是二三面面试官都是做广告的，知道我是做分布式的，问了很多广告系统的问题，回答的还可以。给了offer，当时已经有其他在考虑的offer，待遇也没啥竞争力，通知电话里直接拒掉了。</li>
-<li>今日头条·基础架构：头条的内推华丽丽的错过了。正式校招是三轮面试，当天面试人也很多，但是现场组织明显比滴滴好太多。因为投递的岗位就是大数据工程师，所以面试的内容比较有针对性。和三面面试官聊了很多实际问题，特别是在超大数据量（Batch &amp; Streaming两种情况）下，如何设计各个层次，而且不同方案都会有哪些优劣。面试官给定的场景比较具体，但考察的范围很宽，在设计方案时既要考虑不同的分布式系统，也要把计算机底层知识运用起来。和面试官的交流加深了我对工业界海量数据分析的了解，很长见识，而且头条的数据规模和集群规模都特别大，对我很有吸引力。最后拿到了头条最高档的offer，如果Dream offer没拿到手的话，应该是我的最好的选择了。</li>
-<li>搜狐：参加完网易的面试的当天接着就去搜狐参见面试，总共只有两面，主要是集中在Spark的源码部分，答的不是特别好，当时对一些新特性了解不够深刻。面试的组好像就是在做Spark的优化的，好像还有commiter。二面面试官还问我为什么没有在Spark社区做贡献，让我感觉自己很low。最后拿到了offer，但时间比较晚，也是直接拒掉了。</li>
-<li>宜信·大数据：宜信前后去了两次面完的，第二次面试由于时间冲突没去成，以为没有机会了但是HR还是积极争取了第二次面试的机会。一共三面技术面，面试的算法题特别多，各个面试官让写了代码。问的问题大都和机器学习数据挖掘相关，和三面面试官聊了些分布式计算的问题，了解到宜信的分布式平台搭建在自己开发的私有云上，感觉技术能力还是很强的。最后给的offer还是很诱人的，而且有户口机会，还是不错的选择。</li>
-<li>美团点评：由学长直接推到美团点评Spark团队的。因为之前看了这个团队的几篇技术博文，了解到这里的业务和平台规模很大，技术能力和经验也不错，直接就奔着这个团队来了。一共四面，最后一轮是后加的。前三面也是先从写代码开始，最后主要聊了聊之前实习的项目，还有一些Spark的优化问题。三面有一个代码题没回答出来，但是其他问题回答的还行。面试和给offer的时间都比较晚，因为薪水问题想直接拒掉，但是HR很热心的申请了最高档的offer，但是需要跨部门的领导再面一轮。这一轮也是主要聊得项目。最后能给的最高的offer也没太有竞争力，只能很遗憾的拒掉了。</li>
-<li>Freewheel：论坛学长帮忙推的，一共三面，最后一面的Leader有别的事，很快就结束了。主要面试内容也是先从代码题开始，再次强调一下，刷题很重要(x3)，而且要注意边界问题和代码规范性。和二面面试官聊得比较投机，聊了一些当前他在做的项目、相应的技术选型以及可能的问题。最后也拿到了offer。不过Freewheel的数据分析集群规模相对较小。</li>
-<li>商汤科技：线下笔试+四轮面试。笔试考得挺泛，代码题写得还行，想出来一种时间复杂度最低的算法。HR最开始安排的两轮面试官不太match，主要是做后台开发的，对分布式平台不太熟悉。二面结束后在回学校的路上HR得到之前面试官的反馈后重新安排了对口的面试官。第二次过来面试的内容集中在分布式系统的基本知识和一致性协议上，三面面试官挖过比特币，还聊了BlockChain的具体技术细节。四面面试官还介绍了商汤在大规模图像识别，以及视频图片分布式存储、索引的工作内容，很有启发。商汤offer发下来之后，三面面试官单独约我吃饭聊了聊，听说我在等MSRA消息之后，还提出见一下大boss。最后MSRA offer到手后，怕有讨价还价之嫌，还是放弃了这个机会，主要还是坚持想来MSRA的遗愿，但是后来感觉后悔了，见一面聊一聊也没啥，关键能长见识呀。</li>
-<li>MSRA：最后终于要聊到微软亚洲研究院了。面试走的实习生绿色通道，比校招少一轮面试，再加上mentor强推我，又少了一轮面试，因此总共有三面（校招是5面）：技术面+Research面+AA面。微软的面试还是倾向于写代码的，这个提前有思想准备，但是在Research面时还是栽了。在一道我认为很简单的问题上，面试官一直追问还有没有优化方法、还有没有可以优化的地方。最后我实在答不上来了，面试官提示了可以考虑CPU寻址和内存对齐问题。。在Researcher面前比较明显的暴露了我的短板，不是计算机科班出身，思路不够开阔，一直陷入算法本身的优化，没有想到运用计算机系统的知识。其他代码题回答的还可以，项目聊得比较多，讲项目的时候我感觉一直被那位researcher challenge(😅)。之后的AA面相对轻松一些，田老大还是很Nice地聊了些在研究院做RSDE的特点和不同。最后很幸运的拿到了这个Dream offer。拿到这个offer之后，及时地和几个一直在考虑公司解释了情况，拒掉了他们的offer，也特别感谢这些公司的青睐和理解。至此，我的求职季就正式结束了。</li>
+<li>公有链，就是一个开放的区块链系统，任何人都可以加入，进行交易、“挖矿”。市面上几乎所有的虚拟货币都是公有链。</li>
+<li>私有链，这里指完全私有区块链（Fully private blockchains），指个人或组织自己搭建的区块链网络，外人一般无法自由地加入或者权限受限。私有链的控制权在少数个体手中。</li>
+<li>联盟链，也被称为共同体区块链（Consortium blockchains），介于公有链和私有链之间，一般是多个组织或个人提前达成某种共识，搭建起一个非公开的区块链，各个成员彼此权利对等，通过区块链的种种机制进行制约，共同监管区块链上的数据。</li>
 </ul>
-<h2>尾声</h2>
-<p>求职季也就三四个月，但每天就像打仗一样，尤其是一天面多家时会特别疲惫。特别感谢我的爸妈和盼盼对我的鼓励和支持。</p>
-<p>求职结束也意味着我的职场生涯即将开启，新的征程在等着我。</p></div>
+<p>在公有链上，由于完全开放，任何人都可以参与进来，为了防止恶意破坏和攻击者，都会要求各个节点（“挖矿”的“矿机”）进行工作量证明（Proof证明）。这使得恶意破坏的代价很高，除非控制区块链网络中半数以上的计算能力，否则无法完成。而本身正常挖矿是能有一定的经济收益的（每个区块的创建者会得到虚拟货币奖励），所以在经济上也是不划算的。</p>
+<p>而在私有链和联盟链中，创建区块的权利控制在少数人手中，联盟链中各个节点彼此的身份是已知的，一般是不需要进行工作力证明。另外，各个节点可能存在一定程度的彼此信任，每个节点可以免去对其他节点创建的区块的部分或者全部内容的验证。基于以上两点，即使在同样的网络规模下，私有链和联盟链性能会优于公有链。</p>
+<p>不过也有人认为，只有公有链才是“血统纯正”的区块链，具备区块链系统的全部特征（去中心化，透明性，可追踪性，匿名性等等）。不过随着区块链技术的推广和应用，越来越多非公用链形式的区块链系统被实施部署。</p>
+<h2>钱包，矿机，地址</h2>
+<p>在区块链中，有各种各样的参与者，他们共同构建起一个区块链的社区。</p>
+<p>在一般常见的虚拟货币区块链系统中，会有大量的用户在社区内发生交易（Transaction）。所谓的钱包，里面放的可不是钱，而是一个账户的秘钥。每个钱包都有一个ID，被称为这个钱包的地址，可以理解成这个账户的“账号”。一个人可以有多个钱包，每个钱包/账户里对应着数量不等的虚拟货币。通常一笔交易，就是指一个钱包或多个钱包里的虚拟货币，转移到一个或多个钱包中。实际声明这笔交易时，就是用钱包的地址来代表不同的钱包的。</p>
+<p>这些互相交易的钱包只是区块链系统的一部分参与者，而真正构建起整个区块链系统的是，是一个个节点，各个节点互相联通，形成一个P2P网络。有些节点将网络上的源源不断交易进行验证，并将一段时间内的交易打包成一个区块（Block），随着时间推移，构成一条“区块链（BlockChain）”。一条交易时会被广播到全网节点的，这些节点同时在处理这些交易，他们各自会打包成区块，再次发送到全网。而同一段时间只有一个Block会最终被大家认同并接受。在公有链上，创建一个被大家都承认的Block，会得到一定的虚拟货币奖励。因此，这些工作就被称为“挖矿”，做这些工作的节点（机器）就被称为矿机。</p>
+<p>需要注意的是，有一些节点只进行接收矿机发来的Block，并进行验证，而不自己去打包创建Block。所以并不一定是所有的节点都是“矿机”。</p>
+<p>区块链系统中每个节点也会有一个地址作为标识。实际上，区块链系统中的每个实体（节点、钱包，智能合约），都会有一个地址。</p>
+<h2>公钥（PublicKey），私钥（PrivateKey）和地址（Address）</h2>
+<p>在区块链系统中，对于身份的验证都是利用秘钥加密验证的机制进行的，具体是采用的非对称加密算法来实现的。</p>
+<div class="highlight"><pre>公开密钥与私有密钥是一对，如果用公开密钥对数据进行加密，只有用对应的私有密钥才能解密；如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密。
+</pre></div>
+
+
+<p>前面提到的“钱包”，里面所存放的“密码”，就是对应的私钥。</p>
+<h5>[未完待续]</h5>
+<h2>Transaction:</h2>
+<h2>分叉</h2>
+<p>硬分叉</p>
+<h2>ProofWork：</h2>
+<p>[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/</p></div>
         <hr />
     </div>
 		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html"><h2>迟到的毕业求职总结：兜兜转转回到起点</h2></a>
+        <div class= "well small"> 2017-05-02
+
+by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
+ 
+
+
+ </div>
+        <div class="summary"> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html">read more</a></div>
+    </div>	
+				
 
  
         
@@ -134,6 +149,24 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
  
 
     <div class='article'>
+        <a href="http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html"><h2>区块链系统</h2></a>
+        <div class= "well small"> 2017-04-25
+
+by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
+ 
+
+
+ </div>
+        <div class="summary"> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html">read more</a></div>
+    </div>	
+				
+
+ 
+        
+
+ 
+
+    <div class='article'>
         <a href="http://www.guozhongxin.com/pages/2017/04/25/restart.html"><h2>博客重启</h2></a>
         <div class= "well small"> 2017-04-25
 
@@ -142,7 +175,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
 
 
  </div>
-        <div class="summary"><p>这个博客刚开始搭建时，我刚上研究生不久。那时我对于各种技术都很懵懂，又充满热情。搭建博客之初，我还计划着把我的成长都记录在这，因此，对...</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2017/04/25/restart.html">read more</a></div>
+        <div class="summary"><p>这个博客刚开始搭建时，我刚上研究生不久。那时我对于各种技术都很懵懂，又充满热情。搭建博客之初，我还计划着把我的成长都记录在这，因此，对这个博客也充满热情...</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2017/04/25/restart.html">read more</a></div>
     </div>	
 				
 
@@ -251,31 +284,14 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
         <div class="summary"><p>一步一步在集群上安装spark，搭建spark上运行作业的开发环境</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html">read more</a></div>
     </div>	
 				
-
- 
-        
-
- 
-
-    <div class='article'>
-        <a href="http://www.guozhongxin.com/pages/2014/09/25/build_blog_with_pelican.html"><h2>pelican建站攻略补充（站内搜索，和标签云）</h2></a>
-        <div class= "well small"> 2014-09-25
-
-by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
- 
-
-
- </div>
-        <div class="summary"><p>添加google站内搜索，添加百度站内搜索</p> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2014/09/25/build_blog_with_pelican.html">read more</a></div>
-    </div>	
-				
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
 
     <li class="active"><a href="http://www.guozhongxin.com/author/guozhongxin.html">1</a></li>
+    <li class=""><a href="http://www.guozhongxin.com/author/guozhongxin2.html">2</a></li>
 
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
+    <li class="next"><a href="http://www.guozhongxin.com/author/guozhongxin2.html">Next &rarr;</a></li>
 
 </ul>
 </div>
@@ -306,6 +322,7 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
                 </li>
                 
                 <li><a href="http://www.guozhongxin.com/category/.html"></a></li>
+                <li><a href="http://www.guozhongxin.com/category/blockchain.html">blockchain</a></li>
                 <li><a href="http://www.guozhongxin.com/category/ganglia.html">ganglia</a></li>
                 <li><a href="http://www.guozhongxin.com/category/python.html">Python</a></li>
                 <li><a href="http://www.guozhongxin.com/category/spark.html">Spark</a></li>

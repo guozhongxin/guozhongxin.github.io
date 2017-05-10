@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>开发环境  -guozhongxin's blog</title>
+    <title>blockchain  -guozhongxin's blog</title>
     <meta name="description" content="">
     <meta name="author" content="guozhongxin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,8 +60,8 @@
 
     <div class='article'>
         <div class="content-title">
-            <a href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html"><h1>Spark安装：Spark集群及开发环境搭建</h1></a>
-2014-09-26
+            <a href="http://www.guozhongxin.com/pages/2017/05/07/blockchainGlossary.html"><h1>区块链系统基本概念介绍</h1></a>
+2017-05-07
 
 by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
  
@@ -70,130 +70,65 @@ by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">g
  
         </div>
         
-        <div><h2>安装Spark准备</h2>
-<p>在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  </p>
+        <div><p>这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。</p>
+<h2>区块（Block）:</h2>
+<p>区块是构成区块链的单位。一个区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。</p>
+<h2>区块链（BlockChain）:</h2>
+<p>区块链即是一个个“区块（Block）”组成的“链（Chain）”。每个区块会记录上个区块的hash值，由此产生一个逻辑上的链。</p>
+<h2>公有链，私有链，联盟链</h2>
 <ul>
-<li>scala安装包，可以在<a href="http://www.scala-lang.org/">scala官方网站</a>下载</li>
-<li>spark安装包，可以在<a href="http://spark.apache.org/downloads.html">spark官网</a>下载，用两种形式的安装包：<ul>
-<li>source code package</li>
-<li>pre-build package</li>
+<li>公有链，就是一个开放的区块链系统，任何人都可以加入，进行交易、“挖矿”。市面上几乎所有的虚拟货币都是公有链。</li>
+<li>私有链，这里指完全私有区块链（Fully private blockchains），指个人或组织自己搭建的区块链网络，外人一般无法自由地加入或者权限受限。私有链的控制权在少数个体手中。</li>
+<li>联盟链，也被称为共同体区块链（Consortium blockchains），介于公有链和私有链之间，一般是多个组织或个人提前达成某种共识，搭建起一个非公开的区块链，各个成员彼此权利对等，通过区块链的种种机制进行制约，共同监管区块链上的数据。</li>
 </ul>
-</li>
-<li>在主节点实现ssh免密码登陆其他节点。  </li>
-</ul>
-<h3>install scala - scala安装</h3>
-<p>download scala-2.10.4.tgz and unzip： </p>
-<div class="highlight"><pre><span class="x">tar -zxf scala-2.10.4.tgz</span>
-<span class="x">vi ~/.bashrc</span>
-<span class="x">    export SCALA_HOME=...   </span>
-<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin</span>
-<span class="x">source ~/.bashrc</span>
+<p>在公有链上，由于完全开放，任何人都可以参与进来，为了防止恶意破坏和攻击者，都会要求各个节点（“挖矿”的“矿机”）进行工作量证明（Proof证明）。这使得恶意破坏的代价很高，除非控制区块链网络中半数以上的计算能力，否则无法完成。而本身正常挖矿是能有一定的经济收益的（每个区块的创建者会得到虚拟货币奖励），所以在经济上也是不划算的。</p>
+<p>而在私有链和联盟链中，创建区块的权利控制在少数人手中，联盟链中各个节点彼此的身份是已知的，一般是不需要进行工作力证明。另外，各个节点可能存在一定程度的彼此信任，每个节点可以免去对其他节点创建的区块的部分或者全部内容的验证。基于以上两点，即使在同样的网络规模下，私有链和联盟链性能会优于公有链。</p>
+<p>不过也有人认为，只有公有链才是“血统纯正”的区块链，具备区块链系统的全部特征（去中心化，透明性，可追踪性，匿名性等等）。不过随着区块链技术的推广和应用，越来越多非公用链形式的区块链系统被实施部署。</p>
+<h2>钱包，矿机，地址</h2>
+<p>在区块链中，有各种各样的参与者，他们共同构建起一个区块链的社区。</p>
+<p>在一般常见的虚拟货币区块链系统中，会有大量的用户在社区内发生交易（Transaction）。所谓的钱包，里面放的可不是钱，而是一个账户的秘钥。每个钱包都有一个ID，被称为这个钱包的地址，可以理解成这个账户的“账号”。一个人可以有多个钱包，每个钱包/账户里对应着数量不等的虚拟货币。通常一笔交易，就是指一个钱包或多个钱包里的虚拟货币，转移到一个或多个钱包中。实际声明这笔交易时，就是用钱包的地址来代表不同的钱包的。</p>
+<p>这些互相交易的钱包只是区块链系统的一部分参与者，而真正构建起整个区块链系统的是，是一个个节点，各个节点互相联通，形成一个P2P网络。有些节点将网络上的源源不断交易进行验证，并将一段时间内的交易打包成一个区块（Block），随着时间推移，构成一条“区块链（BlockChain）”。一条交易时会被广播到全网节点的，这些节点同时在处理这些交易，他们各自会打包成区块，再次发送到全网。而同一段时间只有一个Block会最终被大家认同并接受。在公有链上，创建一个被大家都承认的Block，会得到一定的虚拟货币奖励。因此，这些工作就被称为“挖矿”，做这些工作的节点（机器）就被称为矿机。</p>
+<p>需要注意的是，有一些节点只进行接收矿机发来的Block，并进行验证，而不自己去打包创建Block。所以并不一定是所有的节点都是“矿机”。</p>
+<p>区块链系统中每个节点也会有一个地址作为标识。实际上，区块链系统中的每个实体（节点、钱包，智能合约），都会有一个地址。</p>
+<h2>公钥（PublicKey），私钥（PrivateKey）和地址（Address）</h2>
+<p>在区块链系统中，对于身份的验证都是利用秘钥加密验证的机制进行的，具体是采用的非对称加密算法来实现的。</p>
+<div class="highlight"><pre>公开密钥与私有密钥是一对，如果用公开密钥对数据进行加密，只有用对应的私有密钥才能解密；如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密。
 </pre></div>
 
 
-<h3>install spark. - spark安装</h3>
-<p>There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  </p>
-<p>Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包</p>
-<p>To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :    </p>
-<p>在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  </p>
-<div class="highlight"><pre>./make-distribution.sh --hadoop 2.4.0 --with-yarn --with-hive --with-tachyon --tgz --skip-java-test
-</pre></div>
-
-
-<p>If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   </p>
-<p>如果你选择了已经build好的安装包，以上步骤不需执行。</p>
-<p>将自己编译或是下载的编译包解压缩，并配置环境变量：</p>
-<div class="highlight"><pre><span class="x">tar -zxf spark-1.0.0-bin-2.2.0.tgz</span>
-<span class="x">vi ~/.bashrc</span>
-<span class="x">    export SCALA_HOME=...  </span>
-<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/sbin</span>
-<span class="x">source ~/.bashrc</span>
-</pre></div>
-
-
-<h3>Configure Spark cluster - Spark集群配置</h3>
-<ul>
-<li>
-<p>edit <code>$SPARK_HOME/conf/slaves</code>, and input all node IP :  </p>
-<p>masters<br />
-slave1<br />
-slave2<br />
-slave3 </p>
-</li>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_env.sh</code> </p>
-<p>export HADOOP_HOME=/opt/apache/hadoop-2.4.0<br />
-export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop<br />
-export JAVA_HOME=/usr/local/jdk1.7.0_60<br />
-export SCALA_HOME=/home/yarn/scala-2.10.4  </p>
-<p>export SPARK_WORKER_MEMORY=16g<br />
-export SPARK_WORKER_INSTANCES=1<br />
-export SPARK_MASTER_IP=master</p>
-<p>实际上安装好之后<code>conf</code>文件夹下有一个<code>spark_env.sh</code>的模板，里边有各个变量的解释说明，在这不一一累述  </p>
-</li>
-<li>
-<p>Copy to other node </p>
-</li>
-</ul>
-<p>要将各个节点上的这两个文件都进行配置</p>
-<h3>Configure Spark App - Spark作业属性配置</h3>
-<p>对于作业执行的属性配置，spark提供了三种不同的配置方法  </p>
-<ol>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_default.conf</code>  </p>
-<p>spark.master                    spark://master:7077<br />
-spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog<br />
-spark.local.dir                  ...  </p>
-</li>
-<li>
-<p>在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 </p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/bin/spark-submit  /</span>
-<span class="x">--master spark://master:7077  /</span>
-<span class="x">--conf spark.eventLog.enabled=true ...  /</span>
-<span class="x">***.jar</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>通过代码中对SparkContext来对这些属性赋值</p>
-</li>
-</ol>
-<p>这三种方法的优先级是：<br />
-    3 高于 2 高于1  </p>
-<h3>Tips</h3>
-<ol>
-<li>
-<p>If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node<br />
-If old worker's process is still working , you can use this command to kill them:  </p>
-<div class="highlight"><pre>ps -ef | grep Worker | grep -v grep | cut -c 9-15 | xargs kill -s 9
-</pre></div>
-
-
-<p>and restart Spark Cluster  </p>
-</li>
-<li>
-<p>if you want to start history server, you should assign logs' path:  </p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/sbin/start-historyserver.sh  </span><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/logs</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>If you wanna save a job's log, you should assign two properties:  </p>
-<p>spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog  </p>
-</li>
-</ol></div>
+<p>前面提到的“钱包”，里面所存放的“密码”，就是对应的私钥。</p>
+<h5>[未完待续]</h5>
+<h2>Transaction:</h2>
+<h2>分叉</h2>
+<p>硬分叉</p>
+<h2>ProofWork：</h2>
+<p>[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/</p></div>
         <hr />
     </div>
 		
+
+ 
+        
+
+ 
+
+    <div class='article'>
+        <a href="http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html"><h2>区块链系统</h2></a>
+        <div class= "well small"> 2017-04-25
+
+by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
+ 
+
+
+ </div>
+        <div class="summary"> <a class="btn btn-info xsmall" href="http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html">read more</a></div>
+    </div>	
+				
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
 
-    <li class="active"><a href="http://www.guozhongxin.com/tag/kai-fa-huan-jing.html">1</a></li>
+    <li class="active"><a href="http://www.guozhongxin.com/category/blockchain.html">1</a></li>
 
     <li class="next disabled"><a href="#">&rarr; Next</a></li>
 

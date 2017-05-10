@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>开发环境  -guozhongxin's blog</title>
+    <title>区块链系统-guozhongxin's blog</title>
     <meta name="description" content="">
     <meta name="author" content="guozhongxin">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -53,154 +53,56 @@
     <div class="row">
 
         <div class="span9">
-        
-
-        
-
-
     <div class='article'>
         <div class="content-title">
-            <a href="http://www.guozhongxin.com/pages/2014/09/26/spark_installation.html"><h1>Spark安装：Spark集群及开发环境搭建</h1></a>
-2014-09-26
+            <h1>区块链系统</h1>
+2017-04-25
 
 by <a class="url fn" href="http://www.guozhongxin.com/author/guozhongxin.html">guozhongxin</a>
  
 
 
- 
         </div>
-        
-        <div><h2>安装Spark准备</h2>
-<p>在准备安装spark之前，需要准备以下安装包，并完成以下预备动作。  </p>
+	
+        <div><p>笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。</p>
+<p>这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。</p>
+<h2>什么是区块链（BlockChain）</h2>
+<p>从字面上，区块链即是一个个“区块（Block）”组成的“链（Chain）”。区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。</p>
+<p>区块链技术从本质上是一套去中心化的分布式系统，通过“公私钥”和所谓的“挖矿”等机制保障数据的安全和一致性。</p>
+<p>区块链系统大致的运作过程可以 <strong>简单</strong> 描述成这样的： </p>
+<div class="highlight"><pre>在这个分布式系统中，每个节点都会存储下来全部的数据，即一个个的区块组成的区块链。分布式的节点组成一个P2P的网络，各个节点将一段时间内的全网的交易记录（Transaction）打包成一个区块（Block），并进行工作量证明（ProofWork），这些行为就叫做“挖矿”。每一个时间段内，只有一个节点创建的区块会被大家（全网节点）承认，这个节点可以简单地认为是最早完成工作量证明的节点。它最先完成工作，并通知大家，把这段时间产生的区块发送到全网，得到大家认同后，大家都把这个区块记录下来，添加自己本地的区块链之后。这时，相当于全网的区块链又多了一个新的区块。之后，大家就会继续记录下一时间段的新增信息，不断的产生新的区块。
+
+在公有链上（例如比特币、以太币），为了鼓励“挖矿”，每挖出一个新的Block，并被全网承认，这个Block的创建者就会得到一定的数字货币奖励。比特币大约是10分钟产生一个Block，奖励创建者25个比特币；以太币大约12秒产生一个Block，奖励创建者5个以太币。
+</pre></div>
+
+
+<p>以上的描述过于简略，对只是为了了解这个系统的学习者，大致可以了。知乎上有一篇更生动地文章，可以供读者参考<a href="https://zhihu.com/question/37290469/answer/107612456">如何简单易懂地介绍区块链 by汪乐-LaiW3n </a>。如果想了解技术细节，这些解释是明显不够的。在后续的文章中，我会尝试解读。</p>
+<p>总结一下区块链系统的特性/特征：</p>
 <ul>
-<li>scala安装包，可以在<a href="http://www.scala-lang.org/">scala官方网站</a>下载</li>
-<li>spark安装包，可以在<a href="http://spark.apache.org/downloads.html">spark官网</a>下载，用两种形式的安装包：<ul>
-<li>source code package</li>
-<li>pre-build package</li>
+<li><strong>去中心化（Decentration）</strong>，由于区块链系统是一个完全去中心化的网络，任何（不超过全网半数以上算力的）个体或组织都没有绝对权限，大家共同监管区块链上的数据，解决了信任的问题，因此运用区块链技术的虚拟货币越来越得到认可，价值不断攀升。</li>
+<li><strong>可追踪性（Traceability）</strong>，网络中的每个节点都可以保留全链上的完整数据，每条（交易）信息都是公开的，大家都可以查看得到。</li>
+<li><strong>不可篡改性（Non-Modifiability）</strong>，各个节点共同监管，即使个体进行篡改，也不会得到其他节点的认同，不会对整个系统影响。</li>
+<li><strong>可验证性（Verifiability）</strong>，每条记录都是可验证的，都应该有明确的、统一的判定标准。这样大家对链上数据进行监管验证时，才不会有歧义。</li>
 </ul>
-</li>
-<li>在主节点实现ssh免密码登陆其他节点。  </li>
-</ul>
-<h3>install scala - scala安装</h3>
-<p>download scala-2.10.4.tgz and unzip： </p>
-<div class="highlight"><pre><span class="x">tar -zxf scala-2.10.4.tgz</span>
-<span class="x">vi ~/.bashrc</span>
-<span class="x">    export SCALA_HOME=...   </span>
-<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin</span>
-<span class="x">source ~/.bashrc</span>
-</pre></div>
+<p>另外，有的文章了提到了匿名性、开放性，这两个特性是针对公有链的，在私有链、联盟链中，并不适用。</p>
+<h2>区块链技术能干什么</h2>
+<p>其实这个问题也特别宽泛，现在对这项技术有各种解读，往大了说都是“颠覆货币发行”，“颠覆资产/知识产权管理”，“颠覆广告投放”等等。业界对区块链技术的实用化做了很多设想和讨论，物联网、供应链、在线广告等不同的业务都能和区块链扯上关系。但是现在除了虚拟货币，真正落地并推广的项目并不多见。</p>
+<p>尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。</p></div>
+	
+        <hr>
 
-
-<h3>install spark. - spark安装</h3>
-<p>There are two types of spark installation package, source package that you need build spark at first, and prebuild package.  </p>
-<p>Spark的安装包有两种形式：源码包（用户需要自己下载后在平台上编译），以及已经编译打包好的安装包</p>
-<p>To build source package, you should unzip the package and edit pom.xml in the directory, change <hadoop.version></hadoop.version> and some jars' version: protobuf, hbase, hive. Then, you can run this command :    </p>
-<p>在用源码包安装时，你需要先解压缩安装包，然后修改文件夹中中pom.xml文件，将hadoop、protobuf、hbase、hive的版本号修改为当前环境的版本。之后在这个文件夹下运行这条命令：  </p>
-<div class="highlight"><pre>./make-distribution.sh --hadoop 2.4.0 --with-yarn --with-hive --with-tachyon --tgz --skip-java-test
-</pre></div>
-
-
-<p>If you choose prebuild package with the right hadoop version, you needn't build it by yourself.   </p>
-<p>如果你选择了已经build好的安装包，以上步骤不需执行。</p>
-<p>将自己编译或是下载的编译包解压缩，并配置环境变量：</p>
-<div class="highlight"><pre><span class="x">tar -zxf spark-1.0.0-bin-2.2.0.tgz</span>
-<span class="x">vi ~/.bashrc</span>
-<span class="x">    export SCALA_HOME=...  </span>
-<span class="x">    export PATH=</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/bin:</span><span class="p">$</span><span class="nv">SCALA_HOME</span><span class="x">/sbin</span>
-<span class="x">source ~/.bashrc</span>
-</pre></div>
-
-
-<h3>Configure Spark cluster - Spark集群配置</h3>
-<ul>
-<li>
-<p>edit <code>$SPARK_HOME/conf/slaves</code>, and input all node IP :  </p>
-<p>masters<br />
-slave1<br />
-slave2<br />
-slave3 </p>
-</li>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_env.sh</code> </p>
-<p>export HADOOP_HOME=/opt/apache/hadoop-2.4.0<br />
-export HADOOP_CONF_DIR=/opt/apache/hadoop-2.4.0/etc/hadoop<br />
-export JAVA_HOME=/usr/local/jdk1.7.0_60<br />
-export SCALA_HOME=/home/yarn/scala-2.10.4  </p>
-<p>export SPARK_WORKER_MEMORY=16g<br />
-export SPARK_WORKER_INSTANCES=1<br />
-export SPARK_MASTER_IP=master</p>
-<p>实际上安装好之后<code>conf</code>文件夹下有一个<code>spark_env.sh</code>的模板，里边有各个变量的解释说明，在这不一一累述  </p>
-</li>
-<li>
-<p>Copy to other node </p>
-</li>
-</ul>
-<p>要将各个节点上的这两个文件都进行配置</p>
-<h3>Configure Spark App - Spark作业属性配置</h3>
-<p>对于作业执行的属性配置，spark提供了三种不同的配置方法  </p>
-<ol>
-<li>
-<p>create and edit <code>$SPARK_HOME/conf/spark_default.conf</code>  </p>
-<p>spark.master                    spark://master:7077<br />
-spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog<br />
-spark.local.dir                  ...  </p>
-</li>
-<li>
-<p>在通过$SPARK_HOME/bin/spark-submit这个脚本提交作业时，通过 </p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/bin/spark-submit  /</span>
-<span class="x">--master spark://master:7077  /</span>
-<span class="x">--conf spark.eventLog.enabled=true ...  /</span>
-<span class="x">***.jar</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>通过代码中对SparkContext来对这些属性赋值</p>
-</li>
-</ol>
-<p>这三种方法的优先级是：<br />
-    3 高于 2 高于1  </p>
-<h3>Tips</h3>
-<ol>
-<li>
-<p>If you change SPARK_WORKER_INSTANCES, CHECK worker's process in every node<br />
-If old worker's process is still working , you can use this command to kill them:  </p>
-<div class="highlight"><pre>ps -ef | grep Worker | grep -v grep | cut -c 9-15 | xargs kill -s 9
-</pre></div>
-
-
-<p>and restart Spark Cluster  </p>
-</li>
-<li>
-<p>if you want to start history server, you should assign logs' path:  </p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/sbin/start-historyserver.sh  </span><span class="p">$</span><span class="nv">SPARK_HOME</span><span class="x">/logs</span>
-</pre></div>
-
-
-</li>
-<li>
-<p>If you wanna save a job's log, you should assign two properties:  </p>
-<p>spark.eventLog.enabled          true<br />
-spark.eventLog.dir              hdfs://master:8020/sparklog  </p>
-</li>
-</ol></div>
-        <hr />
-    </div>
-		
-<div class="pagination">
-<ul>
-    <li class="prev disabled"><a href="#">&larr; Previous</a></li>
-
-    <li class="active"><a href="http://www.guozhongxin.com/tag/kai-fa-huan-jing.html">1</a></li>
-
-    <li class="next disabled"><a href="#">&rarr; Next</a></li>
-
-</ul>
-</div>
- 
-  
+<!-- 	 -->
+        <h2>Comments</h2>
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "",
+    productKey: "cb2e9fa12f2c45049ec290b878757a9b",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>    </div>
         </div>
         
         <div class="span3">

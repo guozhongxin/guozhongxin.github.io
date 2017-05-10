@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 02 May 2017 23:00:00 +0800</lastBuildDate><item><title>迟到的毕业求职总结：兜兜转转回到起点</title><link>http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html</link><description>&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 07 May 2017 15:00:00 +0800</lastBuildDate><item><title>区块链系统基本概念介绍</title><link>http://www.guozhongxin.com/pages/2017/05/07/blockchainGlossary.html</link><description>&lt;p&gt;这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。&lt;/p&gt;
+&lt;h2&gt;区块（Block）:&lt;/h2&gt;
+&lt;p&gt;区块是构成区块链的单位。一个区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
+&lt;h2&gt;区块链（BlockChain）:&lt;/h2&gt;
+&lt;p&gt;区块链即是一个个“区块（Block）”组成的“链（Chain）”。每个区块会记录上个区块的hash值，由此产生一个逻辑上的链。&lt;/p&gt;
+&lt;h2&gt;公有链，私有链，联盟链&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;公有链，就是一个开放的区块链系统，任何人都可以加入，进行交易、“挖矿”。市面上几乎所有的虚拟货币都是公有链。&lt;/li&gt;
+&lt;li&gt;私有链，这里指完全私有区块链（Fully private blockchains），指个人或组织自己搭建的区块链网络，外人一般无法自由地加入或者权限受限。私有链的控制权在少数个体手中。&lt;/li&gt;
+&lt;li&gt;联盟链，也被称为共同体区块链（Consortium blockchains），介于公有链和私有链之间，一般是多个组织或个人提前达成某种共识，搭建起一个非公开的区块链，各个成员彼此权利对等，通过区块链的种种机制进行制约，共同监管区块链上的数据。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在公有链上，由于完全开放，任何人都可以参与进来，为了防止恶意破坏和攻击者，都会要求各个节点（“挖矿”的“矿机”）进行工作量证明（Proof证明）。这使得恶意破坏的代价很高，除非控制区块链网络中半数以上的计算能力，否则无法完成。而本身正常挖矿是能有一定的经济收益的（每个区块的创建者会得到虚拟货币奖励），所以在经济上也是不划算的。&lt;/p&gt;
+&lt;p&gt;而在私有链和联盟链中，创建区块的权利控制在少数人手中，联盟链中各个节点彼此的身份是已知的，一般是不需要进行工作力证明。另外，各个节点可能存在一定程度的彼此信任，每个节点可以免去对其他节点创建的区块的部分或者全部内容的验证。基于以上两点，即使在同样的网络规模下，私有链和联盟链性能会优于公有链。&lt;/p&gt;
+&lt;p&gt;不过也有人认为，只有公有链才是“血统纯正”的区块链，具备区块链系统的全部特征（去中心化，透明性，可追踪性，匿名性等等）。不过随着区块链技术的推广和应用，越来越多非公用链形式的区块链系统被实施部署。&lt;/p&gt;
+&lt;h2&gt;钱包，矿机，地址&lt;/h2&gt;
+&lt;p&gt;在区块链中，有各种各样的参与者，他们共同构建起一个区块链的社区。&lt;/p&gt;
+&lt;p&gt;在一般常见的虚拟货币区块链系统中，会有大量的用户在社区内发生交易（Transaction）。所谓的钱包，里面放的可不是钱，而是一个账户的秘钥。每个钱包都有一个ID，被称为这个钱包的地址，可以理解成这个账户的“账号”。一个人可以有多个钱包，每个钱包/账户里对应着数量不等的虚拟货币。通常一笔交易，就是指一个钱包或多个钱包里的虚拟货币，转移到一个或多个钱包中。实际声明这笔交易时，就是用钱包的地址来代表不同的钱包的。&lt;/p&gt;
+&lt;p&gt;这些互相交易的钱包只是区块链系统的一部分参与者，而真正构建起整个区块链系统的是，是一个个节点，各个节点互相联通，形成一个P2P网络。有些节点将网络上的源源不断交易进行验证，并将一段时间内的交易打包成一个区块（Block），随着时间推移，构成一条“区块链（BlockChain）”。一条交易时会被广播到全网节点的，这些节点同时在处理这些交易，他们各自会打包成区块，再次发送到全网。而同一段时间只有一个Block会最终被大家认同并接受。在公有链上，创建一个被大家都承认的Block，会得到一定的虚拟货币奖励。因此，这些工作就被称为“挖矿”，做这些工作的节点（机器）就被称为矿机。&lt;/p&gt;
+&lt;p&gt;需要注意的是，有一些节点只进行接收矿机发来的Block，并进行验证，而不自己去打包创建Block。所以并不一定是所有的节点都是“矿机”。&lt;/p&gt;
+&lt;p&gt;区块链系统中每个节点也会有一个地址作为标识。实际上，区块链系统中的每个实体（节点、钱包，智能合约），都会有一个地址。&lt;/p&gt;
+&lt;h2&gt;公钥（PublicKey），私钥（PrivateKey）和地址（Address）&lt;/h2&gt;
+&lt;p&gt;在区块链系统中，对于身份的验证都是利用秘钥加密验证的机制进行的，具体是采用的非对称加密算法来实现的。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;公开密钥与私有密钥是一对，如果用公开密钥对数据进行加密，只有用对应的私有密钥才能解密；如果用私有密钥对数据进行加密，那么只有用对应的公开密钥才能解密。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;前面提到的“钱包”，里面所存放的“密码”，就是对应的私钥。&lt;/p&gt;
+&lt;h5&gt;[未完待续]&lt;/h5&gt;
+&lt;h2&gt;Transaction:&lt;/h2&gt;
+&lt;h2&gt;分叉&lt;/h2&gt;
+&lt;p&gt;硬分叉&lt;/p&gt;
+&lt;h2&gt;ProofWork：&lt;/h2&gt;
+&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sun, 07 May 2017 15:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-07:pages/2017/05/07/blockchainGlossary.html</guid></item><item><title>迟到的毕业求职总结：兜兜转转回到起点</title><link>http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html</link><description>&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
 &lt;p&gt;之前找实习机会还是挺顺利的，导致我到了7月份了都没怎么准备面试套路，也没怎么刷题。慢热的我直接错过了很多互联网公司的内推。在此要特地友情提示一下要找工作的应届生，&lt;strong&gt;一定要赶早投简历&lt;/strong&gt;，特别是内推环节，不要拖到收简历的最后几天，因为很大概率上hr们已经被简历淹没，后边投的就不理了。&lt;/p&gt;
 &lt;h2&gt;我的求职方向&lt;/h2&gt;
 &lt;p&gt;我求职的主要两个方向：一是分布式计算工程师，二是算法工程师。个人更倾向于前者，但是还是要看具体工作内容。而且有些公司面试时岗位分的不是那么细。&lt;/p&gt;
@@ -53,7 +85,30 @@
 &lt;p&gt;我的毕设内容主要是分布式社交分析算法和实现，另外把我小论文的内容也给整合进去，包装成了一个系统。靠前半部分撑起工作量，后边的小论文撑点研究价值，整体比较水。毕设的主要工作也是和实验室项目密切相关的，但是为了使工作量丰满，在找工作的同时还在做一些整合性的工作。论文的正式动笔是10月中旬，到11月下旬攒了一个初稿，进行了中期答辩，之后进行了初步修改和完善。12.1向学校提交了初稿，进行论文盲审，之后就比较顺利了。&lt;/p&gt;
 &lt;p&gt;2016忙忙碌碌，也收获满满。以后每年的总结都要及时进行，不能拖这么久了。&lt;/p&gt;
 &lt;p&gt;[1]Yan Y, Gao Y, Chen Y, et al. TR-Spark: Transient Computing for Big Data Analytics[C]// ACM Symposium on Cloud Computing(SoCC). ACM, 2016:484-496.&lt;/p&gt;
-&lt;p&gt;[2]Guo Z, Hu Z, Zhang C, et al. Learning-Based Characterizing and Modeling Performance Bottlenecks of Big Data Workloads[C]//IEEE 18th International Conference on High Performance Computing and Communications(HPCC). IEEE, 2016: 860-867.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 28 Apr 2017 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-04-28:pages/2017/04/28/summary2016.html</guid></item><item><title>博客重启</title><link>http://www.guozhongxin.com/pages/2017/04/25/restart.html</link><description>&lt;h2&gt;关于此博客&lt;/h2&gt;
+&lt;p&gt;[2]Guo Z, Hu Z, Zhang C, et al. Learning-Based Characterizing and Modeling Performance Bottlenecks of Big Data Workloads[C]//IEEE 18th International Conference on High Performance Computing and Communications(HPCC). IEEE, 2016: 860-867.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Fri, 28 Apr 2017 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-04-28:pages/2017/04/28/summary2016.html</guid></item><item><title>区块链系统</title><link>http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html</link><description>&lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
+&lt;p&gt;这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。&lt;/p&gt;
+&lt;h2&gt;什么是区块链（BlockChain）&lt;/h2&gt;
+&lt;p&gt;从字面上，区块链即是一个个“区块（Block）”组成的“链（Chain）”。区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
+&lt;p&gt;区块链技术从本质上是一套去中心化的分布式系统，通过“公私钥”和所谓的“挖矿”等机制保障数据的安全和一致性。&lt;/p&gt;
+&lt;p&gt;区块链系统大致的运作过程可以 &lt;strong&gt;简单&lt;/strong&gt; 描述成这样的： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;在这个分布式系统中，每个节点都会存储下来全部的数据，即一个个的区块组成的区块链。分布式的节点组成一个P2P的网络，各个节点将一段时间内的全网的交易记录（Transaction）打包成一个区块（Block），并进行工作量证明（ProofWork），这些行为就叫做“挖矿”。每一个时间段内，只有一个节点创建的区块会被大家（全网节点）承认，这个节点可以简单地认为是最早完成工作量证明的节点。它最先完成工作，并通知大家，把这段时间产生的区块发送到全网，得到大家认同后，大家都把这个区块记录下来，添加自己本地的区块链之后。这时，相当于全网的区块链又多了一个新的区块。之后，大家就会继续记录下一时间段的新增信息，不断的产生新的区块。
+
+在公有链上（例如比特币、以太币），为了鼓励“挖矿”，每挖出一个新的Block，并被全网承认，这个Block的创建者就会得到一定的数字货币奖励。比特币大约是10分钟产生一个Block，奖励创建者25个比特币；以太币大约12秒产生一个Block，奖励创建者5个以太币。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;以上的描述过于简略，对只是为了了解这个系统的学习者，大致可以了。知乎上有一篇更生动地文章，可以供读者参考&lt;a href="https://zhihu.com/question/37290469/answer/107612456"&gt;如何简单易懂地介绍区块链 by汪乐-LaiW3n &lt;/a&gt;。如果想了解技术细节，这些解释是明显不够的。在后续的文章中，我会尝试解读。&lt;/p&gt;
+&lt;p&gt;总结一下区块链系统的特性/特征：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;去中心化（Decentration）&lt;/strong&gt;，由于区块链系统是一个完全去中心化的网络，任何（不超过全网半数以上算力的）个体或组织都没有绝对权限，大家共同监管区块链上的数据，解决了信任的问题，因此运用区块链技术的虚拟货币越来越得到认可，价值不断攀升。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可追踪性（Traceability）&lt;/strong&gt;，网络中的每个节点都可以保留全链上的完整数据，每条（交易）信息都是公开的，大家都可以查看得到。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不可篡改性（Non-Modifiability）&lt;/strong&gt;，各个节点共同监管，即使个体进行篡改，也不会得到其他节点的认同，不会对整个系统影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可验证性（Verifiability）&lt;/strong&gt;，每条记录都是可验证的，都应该有明确的、统一的判定标准。这样大家对链上数据进行监管验证时，才不会有歧义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外，有的文章了提到了匿名性、开放性，这两个特性是针对公有链的，在私有链、联盟链中，并不适用。&lt;/p&gt;
+&lt;h2&gt;区块链技术能干什么&lt;/h2&gt;
+&lt;p&gt;其实这个问题也特别宽泛，现在对这项技术有各种解读，往大了说都是“颠覆货币发行”，“颠覆资产/知识产权管理”，“颠覆广告投放”等等。业界对区块链技术的实用化做了很多设想和讨论，物联网、供应链、在线广告等不同的业务都能和区块链扯上关系。但是现在除了虚拟货币，真正落地并推广的项目并不多见。&lt;/p&gt;
+&lt;p&gt;尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Tue, 25 Apr 2017 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-04-25:pages/2017/04/25/blockchainBegin.html</guid></item><item><title>博客重启</title><link>http://www.guozhongxin.com/pages/2017/04/25/restart.html</link><description>&lt;h2&gt;关于此博客&lt;/h2&gt;
 &lt;p&gt;这个博客刚开始搭建时，我刚上研究生不久。那时我对于各种技术都很懵懂，又充满热情。搭建博客之初，我还计划着把我的成长都记录在这，因此，对这个博客也充满热情。&lt;/p&gt;
 &lt;p&gt;早在2013年底，当时大四的我有幸进入了IBM中国研究院，前后做了接近一年的实习生。正是这段经历，我开始接触并学习分布式平台，特别要感谢我的mentor，巨伟，给还是小白的我提供了很多帮助和指导，让我在知识之外学习到研究的基本方法。&lt;/p&gt;
 &lt;p&gt;那时“大数据”的概念刚开始炒作，Hadoop已经推广开来，Spark方兴未艾，我也把分布式技术作为我读研期间的主要方向。当时就想着，把我在学习过程中的收获和体会都记录在这，积少成多，一定是一个值得期待的事情。&lt;/p&gt;
