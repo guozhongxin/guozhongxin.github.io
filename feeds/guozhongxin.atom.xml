@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2017-05-07T15:00:00+08:00</updated><entry><title>区块链系统基本概念介绍</title><link href="http://www.guozhongxin.com/pages/2017/05/07/blockchainGlossary.html" rel="alternate"></link><updated>2017-05-07T15:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-07:pages/2017/05/07/blockchainGlossary.html</id><summary type="html">&lt;p&gt;这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>guozhongxin's blog</title><link href="http://www.guozhongxin.com/" rel="alternate"></link><link href="http://www.guozhongxin.com/feeds/guozhongxin.atom.xml" rel="self"></link><id>http://www.guozhongxin.com/</id><updated>2017-05-09T15:00:00+08:00</updated><entry><title>区块链系统基本概念介绍</title><link href="http://www.guozhongxin.com/pages/2017/05/09/blockchainGlossary.html" rel="alternate"></link><updated>2017-05-09T15:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-09:pages/2017/05/09/blockchainGlossary.html</id><summary type="html">&lt;p&gt;这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。&lt;/p&gt;
 &lt;h2&gt;区块（Block）:&lt;/h2&gt;
 &lt;p&gt;区块是构成区块链的单位。一个区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
 &lt;h2&gt;区块链（BlockChain）:&lt;/h2&gt;
@@ -31,7 +31,30 @@
 &lt;h2&gt;分叉&lt;/h2&gt;
 &lt;p&gt;硬分叉&lt;/p&gt;
 &lt;h2&gt;ProofWork：&lt;/h2&gt;
-&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</summary></entry><entry><title>迟到的毕业求职总结：兜兜转转回到起点</title><link href="http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html" rel="alternate"></link><updated>2017-05-02T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-02:pages/2017/05/02/jobhunting.html</id><summary type="html">&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
+&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</summary></entry><entry><title>区块链系统</title><link href="http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html" rel="alternate"></link><updated>2017-05-06T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-06:pages/2017/05/06/blockchainBegin.html</id><summary type="html">&lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
+&lt;p&gt;这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。&lt;/p&gt;
+&lt;h2&gt;什么是区块链（BlockChain）&lt;/h2&gt;
+&lt;p&gt;从字面上，区块链即是一个个“区块（Block）”组成的“链（Chain）”。区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
+&lt;p&gt;区块链技术从本质上是一套去中心化的分布式系统，通过“公私钥”和所谓的“挖矿”等机制保障数据的安全和一致性。&lt;/p&gt;
+&lt;p&gt;区块链系统大致的运作过程可以 &lt;strong&gt;简单&lt;/strong&gt; 描述成这样的： &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;在这个分布式系统中，每个节点都会存储下来全部的数据，即一个个的区块组成的区块链。分布式的节点组成一个P2P的网络，各个节点将一段时间内的全网的交易记录（Transaction）打包成一个区块（Block），并进行工作量证明（ProofWork），这些行为就叫做“挖矿”。每一个时间段内，只有一个节点创建的区块会被大家（全网节点）承认，这个节点可以简单地认为是最早完成工作量证明的节点。它最先完成工作，并通知大家，把这段时间产生的区块发送到全网，得到大家认同后，大家都把这个区块记录下来，添加自己本地的区块链之后。这时，相当于全网的区块链又多了一个新的区块。之后，大家就会继续记录下一时间段的新增信息，不断的产生新的区块。
+
+在公有链上（例如比特币、以太币），为了鼓励“挖矿”，每挖出一个新的Block，并被全网承认，这个Block的创建者就会得到一定的数字货币奖励。比特币大约是10分钟产生一个Block，奖励创建者25个比特币；以太币大约12秒产生一个Block，奖励创建者5个以太币。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;以上的描述过于简略，对只是为了了解这个系统的学习者，大致可以了。知乎上有一篇更生动地文章，可以供读者参考&lt;a href="https://zhihu.com/question/37290469/answer/107612456"&gt;如何简单易懂地介绍区块链 by汪乐-LaiW3n &lt;/a&gt;。如果想了解技术细节，这些解释是明显不够的。在后续的文章中，我会尝试解读。&lt;/p&gt;
+&lt;p&gt;总结一下区块链系统的特性/特征：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;去中心化（Decentration）&lt;/strong&gt;，由于区块链系统是一个完全去中心化的网络，任何（不超过全网半数以上算力的）个体或组织都没有绝对权限，大家共同监管区块链上的数据，解决了信任的问题，因此运用区块链技术的虚拟货币越来越得到认可，价值不断攀升。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可追踪性（Traceability）&lt;/strong&gt;，网络中的每个节点都可以保留全链上的完整数据，每条（交易）信息都是公开的，大家都可以查看得到。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不可篡改性（Non-Modifiability）&lt;/strong&gt;，各个节点共同监管，即使个体进行篡改，也不会得到其他节点的认同，不会对整个系统影响。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;可验证性（Verifiability）&lt;/strong&gt;，每条记录都是可验证的，都应该有明确的、统一的判定标准。这样大家对链上数据进行监管验证时，才不会有歧义。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外，有的文章了提到了匿名性、开放性，这两个特性是针对公有链的，在私有链、联盟链中，并不适用。&lt;/p&gt;
+&lt;h2&gt;区块链技术能干什么&lt;/h2&gt;
+&lt;p&gt;其实这个问题也特别宽泛，现在对这项技术有各种解读，往大了说都是“颠覆货币发行”，“颠覆资产/知识产权管理”，“颠覆广告投放”等等。业界对区块链技术的实用化做了很多设想和讨论，物联网、供应链、在线广告等不同的业务都能和区块链扯上关系。但是现在除了虚拟货币，真正落地并推广的项目并不多见。&lt;/p&gt;
+&lt;p&gt;尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。&lt;/p&gt;</summary></entry><entry><title>迟到的毕业求职总结：兜兜转转回到起点</title><link href="http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html" rel="alternate"></link><updated>2017-05-02T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-02:pages/2017/05/02/jobhunting.html</id><summary type="html">&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
 &lt;p&gt;之前找实习机会还是挺顺利的，导致我到了7月份了都没怎么准备面试套路，也没怎么刷题。慢热的我直接错过了很多互联网公司的内推。在此要特地友情提示一下要找工作的应届生，&lt;strong&gt;一定要赶早投简历&lt;/strong&gt;，特别是内推环节，不要拖到收简历的最后几天，因为很大概率上hr们已经被简历淹没，后边投的就不理了。&lt;/p&gt;
 &lt;h2&gt;我的求职方向&lt;/h2&gt;
 &lt;p&gt;我求职的主要两个方向：一是分布式计算工程师，二是算法工程师。个人更倾向于前者，但是还是要看具体工作内容。而且有些公司面试时岗位分的不是那么细。&lt;/p&gt;
@@ -85,30 +108,7 @@
 &lt;p&gt;我的毕设内容主要是分布式社交分析算法和实现，另外把我小论文的内容也给整合进去，包装成了一个系统。靠前半部分撑起工作量，后边的小论文撑点研究价值，整体比较水。毕设的主要工作也是和实验室项目密切相关的，但是为了使工作量丰满，在找工作的同时还在做一些整合性的工作。论文的正式动笔是10月中旬，到11月下旬攒了一个初稿，进行了中期答辩，之后进行了初步修改和完善。12.1向学校提交了初稿，进行论文盲审，之后就比较顺利了。&lt;/p&gt;
 &lt;p&gt;2016忙忙碌碌，也收获满满。以后每年的总结都要及时进行，不能拖这么久了。&lt;/p&gt;
 &lt;p&gt;[1]Yan Y, Gao Y, Chen Y, et al. TR-Spark: Transient Computing for Big Data Analytics[C]// ACM Symposium on Cloud Computing(SoCC). ACM, 2016:484-496.&lt;/p&gt;
-&lt;p&gt;[2]Guo Z, Hu Z, Zhang C, et al. Learning-Based Characterizing and Modeling Performance Bottlenecks of Big Data Workloads[C]//IEEE 18th International Conference on High Performance Computing and Communications(HPCC). IEEE, 2016: 860-867.&lt;/p&gt;</summary></entry><entry><title>区块链系统</title><link href="http://www.guozhongxin.com/pages/2017/04/25/blockchainBegin.html" rel="alternate"></link><updated>2017-04-25T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-04-25:pages/2017/04/25/blockchainBegin.html</id><summary type="html">&lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
-&lt;p&gt;这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。&lt;/p&gt;
-&lt;h2&gt;什么是区块链（BlockChain）&lt;/h2&gt;
-&lt;p&gt;从字面上，区块链即是一个个“区块（Block）”组成的“链（Chain）”。区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
-&lt;p&gt;区块链技术从本质上是一套去中心化的分布式系统，通过“公私钥”和所谓的“挖矿”等机制保障数据的安全和一致性。&lt;/p&gt;
-&lt;p&gt;区块链系统大致的运作过程可以 &lt;strong&gt;简单&lt;/strong&gt; 描述成这样的： &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;在这个分布式系统中，每个节点都会存储下来全部的数据，即一个个的区块组成的区块链。分布式的节点组成一个P2P的网络，各个节点将一段时间内的全网的交易记录（Transaction）打包成一个区块（Block），并进行工作量证明（ProofWork），这些行为就叫做“挖矿”。每一个时间段内，只有一个节点创建的区块会被大家（全网节点）承认，这个节点可以简单地认为是最早完成工作量证明的节点。它最先完成工作，并通知大家，把这段时间产生的区块发送到全网，得到大家认同后，大家都把这个区块记录下来，添加自己本地的区块链之后。这时，相当于全网的区块链又多了一个新的区块。之后，大家就会继续记录下一时间段的新增信息，不断的产生新的区块。
-
-在公有链上（例如比特币、以太币），为了鼓励“挖矿”，每挖出一个新的Block，并被全网承认，这个Block的创建者就会得到一定的数字货币奖励。比特币大约是10分钟产生一个Block，奖励创建者25个比特币；以太币大约12秒产生一个Block，奖励创建者5个以太币。
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;以上的描述过于简略，对只是为了了解这个系统的学习者，大致可以了。知乎上有一篇更生动地文章，可以供读者参考&lt;a href="https://zhihu.com/question/37290469/answer/107612456"&gt;如何简单易懂地介绍区块链 by汪乐-LaiW3n &lt;/a&gt;。如果想了解技术细节，这些解释是明显不够的。在后续的文章中，我会尝试解读。&lt;/p&gt;
-&lt;p&gt;总结一下区块链系统的特性/特征：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;去中心化（Decentration）&lt;/strong&gt;，由于区块链系统是一个完全去中心化的网络，任何（不超过全网半数以上算力的）个体或组织都没有绝对权限，大家共同监管区块链上的数据，解决了信任的问题，因此运用区块链技术的虚拟货币越来越得到认可，价值不断攀升。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;可追踪性（Traceability）&lt;/strong&gt;，网络中的每个节点都可以保留全链上的完整数据，每条（交易）信息都是公开的，大家都可以查看得到。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;不可篡改性（Non-Modifiability）&lt;/strong&gt;，各个节点共同监管，即使个体进行篡改，也不会得到其他节点的认同，不会对整个系统影响。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;可验证性（Verifiability）&lt;/strong&gt;，每条记录都是可验证的，都应该有明确的、统一的判定标准。这样大家对链上数据进行监管验证时，才不会有歧义。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;另外，有的文章了提到了匿名性、开放性，这两个特性是针对公有链的，在私有链、联盟链中，并不适用。&lt;/p&gt;
-&lt;h2&gt;区块链技术能干什么&lt;/h2&gt;
-&lt;p&gt;其实这个问题也特别宽泛，现在对这项技术有各种解读，往大了说都是“颠覆货币发行”，“颠覆资产/知识产权管理”，“颠覆广告投放”等等。业界对区块链技术的实用化做了很多设想和讨论，物联网、供应链、在线广告等不同的业务都能和区块链扯上关系。但是现在除了虚拟货币，真正落地并推广的项目并不多见。&lt;/p&gt;
-&lt;p&gt;尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。&lt;/p&gt;</summary></entry><entry><title>博客重启</title><link href="http://www.guozhongxin.com/pages/2017/04/25/restart.html" rel="alternate"></link><updated>2017-04-25T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-04-25:pages/2017/04/25/restart.html</id><summary type="html">&lt;h2&gt;关于此博客&lt;/h2&gt;
+&lt;p&gt;[2]Guo Z, Hu Z, Zhang C, et al. Learning-Based Characterizing and Modeling Performance Bottlenecks of Big Data Workloads[C]//IEEE 18th International Conference on High Performance Computing and Communications(HPCC). IEEE, 2016: 860-867.&lt;/p&gt;</summary></entry><entry><title>博客重启</title><link href="http://www.guozhongxin.com/pages/2017/04/25/restart.html" rel="alternate"></link><updated>2017-04-25T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-04-25:pages/2017/04/25/restart.html</id><summary type="html">&lt;h2&gt;关于此博客&lt;/h2&gt;
 &lt;p&gt;这个博客刚开始搭建时，我刚上研究生不久。那时我对于各种技术都很懵懂，又充满热情。搭建博客之初，我还计划着把我的成长都记录在这，因此，对这个博客也充满热情。&lt;/p&gt;
 &lt;p&gt;早在2013年底，当时大四的我有幸进入了IBM中国研究院，前后做了接近一年的实习生。正是这段经历，我开始接触并学习分布式平台，特别要感谢我的mentor，巨伟，给还是小白的我提供了很多帮助和指导，让我在知识之外学习到研究的基本方法。&lt;/p&gt;
 &lt;p&gt;那时“大数据”的概念刚开始炒作，Hadoop已经推广开来，Spark方兴未艾，我也把分布式技术作为我读研期间的主要方向。当时就想着，把我在学习过程中的收获和体会都记录在这，积少成多，一定是一个值得期待的事情。&lt;/p&gt;
