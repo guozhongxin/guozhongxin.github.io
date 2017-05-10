@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/guozhongxin.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 09 May 2017 15:00:00 +0800</lastBuildDate><item><title>区块链系统基本概念介绍</title><link>http://www.guozhongxin.com/pages/2017/05/09/blockchainGlossary.html</link><description>&lt;p&gt;这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>guozhongxin's blog</title><link>http://www.guozhongxin.com/</link><description></description><atom:link href="http://www.guozhongxin.com/feeds/guozhongxin.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 09 May 2017 15:00:00 +0800</lastBuildDate><item><title>区块链系统基本概念介绍</title><link>http://www.guozhongxin.com/pages/2017/05/09/blockchainGlossary.html</link><description>&lt;!-- summary:  --&gt;
+
+&lt;p&gt;这篇文章主要是介绍一下区块链技术里基本的名词概念，并会对具体实现进行介绍，对于想深入理解区块链技术的人会有一定的帮助。这些概念大都是通用的，本文中涉及到具体实现的，以ethereum中的实现例进行介绍。&lt;/p&gt;
 &lt;h2&gt;区块（Block）:&lt;/h2&gt;
 &lt;p&gt;区块是构成区块链的单位。一个区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
 &lt;h2&gt;区块链（BlockChain）:&lt;/h2&gt;
@@ -31,7 +33,8 @@
 &lt;h2&gt;分叉&lt;/h2&gt;
 &lt;p&gt;硬分叉&lt;/p&gt;
 &lt;h2&gt;ProofWork：&lt;/h2&gt;
-&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Tue, 09 May 2017 15:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-09:pages/2017/05/09/blockchainGlossary.html</guid></item><item><title>区块链系统</title><link>http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html</link><description>&lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
+&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Tue, 09 May 2017 15:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-09:pages/2017/05/09/blockchainGlossary.html</guid></item><item><title>区块链系统</title><link>http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html</link><description>&lt;h1&gt;summary:&lt;/h1&gt;
+&lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
 &lt;p&gt;这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。&lt;/p&gt;
 &lt;h2&gt;什么是区块链（BlockChain）&lt;/h2&gt;
 &lt;p&gt;从字面上，区块链即是一个个“区块（Block）”组成的“链（Chain）”。区块中承载着一段时间内全网的新增信息。每段时间，都会产生一个新的区块被添加到区块链上。区块链上记录的信息不一定是虚拟货币的信息，可以是任何有共识的内容，例如知识产权、访问日志、广告点击日志等。&lt;/p&gt;
@@ -54,7 +57,9 @@
 &lt;p&gt;另外，有的文章了提到了匿名性、开放性，这两个特性是针对公有链的，在私有链、联盟链中，并不适用。&lt;/p&gt;
 &lt;h2&gt;区块链技术能干什么&lt;/h2&gt;
 &lt;p&gt;其实这个问题也特别宽泛，现在对这项技术有各种解读，往大了说都是“颠覆货币发行”，“颠覆资产/知识产权管理”，“颠覆广告投放”等等。业界对区块链技术的实用化做了很多设想和讨论，物联网、供应链、在线广告等不同的业务都能和区块链扯上关系。但是现在除了虚拟货币，真正落地并推广的项目并不多见。&lt;/p&gt;
-&lt;p&gt;尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sat, 06 May 2017 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-06:pages/2017/05/06/blockchainBegin.html</guid></item><item><title>迟到的毕业求职总结：兜兜转转回到起点</title><link>http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html</link><description>&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
+&lt;p&gt;尽管如此，各巨头投入了兴趣和人力，IBM为HyperLedger fabric的贡献了大量代码；微软Azure推出了区块链云服务，支持各种开源区块链项目；蚂蚁金服也宣布了要将在慈善募捐使用区块链技术。在这一轮的“炒作中”，笔者也希望能看到有更多有价值的项目应用到区块链技术，使区块链真正的走出象牙塔。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Sat, 06 May 2017 23:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-06:pages/2017/05/06/blockchainBegin.html</guid></item><item><title>迟到的毕业求职总结：兜兜转转回到起点</title><link>http://www.guozhongxin.com/pages/2017/05/02/jobhunting.html</link><description>&lt;!-- summary:  --&gt;
+
+&lt;h2&gt;起步有点慢的求职季&lt;/h2&gt;
 &lt;p&gt;之前找实习机会还是挺顺利的，导致我到了7月份了都没怎么准备面试套路，也没怎么刷题。慢热的我直接错过了很多互联网公司的内推。在此要特地友情提示一下要找工作的应届生，&lt;strong&gt;一定要赶早投简历&lt;/strong&gt;，特别是内推环节，不要拖到收简历的最后几天，因为很大概率上hr们已经被简历淹没，后边投的就不理了。&lt;/p&gt;
 &lt;h2&gt;我的求职方向&lt;/h2&gt;
 &lt;p&gt;我求职的主要两个方向：一是分布式计算工程师，二是算法工程师。个人更倾向于前者，但是还是要看具体工作内容。而且有些公司面试时岗位分的不是那么细。&lt;/p&gt;
