@@ -33,7 +33,8 @@
 &lt;h2&gt;分叉&lt;/h2&gt;
 &lt;p&gt;硬分叉&lt;/p&gt;
 &lt;h2&gt;ProofWork：&lt;/h2&gt;
-&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Tue, 09 May 2017 15:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-09:pages/2017/05/09/blockchainGlossary.html</guid></item><item><title>区块链系统</title><link>http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html</link><description>&lt;h1&gt;summary:&lt;/h1&gt;
+&lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">guozhongxin</dc:creator><pubDate>Tue, 09 May 2017 15:00:00 +0800</pubDate><guid>tag:www.guozhongxin.com,2017-05-09:pages/2017/05/09/blockchainGlossary.html</guid></item><item><title>区块链系统</title><link>http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html</link><description>&lt;!-- summary:  --&gt;
+
 &lt;p&gt;笔者从去年5月份开始学习关注区块链技术，从中本聪的论文，到一些开源区块链项目的白皮书、黄皮书，再到源码，对区块链系统有了一定的了解和认识，最近也在MSRA做一个区块链相关项目，在这个博客里讲座一系列的总结。&lt;/p&gt;
 &lt;p&gt;这两年，“区块链（BlockChain）”技术又开始火起来，很多金融界的人士开始关注区块链，连央行都开始关注并运用这项技术。相关的创业公司、论坛也层出不穷，一番热闹的景象。目前区块链技术主要运用在虚拟货币上，经常和另一个概念“分布式账本”相混淆。&lt;/p&gt;
 &lt;h2&gt;什么是区块链（BlockChain）&lt;/h2&gt;
