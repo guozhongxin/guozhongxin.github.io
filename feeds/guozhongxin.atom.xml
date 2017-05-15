@@ -28,10 +28,34 @@
 
 
 &lt;p&gt;前面提到的“钱包”，里面所存放的“密码”，就是对应的私钥。&lt;/p&gt;
-&lt;h5&gt;[未完待续]&lt;/h5&gt;
+&lt;p&gt;简单理解，可以把地址当成公钥的表达形式。地址和公钥是任何人都可以互相转换的。&lt;/p&gt;
+&lt;p&gt;在区块链系统中，一个用户发出的交易信息，以及一个矿机创建的区块，都是用私钥对交易（或区块）信息进行加密，生成签名，附在交易（区块）之后。当别人收到这条信息时，首先验证这条信息是否真的是由这个用户发出的，就会用签名和信息本身进行decode，可以得到对应的公钥，验证这个公钥和发出这条信息的地址是否是对应的，就可以判断出真假。&lt;/p&gt;
 &lt;h2&gt;Transaction:&lt;/h2&gt;
+&lt;p&gt;Transaction就是一条交易记录，由于大部分区块链系统支持智能合约，所以Transaction分为三种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;转账&lt;/li&gt;
+&lt;li&gt;创建智能合约&lt;/li&gt;
+&lt;li&gt;调用智能合约&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;以Ethereum中的实现为例，了解一下Transaction中的结构：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;from: // 发送者的地址
+to:  // 接受者的地址（当创建smart contract时此条为空）
+value： // 这笔交易的转账金额
+gas： // 汽油，用来衡量这条交易执行的复杂程度的度量，这里是用户指定的最多愿意付出的gas数量
+gasUsed： // 实际消耗的gas
+gasPrice： // 汽油价格，发送者愿意为gas付的价钱，gasPrice乘以gasUsed就等于给矿机的小费
+nonce：// 用来标记一条Transaction的标记，在一笔交易tx_a没进链时，可以发出同样nonce的tx_b覆盖之前的tx_a。nonce主要是用来避免“双花”的问题：当你不小心将用一条交易发送两遍，或者由于网络原因矿机收到了两个tx_a，这时候依然只有一笔会生效。Ethereum的实现时将nonce设置为这个发送者之前总共发送过的tx数量
+data： // 创建smart contract或者调用smart contract的代码（hash值）
+txHash： // 由以上信息生成的hash值，作为tx的ID。由于nonce的原因，txHash不可能重复
+r：
+v：
+s：  // 这三个实际上是签名（Signature）分成了三部分。签名是由发送者的私钥和txhash生成的。 接受者解密时，由签名和txHash可以得到发送者公钥，会检查公钥和发送者地址是否对应。
+&lt;/pre&gt;&lt;/div&gt;
+
+
 &lt;h2&gt;分叉&lt;/h2&gt;
-&lt;p&gt;硬分叉&lt;/p&gt;
+&lt;p&gt;硬分叉hard fork&lt;/p&gt;
+&lt;p&gt;软分叉soft fork&lt;/p&gt;
 &lt;h2&gt;ProofWork：&lt;/h2&gt;
 &lt;p&gt;[1]https://blog.ethereum.org/2015/08/07/on-public-and-private-blockchains/&lt;/p&gt;</summary></entry><entry><title>区块链系统</title><link href="http://www.guozhongxin.com/pages/2017/05/06/blockchainBegin.html" rel="alternate"></link><updated>2017-05-06T23:00:00+08:00</updated><author><name>guozhongxin</name></author><id>tag:www.guozhongxin.com,2017-05-06:pages/2017/05/06/blockchainBegin.html</id><summary type="html">&lt;!-- summary:  --&gt;
 
