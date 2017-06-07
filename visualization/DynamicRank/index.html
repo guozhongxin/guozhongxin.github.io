@@ -32,29 +32,31 @@
     <title>DynamicRank</title>
 </head>
 <body>
+<h3>  Income (per capita) Top 10 Nations from 1800 to 2009
+</h3>
 <script src="js/d3.v3.min.js" charset="utf-8"></script>
 <script>
-
-    var margin = {top: 30, right: 120, bottom: 0, left: 120},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
-
-    var x = d3.scale.linear()
-        .range([0, width]);
-
-    var startYear = 1800;
+    // Configuration
+    var startYear = 1900;
     var endYear = 2009;
 
     var barHeight = 40;
 
     var barTransDuration = 100;
-    var xaxisTransDuaration = 100;
-    var totalDuration = 80000;
-    var color = d3.scale.ordinal()
-        .range(["steelblue", "#ccc"]);
+    var xaxisTransDuaration = 500;
+    var totalDuration = 120000;
+
+    // Add the basic elements
+    var margin = {top: 30, right: 120, bottom: 0, left: 120},
+        width = 960 - margin.left - margin.right,
+        height = 550 - margin.top - margin.bottom;
+
+//    var color = d3.scale.ordinal().range(["steelblue", "#ccc"]);
 
     var colorScale = d3.scale.category10();
 
+    var x = d3.scale.linear()
+        .range([0, width]);
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("top");
@@ -95,6 +97,7 @@
         data = parseData(nations);
         init(data);
 
+        // Show the animated changes
         svg.transition()
             .duration(totalDuration)
             .ease("linear")
@@ -102,11 +105,14 @@
 
     });
 
+    // Parse the json data into assigned structure
     function parseData(nations) {
         return nations.map(function (n) {
             return {name: n.name, region: n.region, values: n.income}
         });
     }
+
+    // Show the initial rank
     function init(data) {
 
         var top10Data = top10(data, startYear);
@@ -122,7 +128,7 @@
             .duration(xaxisTransDuaration)
             .call(xAxis);
 
-        var barTransition = bars.transition()
+        bars.transition()
             .duration(0)
             .attr("transform", function (d, i) {
                 var position = (i<11)? i: 11;
@@ -131,6 +137,7 @@
 
     }
 
+    // display ranks between startYear and endYear
     function dynamicRank() {
         var timeScale = d3.interpolateNumber(startYear, endYear);
         return function (t) {
@@ -143,41 +150,71 @@
         var scaleMax = d3.max(top10Data, function (d) {
             return d.value;
         });
-        x.domain([0, scaleMax]).nice();
-        svg.selectAll(".x.axis").transition()
-            .duration(xaxisTransDuaration)
-            .call(xAxis);
 
-        bars.data(top10Data, key);//.call(reRank);
+        // Reduce the transition of x-axis
+        var curScale = x.domain()[1];
+        if (scaleMax>curScale  || curScale > scaleMax * 1.6) {
+            x.domain([0, 1.3 * scaleMax]).nice();
+            svg.selectAll(".x.axis")
+                .transition()
+                .duration(xaxisTransDuaration)
+                .call(xAxis);
+        }
+// TODO : add more elements
 //        var titles = bars.selectAll("title");
 //        titles.text(function (d) {
 //            return d.value;
 //        });
-        var rects = bars.selectAll("rect").data(top10Data, key);
-        rects.attr("width", function (d) {
+
+        var update = bars.data(top10Data, key);//.call(reRank);
+
+        var exit = update.exit();
+
+        // Update the width of rect based on the new top10data;
+        update.selectAll("rect").data(top10Data, key)
+            .attr("width", function (d) {
             return x(d.value);
         });
 
-        bars.transition()
+        update.transition()
             .duration(barTransDuration)
-            .attr("transform", function (d, preIndex) {
-                var prePosition = ((preIndex<11)? preIndex: 11) * barHeight * 1.2;
+            .attr("transform", function (d) {
                 var curPosition = ((d.curIndex<11)? d.curIndex: 11) * barHeight * 1.2;
-                var trans = curPosition-prePosition;
-                return "translate("+ 0 + "," +  curPosition+ ")";
+                return "translate(0," +  curPosition+ ")";
             });
+
+        // Add the new bars for the new top10 nations
+        update.enter()
+            .append("g")
+            .call(fillBars)
+            .attr("transform", function (d) {
+                //return "translate(0,"+ barHeight * 1.2 * d.curIndex+ ")";
+                return "translate(0,"+ barHeight * 1.2 * 11+ ")";
+            });
+
+//        enter.transition()
+//            .duration(0)
+//            .attr("transform", "translate(0,"+ barHeight * 1.2 * 11+ ")");
+
+//        enter.transition()
+//            .duration(barTransDuration)
+//            .attr("transform", function (d) {
+//                return "translate(0,"+ barHeight * 1.2 * d.curIndex+ ")";
+//            });
+
+        exit.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d) {
+                return "translate(0,"+ barHeight * 1.2 * 11+ ")";
+            })
+            .remove();
+
+        bars = update;
 
         label.text(Math.round(year));
     }
 
-//    function reRank(g) {
-//        g.selectAll("rect")
-//            .attr("width",  function (d) {
-//                var res = x(d.value);
-//                return res;
-//            });
-//    }
-
+    // The key to update top10 data
     function key(d) {
         return d.name;
     }
@@ -199,7 +236,7 @@
         return a[1];
     }
 
-    // Creates a set of bars for the given data node, at the specified index.
+    // Creates a set of bars for the given data, at the specified index.
     function createBars(set) {
         var bar = svg.insert("g", ".y.axis")
             .attr("class", "bars")
@@ -207,9 +244,12 @@
             .selectAll("g")
             .data(set)
             .enter().append("g");
-        //.style("cursor", function (nations) { return !nations ? null : "pointer"; });
-        //.on("click", down);
 
+        return bar.call(fillBars);
+    }
+
+    // Add `rect` and `text` for a set of bars
+    function fillBars(bar) {
         bar.append("text")
             .attr("x", -6)
             .attr("y", barHeight / 2)
@@ -232,10 +272,9 @@
             .text(function (d) {
                 return d.value;
             });
-
-        return bar;
     }
 
+    // Get the top 10
     function top10(data, year) {
         var ns = data.map(function (d) {
             return {
@@ -244,6 +283,8 @@
                 value: interpolateValues(d.values, year),
             };
         });
+
+        // desc
         ns.sort(function (a, b) {
             return b.value - a.value;
         }).map(function (n, i) {
@@ -251,9 +292,10 @@
              return n;
         });
 
-        return ns;
-        //return ns.slice(0, 10);
+        return ns.slice(0, 10);
     }
+
+
 
 </script>
 </body>
