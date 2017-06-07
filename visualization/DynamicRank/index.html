@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<style>
+    text {
+        font: 12px sans-serif;
+    }
+
+    rect.background {
+        fill: white;
+    }
+
+    .axis {
+        shape-rendering: crispEdges;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+    }
+
+    .year.label {
+        font: 500 96px "Helvetica Neue";
+        fill: #ddd;
+    }
+
+    .year.label.active {
+        fill: #aaa;
+    }
+</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DynamicRank</title>
+</head>
+<body>
+<script src="js/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+    var margin = {top: 30, right: 120, bottom: 0, left: 120},
+        width = 960 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    var x = d3.scale.linear()
+        .range([0, width]);
+
+    var startYear = 1800;
+    var endYear = 2009;
+
+    var barHeight = 40;
+
+    var barTransDuration = 100;
+    var xaxisTransDuaration = 100;
+    var totalDuration = 80000;
+    var color = d3.scale.ordinal()
+        .range(["steelblue", "#ccc"]);
+
+    var colorScale = d3.scale.category10();
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("top");
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("rect")
+        .attr("class", "background")
+        .attr("width", width)
+        .attr("height", height);
+    //.on("click", up);
+
+    svg.append("g")
+        .attr("class", "x axis");
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .append("line")
+        .attr("y1", "100%");
+
+    // Add the year label; the value is set on transition.
+    var label = svg.append("text")
+        .attr("class", "year label")
+        .attr("text-anchor", "end")
+        .attr("y", height - 24)
+        .attr("x", width)
+        .text(startYear);
+
+    var data;
+    var bars;
+    d3.json("resource/nations.json", function (error, nations) {
+        if (error) throw error;
+
+        data = parseData(nations);
+        init(data);
+
+        svg.transition()
+            .duration(totalDuration)
+            .ease("linear")
+            .tween("years", dynamicRank)
+
+    });
+
+    function parseData(nations) {
+        return nations.map(function (n) {
+            return {name: n.name, region: n.region, values: n.income}
+        });
+    }
+    function init(data) {
+
+        var top10Data = top10(data, startYear);
+        var scaleMax = d3.max(top10Data, function (d) {
+            return d.value;
+        });
+
+        x.domain([0, scaleMax]).nice();
+
+        bars = createBars(top10Data).attr("transform", "translate(0,5)");
+
+        svg.selectAll(".x.axis").transition()
+            .duration(xaxisTransDuaration)
+            .call(xAxis);
+
+        var barTransition = bars.transition()
+            .duration(0)
+            .attr("transform", function (d, i) {
+                var position = (i<11)? i: 11;
+                return "translate(0," + barHeight * position * 1.2 + ")";
+            });
+
+    }
+
+    function dynamicRank() {
+        var timeScale = d3.interpolateNumber(startYear, endYear);
+        return function (t) {
+            displayEach(timeScale(t));
+        }
+    }
+
+    function displayEach(year) {
+        var top10Data = top10(data,year);
+        var scaleMax = d3.max(top10Data, function (d) {
+            return d.value;
+        });
+        x.domain([0, scaleMax]).nice();
+        svg.selectAll(".x.axis").transition()
+            .duration(xaxisTransDuaration)
+            .call(xAxis);
+
+        bars.data(top10Data, key);//.call(reRank);
+//        var titles = bars.selectAll("title");
+//        titles.text(function (d) {
+//            return d.value;
+//        });
+        var rects = bars.selectAll("rect").data(top10Data, key);
+        rects.attr("width", function (d) {
+            return x(d.value);
+        });
+
+        bars.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d, preIndex) {
+                var prePosition = ((preIndex<11)? preIndex: 11) * barHeight * 1.2;
+                var curPosition = ((d.curIndex<11)? d.curIndex: 11) * barHeight * 1.2;
+                var trans = curPosition-prePosition;
+                return "translate("+ 0 + "," +  curPosition+ ")";
+            });
+
+        label.text(Math.round(year));
+    }
+
+//    function reRank(g) {
+//        g.selectAll("rect")
+//            .attr("width",  function (d) {
+//                var res = x(d.value);
+//                return res;
+//            });
+//    }
+
+    function key(d) {
+        return d.name;
+    }
+
+    // A bisector since many nation's data is sparsely-defined.
+    var bisect = d3.bisector(function (d) {
+        return d[0];
+    });
+
+    // Finds (and possibly interpolates) the value for the specified year.
+    function interpolateValues(values, year) {
+        var i = bisect.left(values, year, 0, values.length - 1),
+            a = values[i];
+        if (i > 0) {
+            var b = values[i - 1],
+                t = (year - a[0]) / (b[0] - a[0]);
+            return a[1] * (1 - t) + b[1] * t;
+        }
+        return a[1];
+    }
+
+    // Creates a set of bars for the given data node, at the specified index.
+    function createBars(set) {
+        var bar = svg.insert("g", ".y.axis")
+            .attr("class", "bars")
+            .attr("transform", "translate(0,5)")
+            .selectAll("g")
+            .data(set)
+            .enter().append("g");
+        //.style("cursor", function (nations) { return !nations ? null : "pointer"; });
+        //.on("click", down);
+
+        bar.append("text")
+            .attr("x", -6)
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function (d) {
+                return d.name;
+            });
+
+        bar.append("rect")
+            .attr("width", function (d) {
+                return x(d.value);
+            })
+            .attr("height", barHeight)
+            .style("fill", function (d) {
+                return colorScale(d.region)
+            });
+
+        bar.append("title")
+            .text(function (d) {
+                return d.value;
+            });
+
+        return bar;
+    }
+
+    function top10(data, year) {
+        var ns = data.map(function (d) {
+            return {
+                name: d.name,
+                region: d.region,
+                value: interpolateValues(d.values, year),
+            };
+        });
+        ns.sort(function (a, b) {
+            return b.value - a.value;
+        }).map(function (n, i) {
+             n.curIndex = i;
+             return n;
+        });
+
+        return ns;
+        //return ns.slice(0, 10);
+    }
+
+</script>
+</body>
+</html>
