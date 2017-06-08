@@ -206,7 +206,7 @@
 
         legend.transition()
             .attr("transform", function (d, i) {
-            return "translate("+ (width+5) + ","+ (height-i*40)+ ")";
+            return "translate("+ (width+5) + ","+ (height-(i+1)*40)+ ")";
         })
     }
 
