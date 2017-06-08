@@ -19,7 +19,7 @@
     }
 
     .year.label {
-        font: 500 96px "Helvetica Neue";
+        font: 500 120px "Helvetica Neue";
         fill: #ddd;
     }
 
@@ -34,6 +34,11 @@
         shape-rendering: crispEdges;
     }
 
+    .overlay {
+        fill: #b4b4b4;
+        pointer-events: all;
+        cursor: ew-resize;
+    }
 </style>
 <html lang="en">
 <head>
@@ -54,7 +59,7 @@
 
     var barTransDuration = 100;
     var xaxisTransDuaration = 1000;
-    var totalDuration = 120000;
+    var interval = 700; // display time of each year
 
     // Add the basic elements
     var totalHeight = 600;
@@ -75,6 +80,12 @@
         .tickSize(-totalHeight, 0, 0)
         .orient("bottom").ticks(xAxis.tick);
 
+    var yearScale = d3.scale.linear()
+        .range([0, 0]);
+    var yearAxis = d3.svg.axis()
+        .scale(yearScale)
+        .orient("bottom").ticks(5).tickSize(0);
+
     var svg = d3.select("body").append("svg")
         .attr("width", totalWidth)
         .attr("height", totalHeight)
@@ -85,14 +96,13 @@
         .attr("class", "background")
         .attr("width", width)
         .attr("height", height);
-    //.on("click", up);
 
     svg.append("g")
         .attr("class", "x axis");
 
     svg.append("g")
-        .attr("class","innerLine")
-        .attr("transform", "translate(0," +( totalHeight ) + ")")
+        .attr("class", "innerLine")
+        .attr("transform", "translate(0," + ( totalHeight ) + ")")
         .call(xInner)
         .selectAll("text")
         .text("");
@@ -104,22 +114,31 @@
 
     svg.append("g")
         .attr("class", "legend")
-        .attr("transform", "translate("+ margin.left, +","+height+")");
+    ;//.attr("transform", "translate(" + margin.left +"," + height + ")");
 
 
     // Add the year label; the value is set on transition.
     var label = svg.append("text")
         .attr("class", "year label")
         .attr("text-anchor", "end")
-        .attr("y", height-24)
-        .attr("x", width)
+        .attr("y", height - 60)
+        .attr("x", width - 10)
         .text(startYear);
 
 
+    svg.append("g")
+        .attr("class", "yearaxis");
+    //    var yearBar = svg.append("rect")
+    //        .attr("class", "yearBar")
+    //        .attr("height",6)
+    //        .attr("width",label.width)
+    //        .attr("rx",3)
+    //        .attr("ry",3);
 
     var data;
     var bars;
-    
+    var curYear = 1800;
+
     d3.json("resource/nations.json", function (error, nations) {
         if (error) throw error;
 
@@ -128,32 +147,30 @@
         init(data);
 
         // Show the animated changes
-        svg.transition()
-            .duration(totalDuration)
-            .ease("linear")
-            .tween("years", dynamicRank);
+        dynamicRank();
 
+        enableInteraction();
     });
 
     // Parse the json data into assigned structure
     function parseData(nations) {
-        
+
         return nations.map(function (n) {
             return {name: n.name, type: n.region, values: n.income}
         });
     }
-    
+
     function listTypes(data) {
         var res = [], map = {};
         data.forEach(function (d) {
-            if (!map[d.type]){
+            if (!map[d.type]) {
                 res.push(d.type);
                 map[d.type] = true;
             }
         });
         return res.sort();
     }
-    
+
     // Show the initial rank
     function init(data) {
 
@@ -206,13 +223,83 @@
 
         legend.transition()
             .attr("transform", function (d, i) {
-            return "translate("+ (width+5) + ","+ (height-(i+1)*40)+ ")";
-        })
+                return "translate(" + (width + 5) + "," + (height - (i + 1) * 40) + ")";
+            })
+    }
+
+    function enableInteraction() {
+        var box = label.node().getBBox();
+
+        var yearBarHeight = 20;
+        var overlay = svg.append("rect")
+            .attr("class", "overlay")
+            .attr("x", box.x)
+            .attr("y", box.y + box.height-10)
+            .attr("width", box.width)
+            .attr("height", yearBarHeight)
+            .on("mouseover", interaction)
+            .on("mouseout", dynamicRank);
+
+        yearScale.range([box.x, box.x + box.width]).clamp(true);
+        yearScale.domain([startYear, endYear]);
+        svg.selectAll(".yearaxis").transition()
+            .attr("transform", "translate(0," + (box.y + box.height + yearBarHeight-10) + ")")
+            .duration(0)
+            .call(yearAxis);
+
+//        var l = document.getElementsByClassName("overlay");
+//
+//        l.addEventListener("mouseout", dynamicRank);
+
+
+        function interaction() {
+//            var yearScale = d3.scale.linear()
+//                .domain([startYear, endYear])
+//                .range([box.x + 10, box.x + box.width - 10])
+//                .clamp(true);
+
+            // Cancel the current transition, if any.
+            svg.transition().duration(0);
+
+            overlay
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout)
+                .on("mousemove", mousemove)
+                .on("touchmove", mousemove);
+
+            function mouseover() {
+                label.classed("active", true);
+            }
+
+            function mouseout() {
+                label.classed("active", false);
+                svg.transition().duration(0);
+                dynamicRank();
+            }
+
+            function mousemove() {
+                curYear = yearScale.invert(d3.mouse(this)[0]);
+                displayEach(yearScale.invert(d3.mouse(this)[0]));
+                svg.transition().duration(0);
+            }
+
+//            svg.transition()
+//                    .duration(totalDuration)
+//                    .ease("linear")
+//                    .tween("years", dynamicRank);
+        }
+    }
+
+    function dynamicRank() {
+        svg.transition()
+            .duration(interval * (endYear - curYear))
+            .ease("linear")
+            .tween("years", displayYears);
     }
 
     // display ranks between startYear and endYear
-    function dynamicRank() {
-        var timeScale = d3.interpolateNumber(startYear, endYear);
+    function displayYears() {
+        var timeScale = d3.interpolateNumber(curYear, endYear);
         return function (t) {
             displayEach(timeScale(t));
         }
@@ -254,12 +341,6 @@
                 return x(d.value);
             });
 
-        update.transition()
-            .duration(barTransDuration)
-            .attr("transform", function (d) {
-                var curPosition = ((d.curIndex < 11) ? d.curIndex : 11) * barHeight * barSpace;
-                return "translate(0," + curPosition + ")";
-            });
 
         // Add the new bars for the new top10 nations
         update.enter()
@@ -269,16 +350,12 @@
                 // Appear on the bottom at first.
                 return "translate(0," + barHeight * barSpace * 11 + ")";
             });
-
-//        enter.transition()
-//            .duration(0)
-//            .attr("transform", "translate(0,"+ barHeight * barSpace * 11+ ")");
-
-//        enter.transition()
-//            .duration(barTransDuration)
-//            .attr("transform", function (d) {
-//                return "translate(0,"+ barHeight * barSpace * d.curIndex+ ")";
-//            });
+        update.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d) {
+                var curPosition = d.curIndex * barHeight * barSpace;
+                return "translate(0," + curPosition + ")";
+            });
 
         exit.transition()
             .duration(barTransDuration)
