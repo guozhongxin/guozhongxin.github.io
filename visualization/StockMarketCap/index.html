@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<style>
+    text {
+        font: 12px sans-serif;
+    }
+
+    .name {
+        font: 10px sans-serif;
+        fill: #666;
+        word-wrap: break-word;
+    }
+
+
+    rect.background {
+        fill: white;
+    }
+
+    .axis {
+        shape-rendering: crispEdges;
+    }
+
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+    }
+
+    .date.label {
+        font: 500 60px "Helvetica Neue";
+        fill: #ddd;
+    }
+
+    .date.label.active {
+        fill: #aaa;
+    }
+
+    .innerLine path,
+    .innerLine line {
+        fill: #b4b4b4;
+        stroke: #b4b4b4;
+        shape-rendering: crispEdges;
+    }
+
+    .overlay {
+        fill: #b4b4b4;
+        pointer-events: all;
+        cursor: ew-resize;
+    }
+</style>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DynamicRank</title>
+</head>
+<body>
+<h3> Market Capitalization Top 10 U.S Stock from 1990.1.1 to 2017.6.8
+</h3>
+<script src="js/d3.v3.min.js" charset="utf-8"></script>
+<script>
+    // Configuration
+    var timeFormat = d3.time.format("%B %e %Y");
+    var timeFormat2 = d3.time.format("%b. %e %Y");
+    var timeFormat3 = d3.time.format("%b%e %Y");
+    var start = new Date(1990, 0, 1);
+    var end = new Date(2017, 5, 8);
+
+    var barHeight = 36;
+    var barSpace = 1.5;
+
+    var barTransDuration = 100;
+    var xaxisTransDuaration = 1000;
+    var interval = 20; // display time of each year
+
+    // Add the basic elements
+    var totalHeight = 600;
+    var totalWidth = 1200;
+    var margin = {top: 30, right: 200, bottom: 0, left: 300},
+        width = totalWidth - margin.left - margin.right,
+        height = totalHeight - margin.top - margin.bottom;
+    var colorScale = d3.scale.category20();
+
+    var x = d3.scale.linear()
+        .range([0, width]);
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("top");
+
+    var xInner = d3.svg.axis()
+        .scale(x)
+        .tickSize(-totalHeight, 0, 0)
+        .orient("bottom").ticks(xAxis.tick);
+
+    var yearScale = d3.time.scale()
+        .range([0, 0]);
+    var yearAxis = d3.svg.axis()
+        .scale(yearScale)
+        .orient("bottom").ticks(5).tickSize(0);
+
+    var svg = d3.select("body").append("svg")
+        .attr("width", totalWidth)
+        .attr("height", totalHeight)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("rect")
+        .attr("class", "background")
+        .attr("width", width)
+        .attr("height", height);
+
+    svg.append("g")
+        .attr("class", "x axis");
+
+    svg.append("g")
+        .attr("class", "innerLine")
+        .attr("transform", "translate(0," + ( totalHeight ) + ")")
+        .call(xInner)
+        .selectAll("text")
+        .text("");
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .append("line")
+        .attr("y1", "100%");
+
+    svg.append("g")
+        .attr("class", "legend")
+    ;//.attr("transform", "translate(" + margin.left +"," + height + ")");
+
+
+    // Add the year label; the value is set on transition.
+    var label = svg.append("text")
+        .attr("class", "date label")
+        .attr("text-anchor", "end")
+        .attr("y", height - 60)
+        .attr("x", width - 10)
+        .text(timeFormat3(start));
+
+
+    svg.append("g")
+        .attr("class", "yearaxis");
+
+
+    var data;
+    var bars;
+    var curTime = start;
+
+    d3.json("resource/stocks10.json", function (error, stocks) {
+        if (error) throw error;
+
+        data = stocks;
+        data.map(function (d) {
+            d.values.map(function (t, i) {
+                t[0] = strToDate(t[0]);
+                return t;
+            });
+            return d;
+        });
+        init(data);
+
+        // Show the animated changes
+        dynamicRank();
+
+        enableInteraction();
+    });
+
+    function listTypes(data) {
+        var res = [], map = {};
+        data.forEach(function (d) {
+            if (!map[d.type]) {
+                res.push(d.type);
+                map[d.type] = true;
+            }
+        });
+        return res.sort();
+    }
+
+    // Show the initial rank
+    function init(data) {
+
+        var top10Data = top10(data, start);
+        var scaleMax = d3.max(top10Data, function (d) {
+            return d.value;
+        });
+
+        x.domain([0, scaleMax]).nice();
+
+        bars = createBars(top10Data).attr("transform", "translate(0,10)");
+
+        svg.selectAll(".x.axis").transition()
+            .duration(xaxisTransDuaration)
+            .call(xAxis);
+
+        svg.select(".innerLine").transition()
+            .duration(xaxisTransDuaration)
+            .call(xInner);
+
+        displayLegend(data);
+
+        bars.transition()
+            .duration(0)
+            .attr("transform", function (d, i) {
+                return "translate(0," + barHeight * i * barSpace + ")";
+            });
+    }
+
+    function displayLegend(data) {
+        var types = listTypes(data);
+
+        var legend = svg.select(".legend")
+            .selectAll("g")
+            .data(types).enter()
+            .append("g");
+
+        legend.append("rect")
+            .attr("width", 50)
+            .attr("height", 20)
+            .style("fill", colorScale);
+
+        legend.append("text")
+            .attr("x", 0)
+            .attr("y", 32)
+            .text(function (d) {
+                return d;
+            });
+
+        legend.transition()
+            .attr("transform", function (d, i) {
+                return "translate(" + (width + 5) + "," + (height - (i + 1) * 40) + ")";
+            })
+    }
+
+    function enableInteraction() {
+        var box = label.node().getBBox();
+
+        var yearBarHeight = 20;
+        var overlay = svg.append("rect")
+            .attr("class", "overlay")
+            .attr("x", box.x)
+            .attr("y", box.y + box.height)
+            .attr("width", box.width)
+            .attr("height", yearBarHeight)
+            .on("mouseover", interaction)
+            .on("mouseout", dynamicRank);
+
+        yearScale.range([box.x, box.x + box.width]).clamp(true);
+        yearScale.domain([start, end]);
+        svg.selectAll(".yearaxis").transition()
+            .attr("transform", "translate(0," + (box.y + box.height + yearBarHeight) + ")")
+            .duration(0)
+            .call(yearAxis);
+
+
+        function interaction() {
+//            var yearScale = d3.scale.linear()
+//                .domain([start, end])
+//                .range([box.x + 10, box.x + box.width - 10])
+//                .clamp(true);
+
+            // Cancel the current transition, if any.
+            svg.transition().duration(0);
+
+            overlay
+                .on("mouseover", mouseover)
+                .on("mouseout", mouseout)
+                .on("mousemove", mousemove)
+                .on("touchmove", mousemove);
+
+            function mouseover() {
+                label.classed("active", true);
+            }
+
+            function mouseout() {
+                label.classed("active", false);
+                svg.transition().duration(0);
+                dynamicRank();
+            }
+
+            function mousemove() {
+                curTime = yearScale.invert(d3.mouse(this)[0]);
+                displayEach(yearScale.invert(d3.mouse(this)[0]));
+                svg.transition().duration(0);
+            }
+
+        }
+    }
+
+    function dynamicRank() {
+        svg.transition()
+            .duration(interval * (end - curTime) / 8640000)
+            .ease("linear")
+            .tween("days", displayDays);
+    }
+
+    // display ranks between start and end
+    function displayDays() {
+        var timeScale = d3.interpolate(curTime, end);
+        return function (t) {
+            displayEach(timeScale(t));
+        }
+    }
+
+    function displayEach(time) {
+        var date = new Date(time);
+        var top10Data = top10(data, date);
+        var scaleMax = d3.max(top10Data, function (d) {
+            return d.value;
+        });
+
+        // Upate x-axis. Reduce the transition of x-axis
+        var curScale = x.domain()[1];
+        if (scaleMax > curScale || curScale > scaleMax * 1.6) {
+            x.domain([0, 1.3 * scaleMax]).nice();
+            svg.selectAll(".x.axis")
+                .transition()
+                .duration(xaxisTransDuaration)
+                .call(xAxis);
+
+            svg.select(".innerLine")
+                .transition()
+                .duration(xaxisTransDuaration)
+                .call(xInner);
+        }
+
+        var update = bars.data(top10Data, key);//.call(reRank);
+        var enter = update.enter();
+        var exit = update.exit();
+
+        // Update the width of rect based on the new top10data;
+        update.selectAll("rect").data(top10Data, key)
+            .attr("width", function (d) {
+                return x(d.value);
+            });
+
+        // Add the new bars for the new top10 nations
+        enter.append("g")
+            .call(fillBars)
+            .attr("transform", function (d) {
+                // Appear on the bottom at first.
+                return "translate(0," + barHeight * barSpace * 11 + ")";
+            });
+
+        update.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d) {
+                var curPosition = d.curIndex * barHeight * barSpace;
+                return "translate(0," + curPosition + ")";
+            });
+
+        exit.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d) {
+                return "translate(0," + barHeight * barSpace * 11 + ")";
+            }).remove();
+
+        bars = update;
+        label.text(timeFormat3(date));
+    }
+
+    // The key to update top10 data
+    function key(d) {
+        return d.id;
+    }
+
+    function strToDate(dateStr) {
+        var date;
+        if (dateStr.indexOf(".") >= 0) {
+            date = timeFormat2.parse(dateStr);
+        } else {
+            date = timeFormat.parse(dateStr);
+        }
+        return date;
+    }
+
+    var bisect = d3.bisector(function (a, b) {
+//        var ad = ppp(a);
+//        b.map(pp);
+        return b - a[0];
+    });
+
+    // Finds (and possibly interpolates) the value for the specified year.
+    function interpolateValues(values, date) {
+        var i = bisect.right(values, date);
+        var a = values[i];
+        if (i < (values.length)) {
+            if (i == 0) {
+                return a[1];
+            }
+            var b = values[i - 1];
+            var t = (date - a[0]) / (b[0] - a[0]);
+            return a[1] * (1 - t) + b[1] * t;
+        } else {
+            return 1;
+        }
+    }
+
+    // Creates a set of bars for the given data, at the specified index.
+    function createBars(set) {
+        var bar = svg.insert("g", ".y.axis")
+            .attr("class", "bars")
+            .attr("transform", "translate(0,10)")
+            .selectAll("g")
+            .data(set)
+            .enter().append("g");
+
+        return bar.call(fillBars);
+    }
+
+    // Add `rect` and `text` for a set of bars
+    function fillBars(bar) {
+        bar.append("text")
+            .attr("x", -6)
+            .attr("y", barHeight / 3)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function (d) {
+                return d.id;
+            });
+
+        bar.append("text")
+            .attr("class", "name")
+
+            .attr("x", -6)
+            .attr("y", barHeight*(2/3) )
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .style("width", "30px")
+            .text(function (d) {
+                return d.name;
+            });
+
+        bar.append("rect")
+            .attr("width", function (d) {
+                return x(d.value);
+            })
+            .attr("height", barHeight)
+            .style("fill", function (d) {
+                return colorScale(d.type)
+            });
+
+    }
+
+    // Get the top 10
+    function top10(data, year) {
+        var ns = data.map(function (d) {
+            return {
+                id: d.id,
+                name: d.name,
+                type: d.type,
+                value: interpolateValues(d.values, year)
+            };
+        });
+
+        // desc
+        ns.sort(function (a, b) {
+            return b.value - a.value;
+        }).map(function (n, i) {
+            n.curIndex = i;
+            return n;
+        });
+
+        return ns.slice(0, 10);
+    }
+
+
+</script>
+</body>
+</html>
