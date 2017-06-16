@@ -46,6 +46,37 @@
         pointer-events: all;
         cursor: ew-resize;
     }
+
+    .track,
+    .track-inset,
+    .track-overlay {
+        stroke-linecap: round;
+    }
+
+    .track {
+        stroke: #000;
+        stroke-opacity: 0.3;
+        stroke-width: 10px;
+    }
+
+    .track-inset {
+        stroke: #ddd;
+        stroke-width: 8px;
+    }
+
+    .track-overlay {
+        pointer-events: stroke;
+        stroke-width:30px;
+        stroke: transparent;
+        cursor: crosshair;
+    }
+
+    .handle {
+        fill: #fff;
+        stroke: #000;
+        stroke-opacity: 0.5;
+        stroke-width: 1.25px;
+    }
 </style>
 <html lang="en">
 <head>
@@ -55,21 +86,24 @@
 <body>
 <h3> Market Capitalization Top 10 U.S Stock from 1990.1.1 to 2017.6.8
 </h3>
-<script src="js/d3.v3.min.js" charset="utf-8"></script>
+<script src="js/d3.v4.min.js" charset="utf-8"></script>
 <script>
     // Configuration
-    var timeFormat = d3.time.format("%B %e %Y");
-    var timeFormat2 = d3.time.format("%b. %e %Y");
-    var timeFormat3 = d3.time.format("%b%e %Y");
+
+    var timeParse = d3.timeParse("%B %e %Y");
+    var timeParse2 = d3.timeParse("%b. %e %Y");
+    var timeFormat3 = d3.timeFormat("%b%e %Y");
     var start = new Date(1990, 0, 1);
     var end = new Date(2017, 5, 8);
 
     var barHeight = 36;
     var barSpace = 1.5;
 
-    var barTransDuration = 100;
+    var barTransDuration = 80;
     var xaxisTransDuaration = 1000;
-    var interval = 20; // display time of each year
+    var interval = 80; // display time of each year
+
+
 
     // Add the basic elements
     var totalHeight = 600;
@@ -77,24 +111,21 @@
     var margin = {top: 30, right: 200, bottom: 0, left: 300},
         width = totalWidth - margin.left - margin.right,
         height = totalHeight - margin.top - margin.bottom;
-    var colorScale = d3.scale.category20();
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory20);
 
-    var x = d3.scale.linear()
+    var x = d3.scaleLinear()
         .range([0, width]);
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("top");
 
-    var xInner = d3.svg.axis()
-        .scale(x)
-        .tickSize(-totalHeight, 0, 0)
-        .orient("bottom").ticks(xAxis.tick);
+    var xAxis = d3.axisTop(x);
 
-    var yearScale = d3.time.scale()
+    var xInner = d3.axisBottom(x)
+        .tickSizeInner(-totalHeight)
+        .ticks(xAxis.tick);
+
+    var yearScale = d3.scaleTime()
         .range([0, 0]);
-    var yearAxis = d3.svg.axis()
-        .scale(yearScale)
-        .orient("bottom").ticks(5).tickSize(0);
+
+    var yearAxis = d3.axisBottom(yearScale).ticks(5).tickSize(0);
 
     var svg = d3.select("body").append("svg")
         .attr("width", totalWidth)
@@ -131,14 +162,13 @@
     var label = svg.append("text")
         .attr("class", "date label")
         .attr("text-anchor", "end")
-        .attr("y", height - 60)
+        .attr("y", height - 100)
         .attr("x", width - 10)
         .text(timeFormat3(start));
 
 
     svg.append("g")
         .attr("class", "yearaxis");
-
 
     var data;
     var bars;
@@ -187,7 +217,7 @@
         bars = createBars(top10Data).attr("transform", "translate(0,10)");
 
         svg.selectAll(".x.axis").transition()
-            .duration(xaxisTransDuaration)
+            .duration(0)
             .call(xAxis);
 
         svg.select(".innerLine").transition()
@@ -205,13 +235,13 @@
 
     function displayLegend(data) {
 
-    	svg.append("text")
+        svg.append("text")
             .attr("x", -8)
             .attr("y", -8)
             .style("font-weight", "bold")
             .attr("text-anchor", "end")
             .text("(Billion US Dollars)");
-            
+
         var types = listTypes(data);
 
         var legend = svg.select(".legend")
@@ -237,6 +267,7 @@
             })
     }
 
+
     function enableInteraction() {
         var box = label.node().getBBox();
 
@@ -257,12 +288,53 @@
             .duration(0)
             .call(yearAxis);
 
+        displaySpeedBar();
+        function displaySpeedBar(){
+
+            var speedX = d3.scaleLog()
+                .domain([1, 16])
+                .range([0, box.width])
+                .clamp(true);
+
+            var slider = svg.append("g")
+                .attr("class", "slider")
+                .attr("transform", "translate(" + box.x + "," + (box.y + box.height +3* yearBarHeight)  + ")");
+
+            slider.append("line")
+                .attr("class", "track")
+                .attr("x1", speedX.range()[0])
+                .attr("x2", speedX.range()[1])
+                .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+                .attr("class", "track-inset")
+                .select(function() { return this.parentNode.appendChild(this.cloneNode(true)); })
+                .attr("class", "track-overlay")
+                .call(d3.drag()
+                    .on("start.interrupt", function() { slider.interrupt(); })
+                    .on("start drag", function() { hue(speedX.invert(d3.event.x)); }));
+
+            slider.insert("g", ".track-overlay")
+                .attr("class", "ticks")
+                .attr("transform", "translate(0," + 18 + ")")
+                .selectAll("text")
+                .data([1,2,4,8,16])
+                .enter().append("text")
+                .attr("x", speedX)
+                .attr("text-anchor", "middle")
+                .text(function(d) { return d; });
+
+            var handle = slider.insert("circle", ".track-overlay")
+                .attr("class", "handle")
+                .attr("r", 9);
+
+
+            function hue(h) {
+                handle.attr("cx", speedX(h));
+                handleSpeed(h);
+                //svg.style("background-color", d3.hsl(h, 0.8, 0.8));
+            }
+        }
 
         function interaction() {
-//            var yearScale = d3.scale.linear()
-//                .domain([start, end])
-//                .range([box.x + 10, box.x + box.width - 10])
-//                .clamp(true);
 
             // Cancel the current transition, if any.
             svg.transition().duration(0);
@@ -292,10 +364,18 @@
         }
     }
 
+    function handleSpeed(speed) {
+        barTransDuration = 80/Math.sqrt(Math.sqrt(Math.log(speed)/Math.log(2)+1));
+        xaxisTransDuaration = 1000/(Math.log(speed)/Math.log(2)+1);
+        interval = 80/speed; // display time of each year
+        svg.transition().duration(0);
+        dynamicRank();
+    }
+
     function dynamicRank() {
         svg.transition()
             .duration(interval * (end - curTime) / 8640000)
-            .ease("linear")
+            .ease(d3.easeLinear)
             .tween("days", displayDays);
     }
 
@@ -329,8 +409,8 @@
                 .call(xInner);
         }
 
-        var update = bars.data(top10Data, key);//.call(reRank);
-        var enter = update.enter();
+        var update = bars.data(top10Data, key);
+
         var exit = update.exit();
 
         // Update the width of rect based on the new top10data;
@@ -340,27 +420,30 @@
             });
 
         // Add the new bars for the new top10 nations
-        enter.append("g")
-            .call(fillBars)
-            .attr("transform", function (d) {
-                // Appear on the bottom at first.
-                return "translate(0," + barHeight * barSpace * 11 + ")";
-            });
+        var enterbars = update.enter().append("g").call(fillBars);
 
-        update.transition()
-            .duration(barTransDuration)
-            .attr("transform", function (d) {
-                var curPosition = d.curIndex * barHeight * barSpace;
-                return "translate(0," + curPosition + ")";
-            });
+        enterbars.attr("transform", function (d) {
+            // Appear on the bottom at first.
+            return "translate(0," + barHeight * barSpace * 11 + ")";
+        });
+
+        bars = enterbars.merge(update);
 
         exit.transition()
             .duration(barTransDuration)
             .attr("transform", function (d) {
                 return "translate(0," + barHeight * barSpace * 11 + ")";
             }).remove();
+        bars.transition()
+            .duration(barTransDuration)
+            .attr("transform", function (d) {
+                var curPosition = d.curIndex * barHeight * barSpace;
+                return "translate(0," + curPosition + ")";
+            });
 
-        bars = update;
+
+
+//        bars = enter;
         label.text(timeFormat3(date));
     }
 
@@ -372,9 +455,9 @@
     function strToDate(dateStr) {
         var date;
         if (dateStr.indexOf(".") >= 0) {
-            date = timeFormat2.parse(dateStr);
+            date = timeParse2(dateStr);
         } else {
-            date = timeFormat.parse(dateStr);
+            date = timeParse(dateStr);
         }
         return date;
     }
@@ -468,14 +551,13 @@
 
         return ns.slice(0, 10);
     }
-
-
 </script>
 
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"slide":{"type":"slide","bdImg":"1","bdPos":"right","bdTop":"100"},"image":{"viewList":["tsina","weixin","evernotecn","linkedin","renren"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","weixin","evernotecn","linkedin","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"slide":{"type":"slide","bdImg":"1","bdPos":"right","bdTop":"100"},"image":{"viewList":["tsina","weixin","evernotecn","linkedin","renren"],"viewText":"Share with：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","weixin","evernotecn","linkedin","renren"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 
 <script>var _gaq=[['_setAccount','UA-55010568-1'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
 <a href="https://github.com/guozhongxin"><img style="position: absolute; top: 40px; right: 0; border: 0;" src="http://www.guozhongxin.com/theme/images/icons/forkme_right_white.png" alt="Fork me on GitHub" /></a>
- 
+
 </body>
 </html>
