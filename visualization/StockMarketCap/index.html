@@ -204,6 +204,14 @@
     }
 
     function displayLegend(data) {
+
+    	svg.append("text")
+            .attr("x", -8)
+            .attr("y", -8)
+            .style("font-weight", "bold")
+            .attr("text-anchor", "end")
+            .text("(Billion US Dollars)");
+            
         var types = listTypes(data);
 
         var legend = svg.select(".legend")
