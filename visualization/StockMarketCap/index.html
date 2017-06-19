@@ -320,7 +320,7 @@
                 .enter().append("text")
                 .attr("x", speedX)
                 .attr("text-anchor", "middle")
-                .text(function(d) { return d; });
+                .text(function(d) { return d+ "X"; });
 
             var handle = slider.insert("circle", ".track-overlay")
                 .attr("class", "handle")
