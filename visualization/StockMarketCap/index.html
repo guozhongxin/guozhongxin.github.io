@@ -320,7 +320,7 @@
                 .enter().append("text")
                 .attr("x", speedX)
                 .attr("text-anchor", "middle")
-                .text(function(d) { return d+ "X"; });
+                .text(function(d) { return d + "X"; });
 
             var handle = slider.insert("circle", ".track-overlay")
                 .attr("class", "handle")
@@ -389,6 +389,7 @@
 
     function displayEach(time) {
         var date = new Date(time);
+        curTime = date;
         var top10Data = top10(data, date);
         var scaleMax = d3.max(top10Data, function (d) {
             return d.value;
