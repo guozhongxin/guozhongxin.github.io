@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CanvasTransition</title>
+
+</head>
+<body>
+<canvas id="canvas" width="800" height="600">A Drawing of something</canvas>
+<p>Duration(seconds)</p>
+<input type="number" id="duration" value=1.00 step=0.01>
+<button id="play" type="button" onclick="play();">play</button>
+<select id="selectTransactions" name="selectTransactions">
+    <option value ="zoomFade">Zoom In with fading</option>
+    <option value ="pushB">Push from bottom</option>
+    <option value ="pushR">Push from right</option>
+    <option value ="coverB">Cover from bottom</option>
+    <option value ="uncoverL">Uncover to left</option>
+    <option value ="fade">Fade</option>
+    <option value ="zoomIn">Zoom In</option>
+</select>
+
+<script src="js/transCanvas.js" charset="utf-8"></script>
+</body>
+</html>
