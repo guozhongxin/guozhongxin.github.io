@@ -221,9 +221,82 @@ function fadeImageData(cxt, imageData1, imageData2, alpha) {
     return imageCopy;
 }
 
-function zoomImageData(imageData, scale) {
 
+function zoomImageData(imageData, scale) {
+    var width = imageData.width;
+    var height = imageData.height;
+
+    var disImageW = width*scale;
+    var disImageH = height*scale;
+
+    var out = new ImageData(disImageW, disImageH);
+    for (var row = 0; row < disImageH; row++) {
+        for (var col = 0; col < disImageW; col++) {
+            var index = row*disImageW+col;
+            var x = row/scale+ (1/scale -1 );
+            var y = col/scale + (1/scale-1);
+
+            var pixel = interpolation(imageData, x, y);
+
+            out.data.set(pixel.data, index);
+            // out.data[index] = pixel[0];
+            // out.data[index+1] = pixel[1];
+            // out.data[index+2] = pixel[2];
+            // // out.data[index+3] = pixel[3];
+
+        }
+    }
 }
+
+function interpolation() {
+    return nearestInterpolation();
+    return bilinearInterpolation();
+}
+
+function nearestInterpolation(imageData, x,y) {
+    var width = imageData.width;
+    var height = imageData.height;
+
+    var i = Math.round(x);
+    var j = Math.round(y);
+    i = Math.min((x-i)<0.5?i:i+1, height-1);
+    j = Math.min((y-j)<0.5?j:j+1, width-1);
+    var index = i*width + j;
+    
+    var p = new ImageData(new Uint8ClampedArray(imageData.data.subarray(index, index+4)), 1,1);
+    return p;
+}
+
+function bilinearInterpolation(imageData, x,y){
+    var width = imageData.width;
+    var height = imageData.height;
+
+    //  a u ,  1-u  b
+    //  v   p
+    // 1-v
+    //  c           d
+    var i = Math.round(x);
+    var j = Math.round(y);
+    var u = x-i;
+    var v = y-j;
+    
+    var ab = imageData.data.subarray((i*width+j)*4, (i*width+j+1)*4+1);
+    var cd = imageData.data.subarray(((i+1)*width+j)*4, ((i+1)*width+j+1)*4+1);
+
+    var a = ab.subarray(0,4);
+    var b = ab.subarray(4,8);
+    var c = cd.subarray(0,4);
+    var d = cd.subarray(4,8);
+
+    var p = new ImageData(1,1);
+    p[0] = (1-u)*(1-v)*a[0] + u*(1-v)*b[0] + (1-u)*v*c[0] + u*v*d[0]
+    p[1] = (1-u)*(1-v)*a[1] + u*(1-v)*b[1] + (1-u)*v*c[1] + u*v*d[1]
+    p[2] = (1-u)*(1-v)*a[2] + u*(1-v)*b[2] + (1-u)*v*c[2] + u*v*d[2]
+    // p[3] = (1-u)*(1-v)*a[] + u*(1-v)*b[] + (1-u)*v*c[] + u*v*d[]
+
+    return p;
+}
+
 
 /// Deprecated
 function showWithImage() {
@@ -324,3 +397,8 @@ function scaleImageData(imageData, scale) {
 
     return scaled;
 }
+
+
+
+
+
