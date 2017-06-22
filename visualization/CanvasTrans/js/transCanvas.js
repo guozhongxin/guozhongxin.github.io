@@ -7,9 +7,9 @@ var cxt = canvas.getContext('2d');
 var select = document.getElementById("selectTransactions");
 var input = document.getElementById("duration");
 
-var imagePath1 = "resource/image1_800x600.png";
+var imagePath1 = "resource/image1.png";
 var image1 = new Image();
-var imagePath2 = "resource/image2_800x600.png";
+var imagePath2 = "resource/image2.png";
 var image2 = new Image();
 
 var imageData1;
