@@ -162,6 +162,7 @@ function zoomInPixelProcess(cxt, imageData1, imageData2, step, pixelInterpolatio
 
     cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
         0, 0, imageData2Scale.width, imageData2Scale.height);
+    imageData2Scale = null;
 
 }
 
@@ -196,6 +197,7 @@ function zoomInFadePixelProcess(cxt, imageData1, imageData2, step, pixelInterpol
     var imageData2Scale = zoomImageData(imageData2, step, pixelInterpolation);
     cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
         0, 0, imageData2Scale.width, imageData2Scale.height);
+    imageData2Scale = null;
 }
 
 function transform(cxt, imageData) {
@@ -240,7 +242,7 @@ function zoomImageData(imageData, scale, pixelInterpolation) {
         return new ImageData(1, 1);
     }
     var out;
-    var row, col, index, x, y, pixelData
+    var row, col, index, x, y, pixelData;
     // var start = Date.now();
     if (scale <= 1) {
         out = new ImageData(disImageW, disImageH);
@@ -252,6 +254,7 @@ function zoomImageData(imageData, scale, pixelInterpolation) {
                 pixelData = pixelInterpolation(imageData, x, y, width, height);
 
                 out.data.set(pixelData, index);
+                pixelData = null;
             }
         }
     } else {
@@ -267,6 +270,7 @@ function zoomImageData(imageData, scale, pixelInterpolation) {
                 pixelData = pixelInterpolation(imageData, x, y, width, height);
 
                 out.data.set(pixelData, index);
+                pixelData = null;
             }
         }
 
