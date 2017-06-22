@@ -35,6 +35,7 @@ function play() {
 
     clearInterval(playId);
     var transition;
+    var pixelInterpolation;
     var transitionType = select.options[select.selectedIndex].value;
     switch (transitionType) {
         case "pushB":
@@ -55,6 +56,15 @@ function play() {
         case "zoomIn" :
             transition = zoomIn;
             break;
+        case "zoomInNN":
+            transition = zoomInPixelProcess;
+            pixelInterpolation = nearestInterpolation;
+            break;
+        case "zoomInBL":
+            transition = zoomInPixelProcess;
+            pixelInterpolation = bilinearInterpolation;
+            break;
+
         case "zoomFade":
             transition = zoomInFade;
             break;
@@ -67,13 +77,11 @@ function play() {
     var interval = 5; // ms
     var duration = parseFloat(input.value) * 1000;
     playId = setInterval(function () {
-        transition(cxt, imageData1, imageData2, i / (duration / interval));
-        if (i < (duration / interval)) {
-            i++;
-        } else {
-            i = 0;
-        }
+        var step = (Date.now() - start);
+        transition(cxt, imageData1, imageData2, (step % duration) / duration, pixelInterpolation);
+
     }, interval);
+    var start = Date.now();
 }
 
 
@@ -100,7 +108,7 @@ function pushFromBottom(cxt, imageData1, imageData2, step) {
 
     var height1 = height * (1 - step);
     var height2 = height * step;
-
+    console.log(step);
     cxt.putImageData(imageData1, 0, -height2, 0, height2, width, height1);
     cxt.putImageData(imageData2, 0, height1, 0, 0, width, height2);
 }
@@ -141,6 +149,20 @@ function zoomIn(cxt, imageData1, imageData2, step) {
     //     (1 - step) * width / 2, (1 - step) * height / 2, width * step, height * step);
     cxt.drawImage(image2, 0, 0, width, height,
         (1 - step) * width / 2, (1 - step) * height / 2, width * step, height * step);
+
+}
+
+function zoomInPixelProcess(cxt, imageData1, imageData2, step, pixelInterpolation) {
+    var height = cxt.canvas.height;
+    var width = cxt.canvas.width;
+
+    cxt.putImageData(imageData1, 0, 0, 0, 0, width, height);
+
+    var imageData2Scale = zoomImageData(imageData2, step, pixelInterpolation);
+
+    cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
+        0, 0, imageData2Scale.width, imageData2Scale.height);
+
 }
 
 function zoomInFade(cxt, imageData1, imageData2, step) {
@@ -166,6 +188,16 @@ function zoomInFade(cxt, imageData1, imageData2, step) {
     fade(cxt, imageData1Zoom, imageData2Zoom, step);
 }
 
+function zoomInFadePixelProcess(cxt, imageData1, imageData2, step, pixelInterpolation) {
+    var height = cxt.canvas.height;
+    var width = cxt.canvas.width;
+
+
+    var imageData2Scale = zoomImageData(imageData2, step, pixelInterpolation);
+    cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
+        0, 0, imageData2Scale.width, imageData2Scale.height);
+}
+
 function transform(cxt, imageData) {
     cxt.putImageData(imageData, 0, 0, 0, 0, cxt.canvas.width, cxt.canvas.height);
     var image = new Image();
@@ -173,6 +205,117 @@ function transform(cxt, imageData) {
 
     return image;
 }
+
+function fade(cxt, imageData1, imageData2, step) {
+    var height = cxt.canvas.height;
+    var width = cxt.canvas.width;
+
+    var image1Copy = fadeImageData(imageData1, imageData2, step);
+    cxt.putImageData(image1Copy, 0, 0, 0, 0, width, height);
+}
+
+function fadeImageData(imageData1, imageData2, alpha) {
+    var imageCopy = new ImageData(new Uint8ClampedArray(imageData1.data.length), imageData1.width, imageData1.height);
+
+    for (var i = 0, len = imageData1.data.length; i < len; i += 4) {
+
+        // r g b a
+        imageCopy.data[i] = imageData1.data[i] * (1 - alpha) + imageData2.data[i] * alpha;
+        imageCopy.data[i + 1] = imageData1.data[i + 1] * (1 - alpha) + imageData2.data[i + 1] * alpha;
+        imageCopy.data[i + 2] = imageData1.data[i + 2] * (1 - alpha) + imageData2.data[i + 2] * alpha;
+        imageCopy.data[i + 3] = 255;
+    }
+    return imageCopy;
+}
+
+function zoomImageData(imageData, scale, pixelInterpolation) {
+
+    var width = imageData.width;
+    var height = imageData.height;
+
+    var disImageW = Math.floor(width * scale);
+    var disImageH = Math.floor(height * scale);
+
+    if (disImageW == 0 || disImageH == 0) {
+        return new ImageData(1, 1);
+    }
+    var out;
+    var row, col, index, x, y, pixelData
+    // var start = Date.now();
+    if (scale <= 1) {
+        out = new ImageData(disImageW, disImageH);
+        for (row = 0; row < disImageH; row++) {
+            for (col = 0; col < disImageW; col++) {
+                index = (row * disImageW + col) * 4;
+                y = row / scale + (1 / scale - 1);
+                x = col / scale + (1 / scale - 1);
+                pixelData = pixelInterpolation(imageData, x, y, width, height);
+
+                out.data.set(pixelData, index);
+            }
+        }
+    } else {
+        out = new ImageData(width, height);
+        var u = (disImageW - width) / 2;
+        var v = (disImageH - height) / 2;
+
+        for (row = 0; row < height; row++) {
+            for (col = 0; col < width; col++) {
+                index = (row * width + col) * 4;
+                y = (row + v) / scale + (1 / scale - 1);
+                x = (col + u) / scale + (1 / scale - 1);
+                pixelData = pixelInterpolation(imageData, x, y, width, height);
+
+                out.data.set(pixelData, index);
+            }
+        }
+
+    }
+    // console.log(disImageW * disImageH + " pixels : " + (Date.now() - start));
+    return out;
+}
+
+function nearestInterpolation(imageData, x, y, width, height) {
+
+
+    var n = Math.round(x);
+    var m = Math.round(y);
+    // n = Math.min(n, height - 1);
+    // m = Math.min(m, width - 1);
+    var index = (m * width + n) * 4;
+
+    return imageData.data.subarray(index, index + 4);
+}
+
+function bilinearInterpolation(imageData, x, y, width, height) {
+
+    //  a u ,  1-u  b
+    //  v   p
+    // 1-v
+    //  c           d
+    var i = Math.floor(x);
+    var j = Math.floor(y);
+    var u = x - i;
+    var v = y - j;
+
+    var ab = imageData.data.subarray((j * width + i) * 4, (j * width + i + 2) * 4);
+    var cd = imageData.data.subarray(((j + 1) * width + i) * 4, ((j + 1) * width + i + 2) * 4);
+
+    // var a = ab.subarray(0, 4);
+    // var b = ab.subarray(4, 8);
+    // var c = cd.subarray(0, 4);
+    // var d = cd.subarray(4, 8);
+
+    var p = new Uint8ClampedArray(4);
+    p[0] = (1 - u) * (1 - v) * ab[0] + u * (1 - v) * ab[4] + (1 - u) * v * cd[0] + u * v * cd[4];
+    p[1] = (1 - u) * (1 - v) * ab[1] + u * (1 - v) * ab[5] + (1 - u) * v * cd[1] + u * v * cd[5];
+    p[2] = (1 - u) * (1 - v) * ab[2] + u * (1 - v) * ab[6] + (1 - u) * v * cd[2] + u * v * cd[6];
+    p[3] = 255;
+    // p[3] = (1-u)*(1-v)*a[] + u*(1-v)*b[] + (1-u)*v*c[] + u*v*d[]
+
+    return p;
+}
+
 
 function scaleImageData(cxt, imageData, scale) {
     var height = cxt.canvas.height;
@@ -183,118 +326,10 @@ function scaleImageData(cxt, imageData, scale) {
         .attr("height", height);
     newCanvas.getContext("2d").putImageData(imageData, 0, 0);
     cxt.scale(scale, scale);
-    cxt.drawImage(newCanvas, (scale-1) * width / (2 * (scale)), (scale-1) * height / (2 * scale),
+    cxt.drawImage(newCanvas, (scale - 1) * width / (2 * (scale)), (scale - 1) * height / (2 * scale),
         width / scale, height / scale,
         0, 0, width, height);
-    cxt.scale(1/scale,1/scale);
-}
-
-function fade(cxt, imageData1, imageData2, step) {
-    var height = cxt.canvas.height;
-    var width = cxt.canvas.width;
-
-    var image1Copy = fadeImageData(cxt, imageData1, imageData2, step);
-    cxt.putImageData(image1Copy, 0, 0, 0, 0, width, height);
-}
-
-// function fadeImageData(imageData, alpha) {
-//     var imageCopy = new ImageData(new Uint8ClampedArray(imageData.data), imageData.width, imageData.height);
-//
-//     for (var i = 0, len = imageData.data.length; i < len; i += 4) {
-//
-//         imageCopy.data[i + 3] = imageData.data * alpha;
-//     }
-//     return imageCopy;
-// }
-
-function fadeImageData(cxt, imageData1, imageData2, alpha) {
-    var imageCopy = new ImageData(new Uint8ClampedArray(imageData1.data), imageData1.width, imageData1.height);
-    // var imageCopy = cxt.createImageData(imageData1.width, imageData1.height);
-    for (var i = 0, len = imageData1.data.length; i < len; i += 4) {
-
-        // r g b a
-        imageCopy.data[i] = imageCopy.data[i] * (1 - alpha) + imageData2.data[i] * alpha;
-        imageCopy.data[i + 1] = imageCopy.data[i + 1] * (1 - alpha) + imageData2.data[i + 1] * alpha;
-        imageCopy.data[i + 2] = imageCopy.data[i + 2] * (1 - alpha) + imageData2.data[i + 2] * alpha;
-        // imageCopy.data[i + 3] = imageData2.data[i + 7] * alpha;
-    }
-    return imageCopy;
-}
-
-
-function zoomImageData(imageData, scale) {
-    var width = imageData.width;
-    var height = imageData.height;
-
-    var disImageW = width*scale;
-    var disImageH = height*scale;
-
-    var out = new ImageData(disImageW, disImageH);
-    for (var row = 0; row < disImageH; row++) {
-        for (var col = 0; col < disImageW; col++) {
-            var index = row*disImageW+col;
-            var x = row/scale+ (1/scale -1 );
-            var y = col/scale + (1/scale-1);
-
-            var pixel = interpolation(imageData, x, y);
-
-            out.data.set(pixel.data, index);
-            // out.data[index] = pixel[0];
-            // out.data[index+1] = pixel[1];
-            // out.data[index+2] = pixel[2];
-            // // out.data[index+3] = pixel[3];
-
-        }
-    }
-}
-
-function interpolation() {
-    return nearestInterpolation();
-    return bilinearInterpolation();
-}
-
-function nearestInterpolation(imageData, x,y) {
-    var width = imageData.width;
-    var height = imageData.height;
-
-    var i = Math.round(x);
-    var j = Math.round(y);
-    i = Math.min((x-i)<0.5?i:i+1, height-1);
-    j = Math.min((y-j)<0.5?j:j+1, width-1);
-    var index = i*width + j;
-    
-    var p = new ImageData(new Uint8ClampedArray(imageData.data.subarray(index, index+4)), 1,1);
-    return p;
-}
-
-function bilinearInterpolation(imageData, x,y){
-    var width = imageData.width;
-    var height = imageData.height;
-
-    //  a u ,  1-u  b
-    //  v   p
-    // 1-v
-    //  c           d
-    var i = Math.round(x);
-    var j = Math.round(y);
-    var u = x-i;
-    var v = y-j;
-    
-    var ab = imageData.data.subarray((i*width+j)*4, (i*width+j+1)*4+1);
-    var cd = imageData.data.subarray(((i+1)*width+j)*4, ((i+1)*width+j+1)*4+1);
-
-    var a = ab.subarray(0,4);
-    var b = ab.subarray(4,8);
-    var c = cd.subarray(0,4);
-    var d = cd.subarray(4,8);
-
-    var p = new ImageData(1,1);
-    p[0] = (1-u)*(1-v)*a[0] + u*(1-v)*b[0] + (1-u)*v*c[0] + u*v*d[0]
-    p[1] = (1-u)*(1-v)*a[1] + u*(1-v)*b[1] + (1-u)*v*c[1] + u*v*d[1]
-    p[2] = (1-u)*(1-v)*a[2] + u*(1-v)*b[2] + (1-u)*v*c[2] + u*v*d[2]
-    // p[3] = (1-u)*(1-v)*a[] + u*(1-v)*b[] + (1-u)*v*c[] + u*v*d[]
-
-    return p;
+    cxt.scale(1 / scale, 1 / scale);
 }
 
 
@@ -377,6 +412,7 @@ function zoomInWithImage(cxt, image1, image2, step) {
 
 }
 
+/// Deprecated
 function scaleImageData(imageData, scale) {
     var scaled = ctx.createImageData(imageData.width * scale, imageData.height * scale);
     var subLine = ctx.createImageData(scale, 1).data;
