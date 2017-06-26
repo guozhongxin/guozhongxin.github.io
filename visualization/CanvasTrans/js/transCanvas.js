@@ -64,22 +64,28 @@ function play() {
             transition = zoomInPixelProcess;
             pixelInterpolation = bilinearInterpolation;
             break;
-
         case "zoomFade":
             transition = zoomInFade;
+            break;
+        case "peelOff":
+            transition = peelOff;
             break;
         default:
             transition = pushFromBottom;
             break;
     }
 
-    var i = 0;
     var interval = 5; // ms
     var duration = parseFloat(input.value) * 1000;
+    var sleep = 1000;
     playId = setInterval(function () {
-        var step = (Date.now() - start);
-        transition(cxt, imageData1, imageData2, (step % duration) / duration, pixelInterpolation);
+        // var eachstep = Date.now();
 
+        var step = ((Date.now() - start) % (duration + 2 * sleep) - sleep) / duration;
+        step = Math.min(Math.max(step, 0), 1);
+        transition(cxt, imageData1, imageData2, step, pixelInterpolation);
+
+        // console.log((step % duration) / duration + " : " + (Date.now() - eachstep));
     }, interval);
     var start = Date.now();
 }
@@ -108,7 +114,6 @@ function pushFromBottom(cxt, imageData1, imageData2, step) {
 
     var height1 = height * (1 - step);
     var height2 = height * step;
-    console.log(step);
     cxt.putImageData(imageData1, 0, -height2, 0, height2, width, height1);
     cxt.putImageData(imageData2, 0, height1, 0, 0, width, height2);
 }
@@ -189,24 +194,83 @@ function zoomInFade(cxt, imageData1, imageData2, step) {
     fade(cxt, imageData1Zoom, imageData2Zoom, step);
 }
 
-function zoomInFadePixelProcess(cxt, imageData1, imageData2, step, pixelInterpolation) {
+function peelOff(cxt, imageData1, imageData2, step) {
     var height = cxt.canvas.height;
     var width = cxt.canvas.width;
 
+    // The value of `tan(angle)`
+    var gradient = Math.tan(0.4 * Math.PI);
 
-    var imageData2Scale = zoomImageData(imageData2, step, pixelInterpolation);
-    cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
-        0, 0, imageData2Scale.width, imageData2Scale.height);
-    imageData2Scale = null;
+    var c = (1 - step) * (gradient * width + height);
+
+    var A = {x: (c - height) / gradient, y: height};
+    var B = {x: width, y: c - gradient * width};
+    var C = {
+        x: (2 * gradient * (c - height) + width * (1 - gradient * gradient)) / (1 + gradient * gradient),
+        y: (-2 * gradient * width + (gradient * gradient - 1) * height + 2 * c) / (1 + gradient * gradient)
+    };
+    var D = {x: (C.x + width) / 2, y: (C.y + height) / 2};
+
+    var outImageData = flipImage(imageData1, imageData2, gradient, c);
+    cxt.putImageData(outImageData, 0, 0);
+    outImageData = null;
+
+    // var start = Date.now();
+
+    cxt.beginPath();
+    cxt.moveTo(A.x, A.y);
+    // cxt.lineTo(B.x, B.y);
+    // cxt.lineTo(C.x, C.y);
+    cxt.quadraticCurveTo(D.x, D.y, C.x, C.y);
+    // cxt.quadraticCurveTo(D.x, D.y, B.x, B.y);
+    cxt.lineTo(B.x, B.y);
+    cxt.closePath();
+    cxt.shadowBlur = 300;
+    cxt.shadowColor = "black";
+    var foldStyle = cxt.createLinearGradient(C.x, C.y, width, height);
+    foldStyle.addColorStop(0.35, "white");
+    foldStyle.addColorStop(0.5, "#999999");
+    cxt.fillStyle = foldStyle;
+    cxt.fill();
+    // console.log("fill fold page : " + (Date.now()-start));
+
 }
 
-function transform(cxt, imageData) {
-    cxt.putImageData(imageData, 0, 0, 0, 0, cxt.canvas.width, cxt.canvas.height);
-    var image = new Image();
-    image.src = cxt.canvas.toDataURL("image/png");
-
-    return image;
+function flipImage(imageData1, imageData2, gradient, c) {
+    var height = imageData1.height;
+    var width = imageData1.width;
+    var outImageData = cxt.createImageData(width, height);
+    var y, x, index;
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+            index = (y * width + x) * 4;
+            if ((gradient * x + y) <= c) {
+                outImageData.data[index] = imageData1.data[index];
+                outImageData.data[index + 1] = imageData1.data[index + 1];
+                outImageData.data[index + 2] = imageData1.data[index + 2];
+                outImageData.data[index + 3] = imageData1.data[index + 3];
+            } else {
+                outImageData.data[index] = imageData2.data[index];
+                outImageData.data[index + 1] = imageData2.data[index + 1];
+                outImageData.data[index + 2] = imageData2.data[index + 2];
+                outImageData.data[index + 3] = imageData2.data[index + 3];
+            }
+        }
+    }
+    return outImageData;
 }
+
+
+// function zoomInFadePixelProcess(cxt, imageData1, imageData2, step, pixelInterpolation) {
+//     var height = cxt.canvas.height;
+//     var width = cxt.canvas.width;
+//
+//
+//     var imageData2Scale = zoomImageData(imageData2, step, pixelInterpolation);
+//     cxt.putImageData(imageData2Scale, (1 - step) * width / 2, (1 - step) * height / 2,
+//         0, 0, imageData2Scale.width, imageData2Scale.height);
+//     imageData2Scale = null;
+// }
 
 function fade(cxt, imageData1, imageData2, step) {
     var height = cxt.canvas.height;
@@ -214,6 +278,15 @@ function fade(cxt, imageData1, imageData2, step) {
 
     var image1Copy = fadeImageData(imageData1, imageData2, step);
     cxt.putImageData(image1Copy, 0, 0, 0, 0, width, height);
+}
+
+
+function transform(cxt, imageData) {
+    cxt.putImageData(imageData, 0, 0, 0, 0, cxt.canvas.width, cxt.canvas.height);
+    var image = new Image();
+    image.src = cxt.canvas.toDataURL("image/png");
+
+    return image;
 }
 
 function fadeImageData(imageData1, imageData2, alpha) {
@@ -241,86 +314,111 @@ function zoomImageData(imageData, scale, pixelInterpolation) {
     if (disImageW == 0 || disImageH == 0) {
         return new ImageData(1, 1);
     }
-    var out;
-    var row, col, index, x, y, pixelData;
-    // var start = Date.now();
+    var outImage;
+    var row, col, index, x, y, i, j, u, v;
+    // var xs = [];
+    var is = [];
+    var us = [];
     if (scale <= 1) {
-        out = new ImageData(disImageW, disImageH);
+        outImage = new ImageData(disImageW, disImageH);
+        for (col = 0; col < disImageW; col++) {
+            x = col / scale + (1 / scale - 1);
+            is[col] = Math.floor(x);
+            us[col] = x - is[col];
+        }
         for (row = 0; row < disImageH; row++) {
+            y = row / scale + (1 / scale - 1);
+            j = Math.floor(y);
+            v = y - j;
             for (col = 0; col < disImageW; col++) {
                 index = (row * disImageW + col) * 4;
-                y = row / scale + (1 / scale - 1);
-                x = col / scale + (1 / scale - 1);
-                pixelData = pixelInterpolation(imageData, x, y, width, height);
 
-                out.data.set(pixelData, index);
-                pixelData = null;
+                // x = col / scale + (1 / scale - 1);
+                i = is[col];
+                u = us[col];
+                pixelInterpolation(imageData, width, height, outImage, index, i, j, u, v);
             }
         }
-    } else {
-        out = new ImageData(width, height);
-        var u = (disImageW - width) / 2;
-        var v = (disImageH - height) / 2;
-
+    }
+    else {
+        outImage = new ImageData(width, height);
+        var m = (disImageW - width) / 2;
+        var n = (disImageH - height) / 2;
+        for (col = 0; col < disImageW; col++) {
+            x = (col + m) / scale + (1 / scale - 1);
+            is[col] = Math.floor(x);
+            us[col] = x - is[col];
+        }
         for (row = 0; row < height; row++) {
+            y = (row + n) / scale + (1 / scale - 1);
+            j = Math.floor(y);
+            v = y - j;
             for (col = 0; col < width; col++) {
                 index = (row * width + col) * 4;
-                y = (row + v) / scale + (1 / scale - 1);
-                x = (col + u) / scale + (1 / scale - 1);
-                pixelData = pixelInterpolation(imageData, x, y, width, height);
 
-                out.data.set(pixelData, index);
-                pixelData = null;
+                // x = (col + m) / scale + (1 / scale - 1);
+                i = is[col];
+                u = us[col];
+                pixelInterpolation(imageData, width, height, outImage, index, i, j, u, v);
             }
         }
 
     }
-    // console.log(disImageW * disImageH + " pixels : " + (Date.now() - start));
-    return out;
+    return outImage;
 }
 
-function nearestInterpolation(imageData, x, y, width, height) {
+function nearestInterpolation(imageData, width, height, outImage, index, i, j) {
 
+    // var i = Math.round(x);
+    // var j = Math.round(y);
 
-    var n = Math.round(x);
-    var m = Math.round(y);
-    // n = Math.min(n, height - 1);
-    // m = Math.min(m, width - 1);
-    var index = (m * width + n) * 4;
+    var index1 = (j * width + i) * 4;
+    outImage.data[index] = imageData.data[index1];
+    outImage.data[index + 1] = imageData.data[index1 + 1];
+    outImage.data[index + 2] = imageData.data[index1 + 2];
+    // outImage.data[index+3] = imageData.data[index1+3];
+    outImage.data[index + 3] = 255;
 
-    return imageData.data.subarray(index, index + 4);
 }
 
-function bilinearInterpolation(imageData, x, y, width, height) {
-
+function bilinearInterpolation(imageData, width, height, outImage, index, i, j, u, v) {
     //  a u ,  1-u  b
     //  v   p
     // 1-v
     //  c           d
-    var i = Math.floor(x);
-    var j = Math.floor(y);
-    var u = x - i;
-    var v = y - j;
 
-    var ab = imageData.data.subarray((j * width + i) * 4, (j * width + i + 2) * 4);
-    var cd = imageData.data.subarray(((j + 1) * width + i) * 4, ((j + 1) * width + i + 2) * 4);
+    // var i = Math.floor(x);
+    // var j = Math.floor(y);
+    // var u = x - i;
+    // var v = y - j;
+
+    // var ab = imageData.data.subarray((j * width + i) * 4, (j * width + i + 2) * 4);
+    // var cd = imageData.data.subarray(((j + 1) * width + i) * 4, ((j + 1) * width + i + 2) * 4);
 
     // var a = ab.subarray(0, 4);
     // var b = ab.subarray(4, 8);
     // var c = cd.subarray(0, 4);
     // var d = cd.subarray(4, 8);
 
-    var p = new Uint8ClampedArray(4);
-    p[0] = (1 - u) * (1 - v) * ab[0] + u * (1 - v) * ab[4] + (1 - u) * v * cd[0] + u * v * cd[4];
-    p[1] = (1 - u) * (1 - v) * ab[1] + u * (1 - v) * ab[5] + (1 - u) * v * cd[1] + u * v * cd[5];
-    p[2] = (1 - u) * (1 - v) * ab[2] + u * (1 - v) * ab[6] + (1 - u) * v * cd[2] + u * v * cd[6];
-    p[3] = 255;
-    // p[3] = (1-u)*(1-v)*a[] + u*(1-v)*b[] + (1-u)*v*c[] + u*v*d[]
+    // outImage.data[index] = (1 - u) * (1 - v) * ab[0] + u * (1 - v) * ab[4] + (1 - u) * v * cd[0] + u * v * cd[4];
+    // outImage.data[index+1] = (1 - u) * (1 - v) * ab[1] + u * (1 - v) * ab[5] + (1 - u) * v * cd[1] + u * v * cd[5];
+    // outImage.data[index+2] = (1 - u) * (1 - v) * ab[2] + u * (1 - v) * ab[6] + (1 - u) * v * cd[2] + u * v * cd[6];
+    // // outImage.data[index+3] = (1-u)*(1-v)*a[] + u*(1-v)*b[] + (1-u)*v*c[] + u*v*d[]
+    // outImage.data[index+3] = 255;
 
-    return p;
+    var index1 = (j * width + i) * 4;
+    var index2 = ((j + 1) * width + i) * 4;
+    outImage.data[index] = (1 - u) * (1 - v) * imageData.data[index1] + u * (1 - v) * imageData.data[index1 + 4]
+        + (1 - u) * v * imageData.data[index2] + u * v * imageData.data[index2 + 4];
+    outImage.data[index + 1] = (1 - u) * (1 - v) * imageData.data[index1 + 1] + u * (1 - v) * imageData.data[index1 + 5]
+        + (1 - u) * v * imageData.data[index2 + 1] + u * v * imageData.data[index2 + 5];
+    outImage.data[index + 2] = (1 - u) * (1 - v) * imageData.data[index1 + 2] + u * (1 - v) * imageData.data[index1 + 6]
+        + (1 - u) * v * imageData.data[index2 + 2] + u * v * imageData.data[index2 + 6];
+    outImage.data[index + 3] = 255;
 }
 
 
+/// Deprecated
 function scaleImageData(cxt, imageData, scale) {
     var height = cxt.canvas.height;
     var width = cxt.canvas.width;
