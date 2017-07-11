@@ -76,6 +76,56 @@ var flipFSCode = "precision mediump float;\
 
 //#######################################################
 
+var flipMVSCode = "precision mediump float;\
+    attribute vec4 position;\
+    uniform mat4 matrix;\
+    varying vec2 textureCoordinate;\
+    void main()\
+    {\
+        gl_Position = matrix * position;\
+        textureCoordinate = vec2((position.x+1.0)/2.0, 1.0-(position.y+1.0)/2.0);\
+    }";
+
+var flipMFSCode = "precision mediump float;\
+    varying vec2 textureCoordinate;\
+    uniform sampler2D preImage;\
+    uniform sampler2D nextImage;\
+    uniform float step;\
+    void main()\
+    {\
+        if(step <0.5){\
+            gl_FragColor = texture2D(preImage, textureCoordinate);\
+        } else{\
+            gl_FragColor = texture2D(nextImage, vec2(1.0-textureCoordinate.x, textureCoordinate.y));\
+        }\
+    }";
+
+//#######################################################
+
+var boxMVSCode = "precision mediump float;\
+    attribute vec4 position;\
+    uniform mat4 matrix;\
+    varying vec2 textureCoordinate;\
+    void main()\
+    {\
+        gl_Position = matrix * position;\
+        textureCoordinate = vec2((position.x+1.0)/2.0, 1.0-(position.y+1.0)/2.0);\
+    }";
+
+var boxMFSCode = "precision mediump float;\
+    varying vec2 textureCoordinate;\
+    uniform sampler2D preImage;\
+    uniform sampler2D nextImage;\
+    uniform int t;\
+    void main()\
+    {\
+        if (t<1){\
+            gl_FragColor = texture2D(preImage, textureCoordinate);\
+        } else { gl_FragColor = texture2D(nextImage, textureCoordinate);} \
+    }";
+
+//#######################################################
+
 var boxVSCode = defaultVSCode;
 
 var boxFSCode = "precision mediump float;\
@@ -153,6 +203,8 @@ var cubeFSCode = "precision mediump float;\
             }  else { gl_FragColor = defaultColor; }\
         }\
     }";
+
+//#######################################################
 
 
 //#######################################################
@@ -263,3 +315,17 @@ var waveFragmentShader = "precision mediump float;\
             gl_FragColor = texture2D(inputImageTexture, tmp);\
         }\
     }";
+
+//################################################
+
+var flipVSCode2 = "precision mediump float;\
+    attribute vec4 position;\
+    uniform mat4 u_matrix;\
+    varying vec2 textureCoordinate;\
+    void main()\
+    {\
+        gl_Position = u_matrix * position;\
+        textureCoordinate = vec2((position.x+1.0)/2.0, 1.0-(position.y+1.0)/2.0);\
+    }";
+
+var flipFSCode2 = defaultFSCode;

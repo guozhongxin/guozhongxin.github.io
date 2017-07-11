@@ -3,13 +3,11 @@
  */
 
 
-
-
-// var imagePath1 = "resource/pic1.jpg";
-var imagePath1 = "resource/image1B.png";
+var imagePath1 = "resource/pic1.jpg";
+// var imagePath1 = "resource/image1B.png";
 var image1 = new Image();
-// var imagePath2 = "resource/pic2.jpg";
-var imagePath2 = "resource/image2B.png";
+var imagePath2 = "resource/pic2.jpg";
+// var imagePath2 = "resource/image2B.png";
 var image2 = new Image();
 
 image1.src = imagePath1;
@@ -85,13 +83,24 @@ function play() {
             vshaderCode = zoominfadeVSCode;
             fshaderCode = zoominfadeFSCode;
             break;
+        case "flipM" :
+            transition = flipMGL;
+            vshaderCode = flipMVSCode;
+            fshaderCode = flipMFSCode;
+            break;
+        case "boxM" :
+            transition = boxMGL;
+            vshaderCode = boxMVSCode;
+            fshaderCode = boxMFSCode;
+            break;
+
         // case "peelOff":
         //     transition = peelOff;
         //     break;
         default:
             transition = defaultGL;
-            vshaderCode = zoominVSCode;
-            fshaderCode = zoominFSCode;
+            vshaderCode = defaultVSCode;
+            fshaderCode = defaultFSCode;
             break;
     }
 
@@ -112,7 +121,8 @@ function play() {
     shaderInit(glcxt, vshaderCode, fshaderCode);
     var program = programInit(glcxt);
     textureInit(glcxt, program, image1, image2);
-
+    glcxt.clearColor(0.2, 0.2, 0.2, 0.5);
+    glcxt.clear(glcxt.COLOR_BUFFER_BIT | glcxt.DEPTH_BUFFER_BIT);
     var start = Date.now();
 }
 
@@ -183,8 +193,72 @@ function textureInit(glcxt, program, preImage, nextImage) {
 }
 
 function defaultGL(glcxt, program, step) {
+    glcxt.clearColor(0.2, 0.2, 0.2, 0.5);
+    glcxt.clear(glcxt.COLOR_BUFFER_BIT);
+
+
     var uniformStep = glcxt.getUniformLocation(program, "step");
     glcxt.uniform1f(uniformStep, step);
+    glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+}
+
+function flipMGL(glcxt, program, step) {
+    glcxt.clearColor(0.2, 0.2, 0.2, 0.5);
+    glcxt.clear(glcxt.COLOR_BUFFER_BIT);
+
+
+    var uniformStep = glcxt.getUniformLocation(program, "step");
+    glcxt.uniform1f(uniformStep, step);
+
+    var persAngle = 20;
+    var distance = 1 / Math.tan(persAngle / 2 / 180 * Math.PI);
+
+    var rotateM = new Matrix4();
+    rotateM.setRotate(step * 180, 0, 1, 0);
+    var scale = 1 - 0.2 * (0.5 - Math.abs(step - 0.5));
+    rotateM.scale(scale, scale, 1);
+    var viewM = new Matrix4();
+    viewM.setLookAt(0, 0, distance, 0, 0, -1, 0, 1, 0);
+    var persM = new Matrix4();
+    persM.setPerspective(persAngle, 1, 0.1, 100);
+    persM.multiply(viewM).multiply(rotateM);
+
+    var uniformMatrix = glcxt.getUniformLocation(program, "matrix");
+    glcxt.uniformMatrix4fv(uniformMatrix, false, persM.elements);
+    glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+}
+
+function boxMGL(glcxt, program, step) {
+    glcxt.clearColor(0.2, 0.2, 0.2, 0.5);
+    glcxt.clear(glcxt.COLOR_BUFFER_BIT);
+
+    var uniformMatrix = glcxt.getUniformLocation(program, "matrix");
+    var uniformT = glcxt.getUniformLocation(program, "t");
+
+    var distance = 2;
+    var ddetla = 2*step * (1 - step);
+    var persAngle = 2 * Math.atan(1 / distance);
+
+    var viewAngle1 = step * persAngle;
+    var viewM1 = new Matrix4();
+    viewM1.setLookAt(0, 0, distance + ddetla, distance * Math.tan(viewAngle1), 0, 0, 0, 1, 0);
+    var persM = new Matrix4();
+    persM.setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
+    persM.multiply(viewM1);
+
+    glcxt.uniform1i(uniformT, 0);
+    glcxt.uniformMatrix4fv(uniformMatrix, false, persM.elements);
+    glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+
+    var viewAngle2 = (1 - step) * persAngle;
+    var viewM2 = new Matrix4();
+    viewM2.setLookAt(0, 0, distance +ddetla, -distance * Math.tan(viewAngle2), 0, 0, 0, 1, 0);
+    var persM2 = new Matrix4();
+    persM2.setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
+    persM2.multiply(viewM2);
+
+    glcxt.uniform1i(uniformT, 1);
+    glcxt.uniformMatrix4fv(uniformMatrix, false, persM2.elements);
     glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
 }
 

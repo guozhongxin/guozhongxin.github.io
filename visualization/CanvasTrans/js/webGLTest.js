@@ -36,6 +36,10 @@ function shaderInit(type) {
             vshaderCode = waveVertexShader;
             fshaderCode = waveFragmentShader;
             break;
+        case "flip":
+            vshaderCode = flipVSCode2;
+            fshaderCode = flipFSCode2;
+            break;
         default:
             // TODO
             return;
@@ -102,7 +106,7 @@ function main() {
     var image1 = new Image();
     image1.src = "resource/pic1.jpg";
     image1.onload = function () {
-        renderImage(image1, "wave");
+        renderImage(image1, "flip");
 
     }
 }
@@ -121,6 +125,9 @@ function renderImage(image, type) {
         case "wave":
             webglDraw = webglDrawWave;
             break;
+        case "flip":
+            webglDraw = webglDrawFlip;
+            break;
         default:
             // TODO
             return;
@@ -133,7 +140,7 @@ function renderImage(image, type) {
 
     curInterval = setInterval(function () {
         var step = ((Date.now() - start) % (duration + 2 * sleep) - sleep) / duration;
-        step = 10 * Math.min(Math.max(step, 0), 1);
+        step =  Math.min(Math.max(step, 0), 1);
         webglDraw(step);
     }, intervalTime);
     var start = Date.now();
@@ -143,7 +150,27 @@ function webglDrawWave(step) {
     var uniformMotion = webgl.getUniformLocation(curProgram, "motion");
     var uniformAngle = webgl.getUniformLocation(curProgram, "angle");
     console.log(step);
+    step = step * 10;
     webgl.uniform1f(uniformMotion, step);
     webgl.uniform1f(uniformAngle, 10.0);
+    webgl.drawArrays(webgl.TRIANGLE_STRIP, 0, 4);
+}
+
+function webglDrawFlip(step) {
+    var projM = new Matrix4();
+    var uniformMatrix = webgl.getUniformLocation(curProgram, "u_matrix");
+    // webgl.uniformMatrix4fv(uniformMatrix, false, projM.elements);
+    // webgl.drawArrays(webgl.TRIANGLE_STRIP, 0, 4);
+    console.log(step);
+    var rotateM  = new Matrix4();
+    rotateM.setRotate(step*180, 0, 1 , 0);
+    var scale = 1 - 0.2 * (0.5- Math.abs(step-0.5));
+    rotateM.scale(scale, scale, 1);
+    var viewM = new Matrix4();
+    viewM.setLookAt(0,0,1/Math.tan(10/180*Math.PI),0,0,-1,0,1,0);
+    projM.setPerspective(20, 1, 0.1, 100);
+    projM.multiply(viewM).multiply(rotateM);
+    // viewM.multiply(rotateM);
+    webgl.uniformMatrix4fv(uniformMatrix, false, projM.elements);
     webgl.drawArrays(webgl.TRIANGLE_STRIP, 0, 4);
 }
