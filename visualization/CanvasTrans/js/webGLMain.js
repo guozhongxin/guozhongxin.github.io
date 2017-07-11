@@ -93,6 +93,11 @@ function play() {
             vshaderCode = boxMVSCode;
             fshaderCode = boxMFSCode;
             break;
+        case "cubeM" :
+            transition = cubeMGL;
+            vshaderCode = cubeMVSCode;
+            fshaderCode = cubeMFSCode;
+            break;
 
         // case "peelOff":
         //     transition = peelOff;
@@ -236,12 +241,12 @@ function boxMGL(glcxt, program, step) {
     var uniformT = glcxt.getUniformLocation(program, "t");
 
     var distance = 2;
-    var ddetla = 2*step * (1 - step);
+    var ddetla = step * (1 - step);
     var persAngle = 2 * Math.atan(1 / distance);
-
+    distance += ddetla;
     var viewAngle1 = step * persAngle;
     var viewM1 = new Matrix4();
-    viewM1.setLookAt(0, 0, distance + ddetla, distance * Math.tan(viewAngle1), 0, 0, 0, 1, 0);
+    viewM1.setLookAt(0, 0, distance, (distance) * Math.tan(viewAngle1), 0, 0, 0, 1, 0);
     var persM = new Matrix4();
     persM.setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
     persM.multiply(viewM1);
@@ -252,7 +257,7 @@ function boxMGL(glcxt, program, step) {
 
     var viewAngle2 = (1 - step) * persAngle;
     var viewM2 = new Matrix4();
-    viewM2.setLookAt(0, 0, distance +ddetla, -distance * Math.tan(viewAngle2), 0, 0, 0, 1, 0);
+    viewM2.setLookAt(0, 0, distance, (-distance ) * Math.tan(viewAngle2), 0, 0, 0, 1, 0);
     var persM2 = new Matrix4();
     persM2.setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
     persM2.multiply(viewM2);
@@ -260,6 +265,53 @@ function boxMGL(glcxt, program, step) {
     glcxt.uniform1i(uniformT, 1);
     glcxt.uniformMatrix4fv(uniformMatrix, false, persM2.elements);
     glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+}
+
+function cubeMGL(glcxt, program, step) {
+    glcxt.clearColor(0.2, 0.2, 0.2, 0.5);
+    glcxt.clear(glcxt.COLOR_BUFFER_BIT);
+
+    var uniformMatrix = glcxt.getUniformLocation(program, "matrix");
+    var uniformT = glcxt.getUniformLocation(program, "t");
+
+    var distance = 2;  // can be defined (0-inf)
+    var ddetla = 2 * step * (1 - step); // can be defined (0-0)
+    var persAngle = 2 * Math.atan(1 / distance);
+    var cubeAngle = persAngle; // can be defined ()
+    var cubeRadius = 1 / Math.tan(cubeAngle / 2);
+
+    var viewAngle1 = step * cubeAngle;
+    var eyex1 = (distance + cubeRadius+ ddetla) * Math.sin(viewAngle1);
+    var eyez1 = (distance + cubeRadius + ddetla) * Math.cos(viewAngle1) - cubeRadius;
+    var viewM1 = new Matrix4().setLookAt(eyex1, 0, eyez1, 0, 0, -cubeRadius, 0, 1, 0);
+    var persM1 = new Matrix4().setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
+    persM1.multiply(viewM1);
+
+    glcxt.uniform1i(uniformT, 0);
+    glcxt.uniformMatrix4fv(uniformMatrix, false, persM1.elements);
+    glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+
+    var viewAngle2 = (1-step )* cubeAngle;
+    var eyex2 = -(distance + cubeRadius+ ddetla) * Math.sin(viewAngle2);
+    var eyez2 = (distance + cubeRadius + ddetla) * Math.cos(viewAngle2) - cubeRadius;
+    var viewM2 = new Matrix4().setLookAt(eyex2, 0, eyez2, 0, 0, -cubeRadius, 0, 1, 0);
+    var persM2 = new Matrix4().setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
+    persM2.multiply(viewM2);
+
+    glcxt.uniform1i(uniformT, 1);
+    glcxt.uniformMatrix4fv(uniformMatrix, false, persM2.elements);
+    glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
+
+    // var viewAngle2 = (1 - step) * persAngle;
+    // var viewM2 = new Matrix4();
+    // viewM2.setLookAt(0, 0, distance + ddetla, -distance * Math.tan(viewAngle2), 0, 0, 0, 1, 0);
+    // var persM2 = new Matrix4();
+    // persM2.setPerspective(persAngle / Math.PI * 180, 1, 0.1, 100);
+    // persM2.multiply(viewM2);
+    //
+    // glcxt.uniform1i(uniformT, 1);
+    // glcxt.uniformMatrix4fv(uniformMatrix, false, persM2.elements);
+    // glcxt.drawArrays(glcxt.TRIANGLE_STRIP, 0, 4);
 }
 
 // function zoomInGL(glcxt, program, step) {

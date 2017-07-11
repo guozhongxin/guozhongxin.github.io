@@ -206,6 +206,8 @@ var cubeFSCode = "precision mediump float;\
 
 //#######################################################
 
+var cubeMVSCode = boxMVSCode;
+var cubeMFSCode = boxMFSCode;
 
 //#######################################################
 
