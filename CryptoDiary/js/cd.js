@@ -11,7 +11,7 @@ let mainnetUrl = "https://pay.nebulas.io/api/mainnet/pay",
 let callbackUrl = testnetUrl;
 
 
-let contractAdd = "n1osXytr88dCmDiDtPTW3GU85PsgVSvjKA5";
+let contractAdd = "n1ggwcmYqwWythd6JDQSzWX8kEhpMns8GFZ";
 let scGetLastDiaries = "getLastDiaries";
 let scGetSelf = "getSelf";
 let scGetByWriter = "getByWriter";
