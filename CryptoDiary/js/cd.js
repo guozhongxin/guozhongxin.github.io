@@ -148,7 +148,7 @@ function setUserItem(index, userAddr, userDiaryCount) {
         + userAddr
         + '</td><td>'
         + userDiaryCount
-        + '</td><td><a class="btn btn-success" href="./userDiary.html?'
+        + '</td><td><a style="width: 100%" class="btn btn-success" href="./userDiary.html?'
         + userAddr
         + '">查看主页</a></td></tr>';
 }
