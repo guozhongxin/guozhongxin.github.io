@@ -30,6 +30,10 @@ let numberEachLoad = 5;
 
 let userKey = 'curUser';
 
+String.prototype.replaceAll  = function(s1,s2){
+    return this.replace(new RegExp(s1,"gm"),s2);
+};
+
 $(window).ready(function () {
     let currentUser = localStorage.getItem(userKey);
     if (currentUser != undefined) {
@@ -57,11 +61,12 @@ function setDiaryItem(address, content, time, isEncrypted) {
     const date = new Date(time);
     const dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours()
         + ":" + date.getMinutes() + ":" + date.getSeconds();
-
     const isHidden = ( isEncrypted) ? ('') : ('hidden="true"');
     const panelStyle = isEncrypted ? "panel-danger" : "panel-success";
     const header = (address === "") ? ('<div class="panel-heading address"></div>')
         : ('<div class="panel-heading address">作者： ' + address + '</div>');
+
+    content =  content.replaceAll("\\n","<br>");
     const div = '<div class="panel '
         + panelStyle
         + '">' + header
@@ -226,13 +231,14 @@ function onloadUserDiary() {
     return theRequest;
 }
 
-
 // publish diary without encoded
 function publishDiaryWO() {
     const isEncoded = false;
-    const content = $("#id_textarea_newdiary").val();
+    let content = $("#id_textarea_newdiary").val();
+    content = content.replaceAll('\n','\\n');
+
     publishDiary(content, isEncoded);
-    $("#id_textarea_newdiary").val("");
+    // $("#id_textarea_newdiary").val("");
 
 }
 
@@ -251,8 +257,8 @@ function encodedPublish() {
     const encodedContent = $("#id_div_encoded")[0].innerText;
     $("#id_div_encoded").hide();
     publishDiary(encodedContent, isEncoded);
-    $("#id_textarea_newdiary").val("");
-    $("#id_input_encodekey").val("");
+    // $("#id_textarea_newdiary").val("");
+    // $("#id_input_encodekey").val("");
     $('#id_div_noencode').show();
     $('#id_form_encode').hide();
 }
