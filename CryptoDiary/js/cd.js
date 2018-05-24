@@ -1,6 +1,8 @@
 /**
  * Created by zhogu on 5/20/2018.
  */
+let nebulas = require("nebulas");
+let Account = nebulas.Account;
 
 let NebPay = require("nebpay");
 let nebPay = new NebPay();
@@ -219,7 +221,7 @@ function onloadUserDiary() {
     const index = url.indexOf("?");
     if (index !== -1) {
         const params = url.substr(index + 1);
-        if (params.startsWith("n1") && params.length == 35) {
+        if (Account.isValidAddress(params)) {
             $("#id_div_address")[0].innerHTML = "<h3><b>" + params + "</b> 的日记 </h3>";
             getDiariesByWriter(params);
         } else {
