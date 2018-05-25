@@ -129,6 +129,7 @@ function showDiariesOfSomeone(resp) {
 
     const result = JSON.parse(resp.result);
 
+    $("#id_div_diarylist")[0].innerText = "";
     for (let i = result.length - 1; i >= 0; i--) {
 
         const diaryConent = result[i].content;
