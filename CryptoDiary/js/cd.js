@@ -10,10 +10,10 @@ let serialNumber;
 let mainnetUrl = "https://pay.nebulas.io/api/mainnet/pay",
     testnetUrl = "https://pay.nebulas.io/api/pay";
 
-let callbackUrl = testnetUrl;
+let callbackUrl = mainnetUrl;
 
 
-let contractAdd = "n1ggwcmYqwWythd6JDQSzWX8kEhpMns8GFZ";
+let contractAdd = "n1ojSPget9xBnPMpR7QzX8XAe6wf1qwt65p";
 let scGetLastDiaries = "getLastDiaries";
 let scGetSelf = "getSelf";
 let scGetByWriter = "getByWriter";
