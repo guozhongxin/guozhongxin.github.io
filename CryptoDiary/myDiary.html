@@ -35,7 +35,7 @@
                     <li class="active"><a href="./myDiary.html">我的日记</a></li>
                     <li><a href="allUsers.html">所有用户</a></li>
                 </ul>
-                <form id="id_form_login" class="navbar-form navbar-right" >
+                <form id="id_form_login" class="navbar-form navbar-right">
                     <div id="id_div_login">
                         <div class="form-group">
                             <input id="id_input_creator" type="text" class="form-control"
@@ -62,7 +62,13 @@
     </nav>
 
     <div class="jumbotron">
-
+        <div style="font-size: 16px">
+            <h3>秘密日记</h3>
+            用户可以选择在这里上传他们的日记。<br>
+            他们可以选择将自己的日记加密，或者直接公开。（绿色的日记是没有加密直接公开的日记，红色的日记是加密的日记）<br>
+            <b>此Dapp请配合chrome插件<a href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a>使用.</b>
+        </div>
+        <br>
         <div id="id_div_creatdiary">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -79,11 +85,11 @@
                         <script type="text/javascript">
                             function setTime() {
                                 var date = new Date();
-                                $("#id_div_date")[0].innerText= date.getFullYear()
-                                    +"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()
-                                    +":"+date.getMinutes()+":"+date.getSeconds();
+                                $("#id_div_date")[0].innerText = date.getFullYear()
+                                    + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours()
+                                    + ":" + date.getMinutes() + ":" + date.getSeconds();
                             }
-                            self.setInterval("setTime()",1000);
+                            self.setInterval("setTime()", 1000);
                         </script>
                         <div class="col-lg-6" id="id_div_noencode">
                             <a id="id_btn_publish" class="btn btn-default col-lg-5" onclick="publishDiaryWO();">
@@ -97,7 +103,8 @@
                         <div class="col-lg-6" id="id_form_encode" hidden="true">
                             <form class="col-lg-10">
                                 <div class="input-group">
-                                    <input id="id_input_encodekey" type="text" class="form-control" placeholder="本地加密密码，请记牢哦">
+                                    <input id="id_input_encodekey" type="text" class="form-control"
+                                           placeholder="本地加密密码，请记牢哦">
                                     <span class="input-group-btn">
                                         <a id="id_btn_encode" class="btn btn-default" onclick="encodeDiary();">
                                             加密
@@ -130,19 +137,19 @@
             <a class="btn btn-info   btn-block" id="id_refresh" onclick="refreshSelf();">刷新</a>
         </div>
         <br>
-        <div id="id_div_diaryCount">
+        <div id="id_div_diaryCount" style="font-size: 16px">
         </div>
         <br>
         <div id="id_div_diarylist">
 
         </div>
-         <!--<div id="id_div_loadmore" style="font-weight: 700">-->
-            <!--<a class="btn btn-info   btn-block" id="id_loadmore" onclick="loadMore();">加载更多</a>-->
+        <!--<div id="id_div_loadmore" style="font-weight: 700">-->
+        <!--<a class="btn btn-info   btn-block" id="id_loadmore" onclick="loadMore();">加载更多</a>-->
         <!--</div>-->
 
     </div>
     <footer>
-        <p>&copy; 2018 - Nabulas Dapp 秘密日记 - <img src="nebulasx60.png" height="30" width="134"/>  </p>
+        <p>&copy; 2018 - Nabulas Dapp 秘密日记 - <img src="nebulasx60.png" height="30" width="134"/></p>
     </footer>
 </div>
 
