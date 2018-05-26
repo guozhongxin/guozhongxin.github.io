@@ -159,7 +159,7 @@ function setUserItem(index, userAddr, userDiaryCount) {
 function showAllUsersDiaryCount(resp) {
     precheckSimuCallResponse(resp);
     const result = JSON.parse(resp.result);
-    $("#id_table_users tbody").val("");
+    $("#id_table_users tbody")[0].innerHTML = "";
     for (let i = 0; i < result.length; i++) {
         const userAddr = result[i].user;
         const userDiaryCount = result[i].count;
